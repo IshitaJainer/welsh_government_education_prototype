@@ -1,0 +1,73 @@
+{% extends "opp/layout_opp.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "/opp/cy/index.html" %}
+{% set currentNav = "home" %}
+
+{% block pageTitle %}My Local School — Welsh Government{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+
+    <div class="opp-hero">
+      <div class="govuk-width-container">
+        <h1 class="govuk-heading-xl opp-hero__heading">Find information about schools in Wales</h1>
+        <p class="govuk-body-l opp-hero__intro">Search for any maintained school in Wales to see attendance, learner outcomes, Estyn inspection findings and more.</p>
+
+        <form action="/opp/en/search.html" method="get" class="opp-search-form">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--m" for="school-search">
+              Search by school name, town or postcode
+            </label>
+            <div class="opp-search-form__row">
+              <input class="govuk-input opp-search-form__input" id="school-search" name="q" type="text" placeholder="For example, Ysgol Gyfun Cwm Rhymni or CF83">
+              <button class="govuk-button opp-search-form__button" data-module="govuk-button">
+                Search
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row govuk-!-margin-top-8">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h2 class="govuk-heading-l">What you can find out</h2>
+
+      <ul class="govuk-list govuk-list--bullet govuk-body">
+        <li>How well learners are meeting the new 14–16 learning outcomes</li>
+        <li>Attendance rates, including persistent absence</li>
+        <li>Contextual information such as school size and free school meal eligibility</li>
+        <li>Latest Estyn inspection judgement and findings</li>
+        <li>Contact details and links to the school website</li>
+      </ul>
+
+      {{ govukInsetText({
+        text: "This data is provided to support transparency and help inform school choices. It should not be used to rank or compare schools without understanding the context. Many factors outside a school's control influence outcomes."
+      }) }}
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="opp-aside">
+        <h2 class="govuk-heading-m">Browse by local authority</h2>
+        <ul class="govuk-list govuk-!-font-size-16">
+          <li><a href="#" class="govuk-link">Caerphilly</a></li>
+          <li><a href="#" class="govuk-link">Cardiff</a></li>
+          <li><a href="#" class="govuk-link">Carmarthenshire</a></li>
+          <li><a href="#" class="govuk-link">Ceredigion</a></li>
+          <li><a href="#" class="govuk-link">Gwynedd</a></li>
+          <li><a href="#" class="govuk-link">Swansea</a></li>
+          <li><a href="#" class="govuk-link govuk-!-font-weight-bold">View all 22 local authorities</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

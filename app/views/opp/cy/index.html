@@ -1,0 +1,31 @@
+{% extends "opp/layout_opp.html" %}
+
+{% set lang = "cy" %}
+{% set alternativeHref = "/opp/en/index.html" %}
+{% set currentNav = "home" %}
+
+{% block pageTitle %}Fy Ysgol Leol — Llywodraeth Cymru{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <div class="opp-hero">
+      <div class="govuk-width-container">
+        <h1 class="govuk-heading-xl opp-hero__heading">Darganfyddwch wybodaeth am ysgolion yng Nghymru</h1>
+        <p class="govuk-body-l opp-hero__intro">Chwiliwch am unrhyw ysgol a gynhelir yng Nghymru i weld presenoldeb, canlyniadau dysgwyr, canfyddiadau arolygiad Estyn a mwy.</p>
+        <form action="/opp/cy/search.html" method="get" class="opp-search-form">
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--m" for="school-search-cy">
+              Chwiliwch yn ôl enw ysgol, tref neu god post
+            </label>
+            <div class="opp-search-form__row">
+              <input class="govuk-input opp-search-form__input" id="school-search-cy" name="q" type="text" placeholder="Er enghraifft, Ysgol Gyfun Cwm Rhymni neu CF83">
+              <button class="govuk-button opp-search-form__button" data-module="govuk-button">Chwilio</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

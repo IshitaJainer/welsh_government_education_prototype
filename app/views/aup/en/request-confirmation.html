@@ -1,0 +1,13 @@
+{% extends "layout_prototype.html" %}
+{% set lang = "en" %}
+{% block pageTitle %}Request submitted — School Data Service{% endblock %}
+{% block beforeContent %}{% endblock %}
+{% block content %}
+<div class="govuk-width-container govuk-!-margin-top-6">
+  {{ govukPanel({ titleText: "Access request submitted", html: "Your reference number<br><strong>SDS-2026-04821</strong>" }) }}
+  <p class="govuk-body govuk-!-margin-top-6">We have sent a confirmation to your email address.</p>
+  <p class="govuk-body">Welsh Government will review your request within <strong>2 working days</strong>. Your line manager will also be contacted to verify the request.</p>
+  {{ govukInsetText({ text: "Once approved, you will receive an email with a link to sign in using your Hwb account." }) }}
+  <p class="govuk-body"><a href="/aup/en/login.html" class="govuk-link">Return to sign in</a></p>
+</div>
+{% endblock %}

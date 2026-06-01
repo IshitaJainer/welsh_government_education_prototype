@@ -1,0 +1,74 @@
+{% extends "admin/layout_admin.html" %}
+
+{% set currentAdmin = "content" %}
+{% set adminPageTitle = "Manage content" %}
+
+{% block adminActions %}
+  <a href="#" class="govuk-button govuk-!-margin-bottom-0">Add content block</a>
+{% endblock %}
+
+{% block adminContent %}
+
+  <p class="govuk-body">Edit the plain-language explanations and guidance text that appear on the public platform and authorised user portal. All changes require Welsh translation before publishing.</p>
+
+  <div class="admin-tabs govuk-!-margin-bottom-6">
+    <ul class="admin-tabs__list govuk-list">
+      <li class="admin-tabs__item admin-tabs__item--active">Public platform (OPP)</li>
+      <li class="admin-tabs__item">Authorised user portal (AUP)</li>
+      <li class="admin-tabs__item">Notifications</li>
+    </ul>
+  </div>
+
+  <div class="admin-card govuk-!-margin-bottom-4">
+    <div class="admin-card__header">
+      <div>
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Attendance — plain-language explanation</h2>
+        <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Appears on every school profile page under the attendance section</p>
+      </div>
+      <div class="admin-card__actions">
+        <strong class="govuk-tag govuk-tag--green">Published</strong>
+        <a href="#" class="govuk-link govuk-body-s govuk-!-margin-left-3">Edit</a>
+      </div>
+    </div>
+    <div class="admin-content-preview">
+      <p class="govuk-body-s">"This shows the percentage of learners who attended school regularly. Persistent absence means a learner missed at least 10% of sessions. If you have concerns about your child's attendance, contact the school directly."</p>
+    </div>
+    <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Last updated: 25 May 2026 by R. Wallace · <a href="#" class="govuk-link">View Welsh version</a></p>
+  </div>
+
+  <div class="admin-card govuk-!-margin-bottom-4">
+    <div class="admin-card__header">
+      <div>
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">LEIF threshold — plain-language explanation</h2>
+        <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Appears on school profile pages and AUP dashboard</p>
+      </div>
+      <div class="admin-card__actions">
+        <strong class="govuk-tag govuk-tag--yellow">Draft</strong>
+        <a href="#" class="govuk-link govuk-body-s govuk-!-margin-left-3">Edit</a>
+        <a href="#" class="govuk-link govuk-body-s govuk-!-margin-left-3">Publish</a>
+      </div>
+    </div>
+    <div class="admin-content-preview">
+      <p class="govuk-body-s">"This shows the percentage of Year 11 learners who met the Welsh Government's 14–16 Learner Entitlement Indicators Framework (LEIF) threshold. The LEIF replaces the old key stage 4 performance measures and is designed to support a broad, balanced curriculum."</p>
+    </div>
+    <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Last updated: 20 May 2026 by P. Moyle · Welsh translation: <strong class="govuk-tag govuk-tag--yellow">Pending review</strong></p>
+  </div>
+
+  <div class="admin-card govuk-!-margin-bottom-4">
+    <div class="admin-card__header">
+      <div>
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Data use disclaimer</h2>
+        <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Appears on the data download page and export function</p>
+      </div>
+      <div class="admin-card__actions">
+        <strong class="govuk-tag govuk-tag--green">Published</strong>
+        <a href="#" class="govuk-link govuk-body-s govuk-!-margin-left-3">Edit</a>
+      </div>
+    </div>
+    <div class="admin-content-preview">
+      <p class="govuk-body-s">"Please use this data responsibly. Do not use it to rank or compare schools without reading the guidance on how to interpret school data. Many factors outside a school's control influence outcomes."</p>
+    </div>
+    <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-0">Last updated: 12 April 2026 by S. Angel · <a href="#" class="govuk-link">View Welsh version</a></p>
+  </div>
+
+{% endblock %}

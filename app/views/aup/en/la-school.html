@@ -1,0 +1,115 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set currentNav = "la" %}
+{% set userName = "S. Thomas" %}
+{% set schoolName = "Rhondda Cynon Taf CBC" %}
+{% block pageTitle %}Aberdare Community — LA view — School Data Service{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-body-s"><a href="/aup/en/la-schools.html" class="govuk-link">← All schools</a></p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Aberdare Community School</h1>
+      <p class="govuk-body">Secondary · English medium · URN 6744106 · Rhondda Cynon Taf</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-notify-banner">
+        <p class="govuk-body-s">Attendance below LA average for <strong>3 consecutive years</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-metric-grid">
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Attendance</p>
+          <p class="aup-metric-card__value govuk-heading-l" style="color:#d4351c">88.4%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↓ −0.9pp vs last year</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
+          <p class="aup-metric-card__value govuk-heading-l">35.8%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↑ above LA avg (31.2%)</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">FSM eligible</p>
+          <p class="aup-metric-card__value govuk-heading-l">35.6%</p>
+          <p class="aup-metric-card__change govuk-body-s">FSM quartile group 5 (&gt;30%)</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">FSM quartile</p>
+          <p class="aup-metric-card__value govuk-heading-l">Q4</p>
+          <p class="aup-metric-card__change govuk-body-s">Within FSM benchmarking group</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-one-half">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Attendance vs LA average and comparator</h2>
+        </div>
+        <div class="aup-hbar">
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><strong>This school</strong></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:88.4%; background:#d4351c;"><span class="aup-hbar__val">88.4%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Comparator avg</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:90.3%;"><span class="aup-hbar__val">90.3%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">LA average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:88.2%;"><span class="aup-hbar__val">88.2%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Wales average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:89.1%; background:#505a5f;"><span class="aup-hbar__val">89.1%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group</h2>
+        </div>
+        {{ govukTable({
+          head: [ { text: "Group" }, { text: "Attendance" }, { text: "PA %" }, { text: "Status" } ],
+          rows: [
+            [ { text: "All pupils" }, { text: "88.4%" }, { text: "35.8%" }, { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" } ],
+            [ { text: "FSM eligible" }, { text: "80.5%" }, { text: "48.2%" }, { html: "<strong class='govuk-tag govuk-tag--red'>Attention</strong>" } ],
+            [ { text: "Non-FSM" }, { text: "90.4%" }, { text: "28.1%" }, { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" } ],
+            [ { text: "ALN" }, { text: "81.2%" }, { text: "51.0%" }, { html: "<strong class='govuk-tag govuk-tag--red'>Attention</strong>" } ]
+          ]
+        }) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <a href="/aup/en/dashboard.html" role="button" class="govuk-button govuk-button--secondary">View full school dashboard</a>
+      <a href="/aup/en/la-schools.html" class="govuk-link govuk-!-margin-left-4">← Back to all schools</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

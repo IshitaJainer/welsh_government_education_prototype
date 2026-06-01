@@ -1,0 +1,134 @@
+{% extends "admin/layout_admin.html" %}
+
+{% set currentAdmin = "users" %}
+{% set adminPageTitle = "User accounts" %}
+
+{% block adminActions %}
+  <a href="#" class="govuk-button govuk-!-margin-bottom-0">Add user manually</a>
+{% endblock %}
+
+{% block adminContent %}
+
+  <div class="admin-metric-grid govuk-!-margin-bottom-6">
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Total users</p>
+      <p class="admin-metric-card__value govuk-heading-l">4,831</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Active this month</p>
+      <p class="admin-metric-card__value govuk-heading-l">3,204</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Pending approval</p>
+      <p class="admin-metric-card__value govuk-heading-l">17</p>
+      <p class="admin-metric-card__change admin-metric-card__change--warn govuk-body-s">⚠ 4 overdue</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Hwb authenticated</p>
+      <p class="admin-metric-card__value govuk-heading-l">94%</p>
+    </div>
+  </div>
+
+  <div class="admin-card govuk-!-margin-bottom-6">
+    <div class="admin-card__header">
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Search and filter users</h2>
+    </div>
+
+    <div class="aup-filter-bar govuk-!-margin-bottom-4 govuk-!-margin-top-4">
+      {{ govukInput({
+        id: "user-search",
+        name: "user-search",
+        label: { text: "Search", classes: "govuk-visually-hidden" },
+        classes: "govuk-input--width-20",
+        placeholder: "Name, email or school…"
+      }) }}
+      {{ govukSelect({
+        id: "filter-role",
+        name: "filter-role",
+        label: { text: "Role", classes: "govuk-visually-hidden" },
+        classes: "govuk-select--small",
+        items: [
+          { value: "all", text: "All roles", selected: true },
+          { value: "school", text: "School user" },
+          { value: "la", text: "LA user" },
+          { value: "governor", text: "Governor" },
+          { value: "estyn", text: "Estyn" },
+          { value: "wg", text: "WG staff" }
+        ]
+      }) }}
+      {{ govukSelect({
+        id: "filter-status",
+        name: "filter-status",
+        label: { text: "Status", classes: "govuk-visually-hidden" },
+        classes: "govuk-select--small",
+        items: [
+          { value: "all", text: "All statuses", selected: true },
+          { value: "active", text: "Active" },
+          { value: "pending", text: "Pending" },
+          { value: "suspended", text: "Suspended" }
+        ]
+      }) }}
+    </div>
+
+    {{ govukTable({
+      head: [
+        { text: "Name" },
+        { text: "Organisation" },
+        { text: "Role" },
+        { text: "Auth" },
+        { text: "Last active" },
+        { text: "Status" },
+        { text: "Actions" }
+      ],
+      rows: [
+        [
+          { text: "Nia Thomas" },
+          { text: "Ysgol Gymraeg Melin Gruffydd" },
+          { html: "<strong class='govuk-tag govuk-tag--blue'>School user</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "—" },
+          { html: "<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a>" }
+        ],
+        [
+          { text: "Carys Williams" },
+          { text: "Ysgol Gyfun Cwm Rhymni" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Governor</strong>" },
+          { html: "<strong class='govuk-tag'>Manual</strong>" },
+          { text: "—" },
+          { html: "<strong class='govuk-tag govuk-tag--red'>Overdue</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a>" }
+        ],
+        [
+          { text: "J. Williams" },
+          { text: "Ysgol Gyfun Cwm Rhymni" },
+          { html: "<strong class='govuk-tag govuk-tag--blue'>School user</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "Today" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Active</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+        ],
+        [
+          { text: "Rhodri Evans" },
+          { text: "Caerphilly CBC" },
+          { html: "<strong class='govuk-tag govuk-tag--purple'>LA user</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "Yesterday" },
+          { html: "<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a>" }
+        ],
+        [
+          { text: "Gari Jones" },
+          { text: "Estyn" },
+          { html: "<strong class='govuk-tag govuk-tag--orange'>Estyn</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "23 May" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Active</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+        ]
+      ]
+    }) }}
+
+  </div>
+
+{% endblock %}

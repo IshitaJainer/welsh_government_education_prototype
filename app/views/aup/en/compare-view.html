@@ -1,0 +1,181 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set currentNav = "compare" %}
+{% block pageTitle %}Comparator view — School Data Service{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Comparison — Aberdare Community School</h1>
+      <p class="govuk-body">Compared against 4 schools with a similar contextual profile. Schools are anonymised.</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <a href="/aup/en/compare-results.html" class="govuk-link govuk-body-s">← Edit group</a>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <div class="aup-filter-bar">
+        <span class="govuk-body-s aup-filter-bar__label">View:</span>
+        <a href="#attendance" class="govuk-link govuk-body-s aup-nav__link--active">Attendance</a>
+        <a href="#attainment" class="govuk-link govuk-body-s">Attainment</a>
+        <a href="#fsm-gap" class="govuk-link govuk-body-s">FSM gap</a>
+        <a href="#context" class="govuk-link govuk-body-s">Context</a>
+      </div>
+    </div>
+  </div>
+
+  {# Attendance comparison #}
+  <div id="attendance" class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Attendance — % half day sessions attended (2024–25)</h2>
+        </div>
+        <p class="govuk-body-s">Your school is below the comparator group average.</p>
+        <div class="aup-hbar">
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><strong>Aberdare (you)</strong></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:88.4%"><span class="aup-hbar__val">88.4%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School A</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:91.2%"><span class="aup-hbar__val">91.2%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School B</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:89.4%"><span class="aup-hbar__val">89.4%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School C</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:90.1%"><span class="aup-hbar__val">90.1%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School D</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:87.8%"><span class="aup-hbar__val">87.8%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Group average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:89.6%"><span class="aup-hbar__val">89.6%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Wales average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:89.1%; background: #505a5f;"><span class="aup-hbar__val">89.1%</span></div>
+            </div>
+          </div>
+        </div>
+        <ul class="aup-legend govuk-list govuk-!-font-size-14">
+          <li class="aup-legend__item aup-legend__item--school">This school</li>
+          <li class="aup-legend__item aup-legend__item--comparator">Comparator schools</li>
+          <li class="aup-legend__item aup-legend__item--national">Group average</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {# Attainment comparison #}
+  <div id="attainment" class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Capped 9 points score — all learners (2024–25)</h2>
+          <span class="govuk-body-s" style="color: #505a5f;">Available to 2026 only. LEIF data from September 2027.</span>
+        </div>
+        {{ govukTable({
+          head: [
+            { text: "School" },
+            { text: "Capped 9" },
+            { text: "Literacy" },
+            { text: "Numeracy" },
+            { text: "Welsh Bac" }
+          ],
+          rows: [
+            [
+              { html: "<strong>Aberdare (you)</strong>" },
+              { html: "<strong>9.3</strong>" },
+              { html: "<strong>3.3</strong>" },
+              { html: "<strong>3.0</strong>" },
+              { html: "<strong>4.4</strong>" }
+            ],
+            [ { text: "School A" }, { text: "9.8" }, { text: "3.5" }, { text: "3.2" }, { text: "4.6" } ],
+            [ { text: "School B" }, { text: "9.1" }, { text: "3.1" }, { text: "2.9" }, { text: "4.2" } ],
+            [ { text: "School C" }, { text: "9.5" }, { text: "3.4" }, { text: "3.1" }, { text: "4.5" } ],
+            [ { text: "School D" }, { text: "8.9" }, { text: "3.0" }, { text: "2.8" }, { text: "4.1" } ],
+            [ { html: "<strong>Group average</strong>" }, { html: "<strong>9.4</strong>" }, { html: "<strong>3.3</strong>" }, { html: "<strong>3.0</strong>" }, { html: "<strong>4.4</strong>" } ],
+            [ { text: "Wales average" }, { text: "9.1" }, { text: "3.1" }, { text: "2.9" }, { text: "4.3" } ]
+          ]
+        }) }}
+      </div>
+    </div>
+  </div>
+
+  {# FSM gap #}
+  <div id="fsm-gap" class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">FSM attendance gap — FSM eligible vs non-FSM (2024–25)</h2>
+        </div>
+        <p class="govuk-body-s">The gap between FSM-eligible and non-FSM learner attendance. Smaller is better.</p>
+        <div class="aup-hbar">
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><strong>Aberdare (you)</strong></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:99%"><span class="aup-hbar__val">9.9pp</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School A</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:81%"><span class="aup-hbar__val">8.1pp</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">School B</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:89%"><span class="aup-hbar__val">8.9pp</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Group average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:85%"><span class="aup-hbar__val">8.5pp</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s">Wales average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:88%; background: #505a5f;"><span class="aup-hbar__val">8.8pp</span></div>
+            </div>
+          </div>
+        </div>
+        {{ govukWarningText({ text: "Your FSM attendance gap is larger than the comparator group average. This may be worth exploring further.", iconFallbackText: "Warning" }) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <a href="/aup/en/compare-build.html" class="govuk-link govuk-body-s">← Change comparator group</a>
+      &nbsp;&nbsp;
+      <a href="/aup/en/attendance.html" class="govuk-link govuk-body-s">View full attendance detail →</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

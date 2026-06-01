@@ -1,0 +1,310 @@
+// Admin panel styles
+
+// ---- Full-page layout ----
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+// ---- Sidebar ----
+
+.admin-sidebar {
+  background-color: #1B1E56;
+  color: govuk-colour("white");
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: govuk-spacing(4);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  &__org {
+    color: rgba(255,255,255,0.6);
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__service {
+    color: govuk-colour("white");
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+
+  &__user {
+    padding: govuk-spacing(3) govuk-spacing(4);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(2);
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #FDDE7A;
+    color: #1B1E56;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    color: govuk-colour("white");
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+
+  &__role {
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 0;
+  }
+
+  &__nav-label {
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    padding: govuk-spacing(3) govuk-spacing(4) govuk-spacing(1);
+    margin-bottom: 0;
+  }
+
+  &__nav-list {
+    margin-bottom: 0;
+    padding: 0 0 govuk-spacing(2);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  &__nav-link {
+    display: block;
+    padding: govuk-spacing(2) govuk-spacing(4);
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+
+    &:visited {
+      color: rgba(255,255,255,0.75);
+    }
+
+    &:hover {
+      color: govuk-colour("white");
+      background-color: rgba(255,255,255,0.06);
+    }
+
+    &--active {
+      color: #FDDE7A;
+      border-left: 3px solid #FDDE7A;
+      padding-left: calc(#{govuk-spacing(4)} - 3px);
+
+      &:visited {
+        color: #FDDE7A;
+      }
+    }
+  }
+}
+
+// ---- Main area ----
+
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  background-color: govuk-colour("light-grey");
+}
+
+.admin-topbar {
+  background-color: govuk-colour("white");
+  border-bottom: 1px solid govuk-colour("mid-grey");
+  padding: govuk-spacing(3) govuk-spacing(6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__actions {
+    display: flex;
+    gap: govuk-spacing(2);
+    align-items: center;
+  }
+}
+
+.admin-content {
+  padding: govuk-spacing(6);
+  flex: 1;
+}
+
+// ---- Metric cards ----
+
+.admin-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: govuk-spacing(3);
+}
+
+.admin-metric-card {
+  background-color: govuk-colour("white");
+  border: 1px solid govuk-colour("mid-grey");
+  padding: govuk-spacing(4);
+
+  &__label {
+    color: #505a5f;
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__value {
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__change {
+    margin-bottom: 0;
+
+    &--up { color: var(--nrw-dark-green); }
+    &--down { color: govuk-colour("red"); }
+    &--warn { color: #b25c00; }
+  }
+}
+
+// ---- Cards ----
+
+.admin-card {
+  background-color: govuk-colour("white");
+  border: 1px solid govuk-colour("mid-grey");
+  padding: govuk-spacing(5);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: govuk-spacing(4);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+}
+
+// ---- Activity feed ----
+
+.admin-activity {
+  display: flex;
+  align-items: flex-start;
+  gap: govuk-spacing(3);
+  padding: govuk-spacing(3) 0;
+  border-bottom: 1px solid govuk-colour("mid-grey");
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &__icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+    flex-shrink: 0;
+    color: govuk-colour("white");
+
+    &--green { background-color: var(--nrw-dark-green); }
+    &--blue { background-color: #1d70b8; }
+    &--amber { background-color: #b25c00; color: govuk-colour("white"); }
+  }
+
+  &__text {
+    flex: 1;
+  }
+
+  &__time {
+    color: #505a5f;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+// ---- Horizontal bar chart ----
+
+.admin-hbar {
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(2);
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__label {
+    width: 70px;
+    flex-shrink: 0;
+    color: #505a5f;
+    font-size: 13px;
+  }
+
+  &__track {
+    flex: 1;
+    background-color: govuk-colour("light-grey");
+    height: 16px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  &__count {
+    width: 40px;
+    text-align: right;
+    color: #505a5f;
+    flex-shrink: 0;
+  }
+}
+
+// ---- Content preview ----
+
+.admin-content-preview {
+  background-color: govuk-colour("light-grey");
+  border-left: 4px solid govuk-colour("mid-grey");
+  padding: govuk-spacing(3);
+  margin: govuk-spacing(3) 0;
+
+  p {
+    margin-bottom: 0;
+    font-style: italic;
+  }
+}
+
+// ---- Tabs ----
+
+.admin-tabs {
+  border-bottom: 2px solid govuk-colour("mid-grey");
+  margin-bottom: govuk-spacing(6);
+
+  &__list {
+    display: flex;
+    gap: 0;
+    margin-bottom: -2px;
+  }
+
+  &__item {
+    padding: govuk-spacing(2) govuk-spacing(4);
+    font-size: 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: #505a5f;
+
+    &--active {
+      color: var(--nrw-dark-green);
+      font-weight: bold;
+      border-bottom-color: var(--nrw-dark-green);
+    }
+  }
+}

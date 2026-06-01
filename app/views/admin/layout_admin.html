@@ -1,0 +1,100 @@
+{% extends "layout_unbranded.html" %}
+
+{% block pageTitle %}Admin — School Data Service{% endblock %}
+
+{% block body %}
+<div class="admin-layout">
+
+  <div class="admin-sidebar">
+    <div class="admin-sidebar__header">
+      <p class="admin-sidebar__org govuk-body-s">Welsh Government</p>
+      <p class="admin-sidebar__service govuk-body-s">School Data Service — Admin</p>
+    </div>
+
+    <div class="admin-sidebar__user">
+      <div class="admin-sidebar__avatar">SR</div>
+      <div>
+        <p class="admin-sidebar__name govuk-body-s">S. Rees</p>
+        <p class="admin-sidebar__role govuk-body-s">Super administrator</p>
+      </div>
+    </div>
+
+    <nav aria-label="Admin navigation">
+      <p class="admin-sidebar__nav-label govuk-body-s">Overview</p>
+      <ul class="admin-sidebar__nav-list govuk-list">
+        <li>
+          <a href="/admin/dashboard.html" class="admin-sidebar__nav-link {{ 'admin-sidebar__nav-link--active' if currentAdmin == 'dashboard' }}">
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Notifications</a>
+        </li>
+      </ul>
+
+      <p class="admin-sidebar__nav-label govuk-body-s">Content</p>
+      <ul class="admin-sidebar__nav-list govuk-list">
+        <li>
+          <a href="/admin/content.html" class="admin-sidebar__nav-link {{ 'admin-sidebar__nav-link--active' if currentAdmin == 'content' }}">
+            Manage content
+          </a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Welsh translations</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Suppression rules</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Data publishing</a>
+        </li>
+      </ul>
+
+      <p class="admin-sidebar__nav-label govuk-body-s">Users</p>
+      <ul class="admin-sidebar__nav-list govuk-list">
+        <li>
+          <a href="/admin/users.html" class="admin-sidebar__nav-link {{ 'admin-sidebar__nav-link--active' if currentAdmin == 'users' }}">
+            User accounts
+          </a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Roles and permissions</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Organisations</a>
+        </li>
+      </ul>
+
+      <p class="admin-sidebar__nav-label govuk-body-s">System</p>
+      <ul class="admin-sidebar__nav-list govuk-list">
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">API and integrations</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Usage analytics</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Audit log</a>
+        </li>
+        <li>
+          <a href="#" class="admin-sidebar__nav-link">Settings</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <h1 class="admin-topbar__title govuk-heading-m govuk-!-margin-bottom-0">{{ adminPageTitle | default("Admin dashboard") }}</h1>
+      <div class="admin-topbar__actions">
+        {% block adminActions %}{% endblock %}
+      </div>
+    </div>
+
+    <div class="admin-content">
+      {% block adminContent %}{% endblock %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

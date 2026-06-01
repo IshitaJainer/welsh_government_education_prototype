@@ -1,0 +1,112 @@
+{% extends "opp/layout_opp.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "/opp/cy/search.html" %}
+{% set currentNav = "find" %}
+
+{% block pageTitle %}Search results — My Local School{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l">Find a school</h1>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form action="/opp/en/search.html" method="get">
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="school-search">
+            Search by school name, town or postcode
+          </label>
+          <div class="opp-search-form__row">
+            <input class="govuk-input" id="school-search" name="q" type="text" value="Cwm Rhymni">
+            <button class="govuk-button" data-module="govuk-button">Search</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-top-4">
+    <div class="govuk-grid-column-two-thirds">
+
+      <p class="govuk-body govuk-!-color-secondary">Showing 2 results for <strong>"Cwm Rhymni"</strong></p>
+
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+      <div class="opp-result">
+        <h2 class="govuk-heading-m opp-result__heading">
+          <a href="/opp/en/school-profile.html" class="govuk-link">Ysgol Gyfun Cwm Rhymni</a>
+        </h2>
+        <ul class="opp-result__meta govuk-list govuk-!-font-size-16">
+          <li class="opp-result__meta-item">Secondary (11–18)</li>
+          <li class="opp-result__meta-item">Welsh medium</li>
+          <li class="opp-result__meta-item">Caerphilly</li>
+          <li class="opp-result__meta-item">1,247 learners</li>
+        </ul>
+        <p class="govuk-body-s">Fleur-de-lis Road, Pengam, Caerphilly, NP12 3QP</p>
+        <strong class="govuk-tag govuk-tag--green opp-result__estyn">Estyn: Good</strong>
+      </div>
+
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+      <div class="opp-result">
+        <h2 class="govuk-heading-m opp-result__heading">
+          <a href="#" class="govuk-link">Ysgol Gymraeg Cwm Rhymni</a>
+        </h2>
+        <ul class="opp-result__meta govuk-list govuk-!-font-size-16">
+          <li class="opp-result__meta-item">Primary (3–11)</li>
+          <li class="opp-result__meta-item">Welsh medium</li>
+          <li class="opp-result__meta-item">Caerphilly</li>
+          <li class="opp-result__meta-item">312 learners</li>
+        </ul>
+        <p class="govuk-body-s">High Street, Rhymney, Caerphilly, NP22 5LG</p>
+        <strong class="govuk-tag govuk-tag--green opp-result__estyn">Estyn: Good</strong>
+      </div>
+
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="opp-aside">
+        <h2 class="govuk-heading-s">Refine results</h2>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-size-16" for="filter-la">Local authority</label>
+          <select class="govuk-select govuk-!-width-full" id="filter-la">
+            <option value="">All local authorities</option>
+            <option value="caerphilly" selected>Caerphilly</option>
+            <option value="cardiff">Cardiff</option>
+            <option value="swansea">Swansea</option>
+          </select>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-size-16" for="filter-type">School type</label>
+          <select class="govuk-select govuk-!-width-full" id="filter-type">
+            <option value="">All types</option>
+            <option value="primary">Primary</option>
+            <option value="secondary" selected>Secondary</option>
+            <option value="special">Special</option>
+          </select>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-!-font-size-16" for="filter-lang">Language medium</label>
+          <select class="govuk-select govuk-!-width-full" id="filter-lang">
+            <option value="">All</option>
+            <option value="welsh">Welsh medium</option>
+            <option value="english">English medium</option>
+            <option value="dual">Dual stream</option>
+          </select>
+        </div>
+        <button class="govuk-button govuk-button--secondary govuk-!-width-full">Apply filters</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

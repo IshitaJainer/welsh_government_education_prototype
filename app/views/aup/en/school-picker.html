@@ -1,0 +1,39 @@
+{% extends "layout_prototype.html" %}
+{% set lang = "en" %}
+{% block pageTitle %}Choose your school — School Data Service{% endblock %}
+{% block beforeContent %}{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row govuk-!-margin-top-6">
+    <div class="govuk-grid-column-one-half">
+
+      <h1 class="govuk-heading-l">Choose a school</h1>
+      <p class="govuk-body">You have access to multiple schools. Select the one you want to view.</p>
+
+      <div class="govuk-inset-text govuk-!-margin-bottom-4">
+        Signed in as <strong>J. Davies</strong> via Hwb. Your access covers 3 schools.
+      </div>
+
+      <div class="govuk-!-margin-bottom-2">
+        <a href="/aup/en/dashboard.html" class="govuk-link school-picker-option govuk-!-display-block govuk-!-padding-3" style="border: 2px solid #1B1E56; border-radius: 4px; text-decoration: none; margin-bottom: 8px; background: #f0f0ff;">
+          <strong class="govuk-body govuk-!-font-weight-bold" style="color: #1B1E56;">Aberdare Community School</strong><br>
+          <span class="govuk-body-s" style="color: #505a5f;">Secondary · Rhondda Cynon Taf · URN 6744106</span>
+        </a>
+        <a href="/aup/en/dashboard.html" class="govuk-link school-picker-option govuk-!-display-block govuk-!-padding-3" style="border: 1px solid #b1b4b6; border-radius: 4px; text-decoration: none; margin-bottom: 8px;">
+          <strong class="govuk-body govuk-!-font-weight-bold" style="color: #0b0c0c;">Blaengwawr Primary School</strong><br>
+          <span class="govuk-body-s" style="color: #505a5f;">Primary · Rhondda Cynon Taf · URN 6742001</span>
+        </a>
+        <a href="/aup/en/dashboard.html" class="govuk-link school-picker-option govuk-!-display-block govuk-!-padding-3" style="border: 1px solid #b1b4b6; border-radius: 4px; text-decoration: none; margin-bottom: 8px;">
+          <strong class="govuk-body govuk-!-font-weight-bold" style="color: #0b0c0c;">Mountain Ash Comprehensive School</strong><br>
+          <span class="govuk-body-s" style="color: #505a5f;">Secondary · Rhondda Cynon Taf · URN 6744210</span>
+        </a>
+      </div>
+
+      <p class="govuk-body-s govuk-!-margin-top-4">
+        <a href="/aup/en/login.html" class="govuk-link">Not you? Sign in with a different account</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

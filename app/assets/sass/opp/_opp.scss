@@ -1,0 +1,314 @@
+// OPP — Online Public Platform styles
+// Built on top of lbm-frontend / GOV.UK Frontend
+
+// ---- Navigation ----
+
+.opp-nav {
+  background-color: govuk-colour("white");
+  border-bottom: 1px solid govuk-colour("mid-grey");
+  margin-bottom: govuk-spacing(4);
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: govuk-spacing(1);
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__link {
+    display: block;
+    padding: govuk-spacing(2) govuk-spacing(3);
+    text-decoration: none;
+    color: govuk-colour("black");
+    font-size: 16px;
+    border-bottom: 3px solid transparent;
+
+    &:hover {
+      color: var(--nrw-dark-green);
+      border-bottom-color: var(--nrw-green);
+    }
+
+    &--active {
+      color: var(--nrw-dark-green);
+      border-bottom-color: var(--nrw-dark-green);
+      font-weight: bold;
+    }
+  }
+}
+
+// ---- Hero search block ----
+
+.opp-hero {
+  background-color: var(--nrw-dark-green);
+  color: govuk-colour("white");
+  padding: govuk-spacing(8) 0;
+  margin-bottom: govuk-spacing(6);
+
+  &__heading {
+    color: govuk-colour("white");
+  }
+
+  &__intro {
+    color: govuk-colour("white");
+    max-width: 40em;
+  }
+}
+
+.opp-search-form {
+  max-width: 600px;
+
+  .govuk-label {
+    color: govuk-colour("white");
+  }
+
+  &__row {
+    display: flex;
+    gap: govuk-spacing(2);
+    align-items: flex-start;
+  }
+
+  &__input {
+    flex: 1;
+  }
+
+  &__button {
+    margin-bottom: 0;
+    white-space: nowrap;
+  }
+}
+
+// ---- Summary grid ----
+
+.opp-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: govuk-spacing(3);
+
+  @include govuk-media-query($until: tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.opp-summary-card {
+  background-color: govuk-colour("light-grey");
+  padding: govuk-spacing(4);
+
+  &__label {
+    color: #505a5f;
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__value {
+    margin-bottom: govuk-spacing(1);
+    color: govuk-colour("black");
+  }
+
+  &__context {
+    margin-bottom: 0;
+
+    &--positive {
+      color: var(--nrw-dark-green);
+    }
+
+    &--warning {
+      color: govuk-colour("black");
+      font-weight: bold;
+    }
+  }
+}
+
+// ---- Tags row ----
+
+.opp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: govuk-spacing(1);
+
+  li {
+    margin: 0;
+  }
+}
+
+// ---- Horizontal bar charts ----
+
+.opp-chart {
+  margin: govuk-spacing(4) 0;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: govuk-spacing(2);
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__label {
+    width: 120px;
+    flex-shrink: 0;
+    text-align: right;
+    color: #505a5f;
+  }
+
+  &__track {
+    flex: 1;
+    background-color: govuk-colour("light-grey");
+    height: 24px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: govuk-spacing(2);
+    border-radius: 2px;
+
+    &--school {
+      background-color: var(--nrw-dark-green);
+    }
+
+    &--national {
+      background-color: #aacae6;
+    }
+  }
+
+  &__bar-value {
+    font-size: 13px;
+    font-weight: bold;
+    color: govuk-colour("white");
+
+    .opp-chart__bar--national & {
+      color: govuk-colour("black");
+    }
+  }
+}
+
+// ---- Trend chart ----
+
+.opp-trend {
+  margin: govuk-spacing(4) 0;
+
+  &__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: govuk-spacing(2);
+    height: 120px;
+    padding-bottom: govuk-spacing(5);
+    border-bottom: 2px solid govuk-colour("mid-grey");
+  }
+
+  &__bar-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+
+  &__pct {
+    margin-bottom: govuk-spacing(1);
+    color: #505a5f;
+  }
+
+  &__bar {
+    width: 100%;
+    background-color: #aacae6;
+    border-radius: 2px 2px 0 0;
+
+    &--current {
+      background-color: var(--nrw-dark-green);
+    }
+  }
+
+  &__year {
+    margin-top: govuk-spacing(1);
+    color: #505a5f;
+  }
+}
+
+// ---- Estyn block ----
+
+.opp-estyn {
+  border-left: 4px solid var(--nrw-dark-green);
+  padding-left: govuk-spacing(4);
+}
+
+// ---- Sidebar aside blocks ----
+
+.opp-aside {
+  background-color: govuk-colour("light-grey");
+  padding: govuk-spacing(4);
+
+  .govuk-summary-list__key {
+    font-weight: normal;
+    color: #505a5f;
+  }
+}
+
+// ---- School actions ----
+
+.opp-school-actions {
+  text-align: right;
+  padding-top: govuk-spacing(4);
+}
+
+// ---- Search results ----
+
+.opp-result {
+  margin-bottom: govuk-spacing(2);
+
+  &__heading {
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: govuk-spacing(2);
+    margin-bottom: govuk-spacing(1);
+    color: #505a5f;
+  }
+
+  &__meta-item {
+    margin: 0;
+
+    &::before {
+      content: '';
+    }
+
+    & + & {
+      &::before {
+        content: '·';
+        margin-right: govuk-spacing(2);
+      }
+    }
+  }
+
+  &__estyn {
+    margin-top: govuk-spacing(1);
+  }
+}
+
+// ---- Nearby schools ----
+
+.opp-nearby-school {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: govuk-spacing(2);
+  padding-bottom: govuk-spacing(2);
+  border-bottom: 1px solid govuk-colour("mid-grey");
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// ---- Section spacing ----
+
+.opp-section {
+  margin-bottom: govuk-spacing(6);
+}

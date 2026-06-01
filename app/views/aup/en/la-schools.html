@@ -1,0 +1,98 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set currentNav = "la" %}
+{% set userName = "S. Thomas" %}
+{% set schoolName = "Rhondda Cynon Taf CBC" %}
+{% block pageTitle %}All schools — School Data Service{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">All schools — Rhondda Cynon Taf</h1>
+      <p class="govuk-body">86 schools · Sorted by attendance (lowest first) · 2024–25</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <a href="/aup/en/la-overview.html" class="govuk-link govuk-body-s">← LA overview</a>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <div class="aup-filter-bar">
+        <span class="govuk-body-s aup-filter-bar__label">Sort by:</span>
+        {{ govukSelect({ id: "sort", name: "sort", label: { text: "Sort", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "att-asc", text: "Attendance (lowest first)", selected: true },
+          { value: "att-desc", text: "Attendance (highest first)" },
+          { value: "pa", text: "Persistent absence" },
+          { value: "fsm", text: "FSM %" },
+          { value: "name", text: "School name" }
+        ]}) }}
+        {{ govukSelect({ id: "phase2", name: "phase2", label: { text: "Phase", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "all", text: "All schools", selected: true },
+          { value: "secondary", text: "Secondary only" },
+          { value: "primary", text: "Primary only" },
+          { value: "special", text: "Special only" }
+        ]}) }}
+        {{ govukSelect({ id: "status", name: "status", label: { text: "Status", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "all", text: "All statuses", selected: true },
+          { value: "attention", text: "Attention needed" },
+          { value: "monitor", text: "Monitor" },
+          { value: "ok", text: "On track" }
+        ]}) }}
+        <a href="#" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-font-size-14">Export CSV</a>
+      </div>
+    </div>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "School" },
+      { text: "Type" },
+      { text: "Pupils" },
+      { text: "FSM %" },
+      { text: "Attendance" },
+      { text: "Persistent absence" },
+      { text: "Status" },
+      { text: "" }
+    ],
+    rows: [
+      [
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Mountain Ash CS</a>" },
+        { text: "Secondary" }, { text: "923" }, { text: "41.0%" }, { text: "86.1%" }, { text: "41.2%" },
+        { html: "<strong class='govuk-tag govuk-tag--red'>Attention needed</strong>" },
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+      ],
+      [
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Aberdare Community</a>" },
+        { text: "Secondary" }, { text: "1,107" }, { text: "35.6%" }, { text: "88.4%" }, { text: "35.8%" },
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" },
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+      ],
+      [
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ysgol y Cymoedd</a>" },
+        { text: "Secondary" }, { text: "1,340" }, { text: "28.4%" }, { text: "89.3%" }, { text: "29.1%" },
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" },
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+      ],
+      [
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Blaengwawr High</a>" },
+        { text: "Secondary" }, { text: "876" }, { text: "22.1%" }, { text: "91.2%" }, { text: "22.4%" },
+        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" },
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+      ],
+      [
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ferndale Community</a>" },
+        { text: "Secondary" }, { text: "654" }, { text: "31.2%" }, { text: "90.4%" }, { text: "27.8%" },
+        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" },
+        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+      ],
+      [
+        { html: "<span class='govuk-body-s' style='color:#505a5f'>+ 81 more schools...</span>" },
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }
+      ]
+    ]
+  }) }}
+
+</div>
+{% endblock %}

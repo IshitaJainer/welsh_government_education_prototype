@@ -1,0 +1,150 @@
+{% extends "opp/layout_opp.html" %}
+
+{% set lang = "cy" %}
+{% set alternativeHref = "/opp/en/school-profile.html" %}
+{% set currentNav = "find" %}
+
+{% block pageTitle %}Ysgol Gyfun Cwm Rhymni — Fy Ysgol Leol{% endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Hafan", href: "/opp/cy/index.html" },
+      { text: "Dod o hyd i ysgol", href: "/opp/cy/search.html" },
+      { text: "Caerffili", href: "#" },
+      { text: "Ysgol Gyfun Cwm Rhymni" }
+    ]
+  }) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Ysgol Gyfun Cwm Rhymni</h1>
+      <p class="govuk-body govuk-!-margin-bottom-1">
+        Ffordd Fleur-de-lis, Pengam, Caerffili, NP12 3QP
+      </p>
+      <ul class="opp-tags govuk-list govuk-!-margin-bottom-4">
+        <li><strong class="govuk-tag govuk-tag--blue">Uwchradd (11–18)</strong></li>
+        <li><strong class="govuk-tag govuk-tag--green">Cymraeg</strong></li>
+        <li><strong class="govuk-tag govuk-tag--blue">Ysgol gymunedol</strong></li>
+        <li><strong class="govuk-tag govuk-tag--blue">1,247 o ddysgwyr</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="opp-summary-grid">
+
+        <div class="opp-summary-card">
+          <p class="opp-summary-card__label govuk-body-s">Cyfradd presenoldeb</p>
+          <p class="opp-summary-card__value govuk-heading-l">93.4%</p>
+          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">
+            Uwchlaw cyfartaledd Cymru (91.8%)
+          </p>
+        </div>
+
+        <div class="opp-summary-card">
+          <p class="opp-summary-card__label govuk-body-s">Dysgwyr sy'n cyrraedd canlyniadau 14–16</p>
+          <p class="opp-summary-card__value govuk-heading-l">71.3%</p>
+          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">
+            Uwchlaw cyfartaledd Cymru (69%)
+          </p>
+        </div>
+
+        <div class="opp-summary-card">
+          <p class="opp-summary-card__label govuk-body-s">Absenoldeb parhaus</p>
+          <p class="opp-summary-card__value govuk-heading-l">18.2%</p>
+          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--warning">
+            Ychydig uwchlaw cyfartaledd Cymru (17.1%)
+          </p>
+        </div>
+
+        <div class="opp-summary-card">
+          <p class="opp-summary-card__label govuk-body-s">Cymhwysedd prydau ysgol am ddim</p>
+          <p class="opp-summary-card__value govuk-heading-l">22.4%</p>
+          <p class="opp-summary-card__context govuk-body-s">
+            Cyfartaledd Cymru: 21.8%
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <section class="opp-section" aria-labelledby="outcomes-heading">
+        <h2 class="govuk-heading-l" id="outcomes-heading">Sut mae dysgwyr yn gwneud?</h2>
+        <p class="govuk-body">Mae hyn yn dangos y ganran o ddysgwyr Blwyddyn 11 a gyflawnodd ganlyniadau dysgu 14–16 Llywodraeth Cymru yn 2024–25. <strong>Cyflawnodd 71.3% o ddysgwyr yn yr ysgol hon y trothwy</strong>, o'i gymharu â 69% ledled Cymru.</p>
+
+        {{ govukInsetText({
+          text: "Mae'r ffigurau hyn yn dangos sut mae dysgwyr yn cynnydd yn gyffredinol. Nid ydynt yn rhestru ysgolion yn erbyn ei gilydd. Mae llawer o ffactorau yn dylanwadu ar ganlyniadau. Defnyddiwch y wybodaeth hon ochr yn ochr â chanfyddiadau arolygiad Estyn."
+        }) }}
+      </section>
+
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+      <section class="opp-section" aria-labelledby="attendance-heading">
+        <h2 class="govuk-heading-l" id="attendance-heading">Presenoldeb</h2>
+        <p class="govuk-body"><strong>Mynychodd 93.4% o ddysgwyr yn rheolaidd</strong> yn 2024–25. Mae hyn uwchlaw cyfartaledd Cymru o 91.8%.</p>
+        <p class="govuk-body">Fodd bynnag, roedd <strong>18.2% o ddysgwyr yn absennol yn barhaus</strong>, sy'n golygu eu bod wedi colli o leiaf 10% o sesiynau ysgol.</p>
+
+        {{ govukWarningText({
+          text: "Mae absenoldeb parhaus yn her genedlaethol. Os oes gennych bryderon am bresenoldeb eich plentyn, cysylltwch â'r ysgol yn uniongyrchol.",
+          iconFallbackText: "Rhybudd"
+        }) }}
+      </section>
+
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+      <section class="opp-section" aria-labelledby="estyn-heading">
+        <h2 class="govuk-heading-l" id="estyn-heading">Beth ddywedodd Estyn</h2>
+        <div class="opp-estyn">
+          <p class="govuk-body-s govuk-!-margin-bottom-1">Arolygwyd ddiwethaf: <strong>Mawrth 2024</strong></p>
+          <p class="govuk-heading-m govuk-!-margin-bottom-2">
+            Dyfarniad cyffredinol: <strong class="govuk-tag govuk-tag--green">Da</strong>
+          </p>
+          <p class="govuk-body">Barnodd Estyn — arolygiaeth ysgolion Cymru — fod yr ysgol hon yn Dda. Nododd arolygwyr ddarpariaeth Gymraeg gref, arweinyddiaeth ymroddedig a lles dysgwyr sy'n gwella.</p>
+          <a href="#" class="govuk-link">Darllenwch adroddiad llawn Estyn (yn agor mewn tab newydd)</a>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="opp-aside govuk-!-margin-bottom-6">
+        <h2 class="govuk-heading-s">Am yr ysgol hon</h2>
+        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-font-size-16">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Math o ysgol</dt>
+            <dd class="govuk-summary-list__value">Uwchradd</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Ystod oedran</dt>
+            <dd class="govuk-summary-list__value">11 i 18</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Iaith</dt>
+            <dd class="govuk-summary-list__value">Cymraeg</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Dysgwyr</dt>
+            <dd class="govuk-summary-list__value">1,247</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Awdurdod lleol</dt>
+            <dd class="govuk-summary-list__value">Caerffili</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

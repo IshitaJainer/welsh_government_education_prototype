@@ -1,0 +1,200 @@
+{% extends "admin/layout_admin.html" %}
+
+{% set currentAdmin = "dashboard" %}
+{% set adminPageTitle = "Admin dashboard" %}
+
+{% block adminActions %}
+  <a href="#" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-margin-right-2">Publish notification</a>
+  <a href="#" class="govuk-button govuk-!-margin-bottom-0">Publish new data</a>
+{% endblock %}
+
+{% block adminContent %}
+
+  {{ govukNotificationBanner({
+    html: "<p class='govuk-body'>2024–25 attendance data was published on 22 May 2026. 1,214 of 1,247 schools have been notified. <a href='#' class='govuk-link'>View publishing log</a></p>"
+  }) }}
+
+  <div class="admin-metric-grid govuk-!-margin-bottom-6">
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Registered users</p>
+      <p class="admin-metric-card__value govuk-heading-l">4,831</p>
+      <p class="admin-metric-card__change admin-metric-card__change--up govuk-body-s">↑ 143 new this month</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Active sessions today</p>
+      <p class="admin-metric-card__value govuk-heading-l">612</p>
+      <p class="admin-metric-card__change govuk-body-s">Peak: 09:30–10:30</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Public page views (7 days)</p>
+      <p class="admin-metric-card__value govuk-heading-l">28,410</p>
+      <p class="admin-metric-card__change admin-metric-card__change--up govuk-body-s">↑ +12% vs last week</p>
+    </div>
+    <div class="admin-metric-card">
+      <p class="admin-metric-card__label govuk-body-s">Pending access requests</p>
+      <p class="admin-metric-card__value govuk-heading-l">17</p>
+      <p class="admin-metric-card__change admin-metric-card__change--warn govuk-body-s">⚠ 4 awaiting over 48 hours</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="admin-card">
+        <h2 class="govuk-heading-s">Recent activity</h2>
+
+        <div class="admin-activity">
+          <div class="admin-activity__icon admin-activity__icon--green">↑</div>
+          <div class="admin-activity__text">
+            <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>Attendance data published</strong> — 2024–25 term 3 data pushed to AUP and OPP. 1,247 schools updated.</p>
+          </div>
+          <span class="admin-activity__time govuk-body-s">Today, 09:14</span>
+        </div>
+
+        <div class="admin-activity">
+          <div class="admin-activity__icon admin-activity__icon--blue">+</div>
+          <div class="admin-activity__text">
+            <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>17 new access requests</strong> — school and LA users pending approval. 4 waiting more than 48 hours.</p>
+          </div>
+          <span class="admin-activity__time govuk-body-s">Today, 08:50</span>
+        </div>
+
+        <div class="admin-activity">
+          <div class="admin-activity__icon admin-activity__icon--amber">✎</div>
+          <div class="admin-activity__text">
+            <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>Plain-language text updated</strong> — persistent absence explanation on OPP updated by R. Wallace.</p>
+          </div>
+          <span class="admin-activity__time govuk-body-s">Yesterday, 14:22</span>
+        </div>
+
+        <div class="admin-activity">
+          <div class="admin-activity__icon admin-activity__icon--blue">W</div>
+          <div class="admin-activity__text">
+            <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>Welsh translation approved</strong> — LEIF threshold description reviewed and approved for publication.</p>
+          </div>
+          <span class="admin-activity__time govuk-body-s">Yesterday, 11:05</span>
+        </div>
+
+        <div class="admin-activity">
+          <div class="admin-activity__icon admin-activity__icon--green">✓</div>
+          <div class="admin-activity__text">
+            <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>Suppression rules applied</strong> — 38 data points suppressed across 12 schools due to small cohort sizes.</p>
+          </div>
+          <span class="admin-activity__time govuk-body-s">22 May, 09:01</span>
+        </div>
+
+        <p class="govuk-!-margin-top-4 govuk-!-margin-bottom-0">
+          <a href="#" class="govuk-link govuk-body-s">View full audit log</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="admin-card">
+        <h2 class="govuk-heading-s">Usage by user type</h2>
+
+        <div class="admin-hbar">
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">Schools</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:72%;background-color:#155547;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">2,680</span>
+          </div>
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">LAs</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:28%;background-color:#aacae6;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">520</span>
+          </div>
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">Consortia</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:14%;background-color:#9FE1CB;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">260</span>
+          </div>
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">Governors</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:20%;background-color:#D3D1C7;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">380</span>
+          </div>
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">Estyn</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:6%;background-color:#f4c342;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">48</span>
+          </div>
+          <div class="admin-hbar__row">
+            <span class="admin-hbar__label govuk-body-s">WG staff</span>
+            <div class="admin-hbar__track">
+              <div class="admin-hbar__fill" style="width:8%;background-color:#CCA9EC;"></div>
+            </div>
+            <span class="admin-hbar__count govuk-body-s">64</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card govuk-!-margin-bottom-6">
+    <div class="admin-card__header">
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-0">Pending access requests</h2>
+      <a href="/admin/users.html" class="govuk-link govuk-body-s">View all</a>
+    </div>
+
+    {{ govukTable({
+      head: [
+        { text: "Name" },
+        { text: "Organisation" },
+        { text: "Requested role" },
+        { text: "Auth method" },
+        { text: "Requested" },
+        { text: "Status" },
+        { text: "Action" }
+      ],
+      rows: [
+        [
+          { text: "Nia Thomas" },
+          { text: "Ysgol Gymraeg Melin Gruffydd" },
+          { html: "<strong class='govuk-tag govuk-tag--blue'>School user</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "Today" },
+          { html: "<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a> / <a href='#' class='govuk-link govuk-body-s'>Decline</a>" }
+        ],
+        [
+          { text: "Rhodri Evans" },
+          { text: "Caerphilly County Borough Council" },
+          { html: "<strong class='govuk-tag govuk-tag--purple'>LA user</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "Yesterday" },
+          { html: "<strong class='govuk-tag govuk-tag--yellow'>Pending</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a> / <a href='#' class='govuk-link govuk-body-s'>Decline</a>" }
+        ],
+        [
+          { text: "Carys Williams" },
+          { text: "Ysgol Gyfun Cwm Rhymni" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Governor</strong>" },
+          { html: "<strong class='govuk-tag'>Manual</strong>" },
+          { text: "23 May" },
+          { html: "<strong class='govuk-tag govuk-tag--red'>Overdue</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a> / <a href='#' class='govuk-link govuk-body-s'>Decline</a>" }
+        ],
+        [
+          { text: "Gareth Pritchard" },
+          { text: "GwE — North Wales" },
+          { html: "<strong class='govuk-tag govuk-tag--purple'>Consortia</strong>" },
+          { html: "<strong class='govuk-tag govuk-tag--green'>Hwb</strong>" },
+          { text: "23 May" },
+          { html: "<strong class='govuk-tag govuk-tag--red'>Overdue</strong>" },
+          { html: "<a href='#' class='govuk-link govuk-body-s'>Approve</a> / <a href='#' class='govuk-link govuk-body-s'>Decline</a>" }
+        ]
+      ]
+    }) }}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "layout_prototype.html" %}
+
+{% block pageTitle %}School Data Service — Prototype{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
+    <h1 class="govuk-heading-xl">School Data Service</h1>
+    <p class="govuk-body">Alpha prototype — Welsh Government School Information Discovery</p>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    <h2 class="govuk-heading-m">Journey 1 — Online Public Platform (OPP)</h2>
+    <p class="govuk-body-s">The public-facing site replacing My Local School. No login required.</p>
+    <ul class="govuk-list govuk-list--bullet govuk-body-s">
+      <li><a href="/opp/en/index.html" class="govuk-link">Home page (English)</a></li>
+      <li><a href="/opp/cy/index.html" class="govuk-link">Home page (Cymraeg)</a></li>
+      <li><a href="/opp/en/search.html" class="govuk-link">Search results</a></li>
+      <li><a href="/opp/en/school-profile.html" class="govuk-link">School profile — Ysgol Gyfun Cwm Rhymni (English)</a></li>
+      <li><a href="/opp/cy/school-profile.html" class="govuk-link">School profile (Cymraeg)</a></li>
+    </ul>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    <h2 class="govuk-heading-m">Journey 2 — Authorised User Portal (AUP)</h2>
+    <p class="govuk-body-s">Secure dashboard for schools, LAs and partners. Replaces AWCDS.</p>
+    <ul class="govuk-list govuk-list--bullet govuk-body-s">
+      <li><a href="/aup/en/login.html" class="govuk-link">Login page (Hwb sign-in)</a></li>
+      <li><a href="/aup/en/dashboard.html" class="govuk-link">School dashboard — overview</a></li>
+      <li><a href="/aup/en/attendance.html" class="govuk-link">Attendance drill-down</a></li>
+      <li><a href="/aup/en/attainment.html" class="govuk-link">Attainment drill-down</a></li>
+    </ul>
+
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+    <h2 class="govuk-heading-m">Journey 3 — WG Admin Panel</h2>
+    <p class="govuk-body-s">Welsh Government administrator controls — content, users, data publishing.</p>
+    <ul class="govuk-list govuk-list--bullet govuk-body-s">
+      <li><a href="/admin/dashboard.html" class="govuk-link">Admin dashboard</a></li>
+      <li><a href="/admin/content.html" class="govuk-link">Manage content</a></li>
+      <li><a href="/admin/users.html" class="govuk-link">User accounts</a></li>
+    </ul>
+
+  </div>
+</div>
+{% endblock %}

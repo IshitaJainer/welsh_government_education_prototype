@@ -1,0 +1,37 @@
+{% extends "layout_prototype.html" %}
+
+{% block header %}
+  {{ prototypeHeader({
+    "lang": lang | default("en"),
+    "alternative": {
+      "href": alternativeHref | default("#")
+    }
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  <nav class="govuk-width-container opp-nav" aria-label="Site navigation">
+    <ul class="opp-nav__list">
+      <li class="opp-nav__item">
+        <a href="/opp/en/index.html" class="opp-nav__link {{ 'opp-nav__link--active' if currentNav == 'home' }}">
+          {% if lang == "cy" %}Hafan{% else %}Home{% endif %}
+        </a>
+      </li>
+      <li class="opp-nav__item">
+        <a href="/opp/en/search.html" class="opp-nav__link {{ 'opp-nav__link--active' if currentNav == 'find' }}">
+          {% if lang == "cy" %}Dod o hyd i ysgol{% else %}Find a school{% endif %}
+        </a>
+      </li>
+      <li class="opp-nav__item">
+        <a href="#" class="opp-nav__link {{ 'opp-nav__link--active' if currentNav == 'compare' }}">
+          {% if lang == "cy" %}Cymharu ysgolion{% else %}Compare schools{% endif %}
+        </a>
+      </li>
+      <li class="opp-nav__item">
+        <a href="#" class="opp-nav__link {{ 'opp-nav__link--active' if currentNav == 'about' }}">
+          {% if lang == "cy" %}Am y data hwn{% else %}About this data{% endif %}
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}

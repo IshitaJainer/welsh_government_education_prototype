@@ -1,0 +1,160 @@
+{% extends "aup/layout_aup.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "attendance" %}
+
+{% block pageTitle %}Attendance — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Attendance</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Cwm Rhymni — 2024–25</p>
+    </div>
+    <div class="govuk-grid-column-one-third aup-export-row">
+      {{ govukButton({
+        text: "Export to CSV",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+      }) }}
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-metric-grid">
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
+          <p class="aup-metric-card__value govuk-heading-l">93.4%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--up govuk-body-s">↑ Above Wales average (91.8%)</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
+          <p class="aup-metric-card__value govuk-heading-l">18.2%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↑ Slightly above Wales average (17.1%)</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Authorised absence</p>
+          <p class="aup-metric-card__value govuk-heading-l">3.8%</p>
+          <p class="aup-metric-card__change govuk-body-s">Wales average: 4.1%</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Unauthorised absence</p>
+          <p class="aup-metric-card__value govuk-heading-l">2.8%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↑ Above Wales average (2.1%)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card govuk-!-margin-bottom-6">
+        <h2 class="govuk-heading-s">Attendance by learner characteristic</h2>
+        <p class="govuk-body-s aup-chart-card__desc">Filter simultaneously by multiple characteristics using the dropdowns below.</p>
+
+        <div class="aup-filter-bar govuk-!-margin-bottom-4">
+          {{ govukSelect({
+            id: "att-gender",
+            name: "att-gender",
+            label: { text: "Gender", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "all", text: "All genders", selected: true },
+              { value: "f", text: "Female" },
+              { value: "m", text: "Male" }
+            ]
+          }) }}
+          {{ govukSelect({
+            id: "att-fsm",
+            name: "att-fsm",
+            label: { text: "FSM", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "all", text: "All learners", selected: true },
+              { value: "fsm", text: "FSM eligible" },
+              { value: "nonfsm", text: "Non-FSM" }
+            ]
+          }) }}
+          {{ govukSelect({
+            id: "att-aln",
+            name: "att-aln",
+            label: { text: "ALN", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "all", text: "All learners", selected: true },
+              { value: "aln", text: "ALN" },
+              { value: "nonaln", text: "No ALN" }
+            ]
+          }) }}
+        </div>
+
+        {{ govukTable({
+          head: [
+            { text: "Characteristic" },
+            { text: "Attendance rate" },
+            { text: "Persistent absence" },
+            { text: "vs Wales average" },
+            { text: "vs comparator" }
+          ],
+          rows: [
+            [
+              { text: "All learners" },
+              { text: "93.4%" },
+              { text: "18.2%" },
+              { text: "+1.6pp" },
+              { text: "+1.3pp" }
+            ],
+            [
+              { text: "Female" },
+              { text: "94.1%" },
+              { text: "16.8%" },
+              { text: "+2.3pp" },
+              { text: "+1.9pp" }
+            ],
+            [
+              { text: "Male" },
+              { text: "91.3%" },
+              { text: "19.8%" },
+              { text: "+0.6pp" },
+              { text: "+0.4pp" }
+            ],
+            [
+              { text: "FSM eligible" },
+              { text: "84.2%" },
+              { text: "28.4%" },
+              { text: "−0.6pp" },
+              { text: "−1.1pp" }
+            ],
+            [
+              { text: "ALN" },
+              { text: "88.6%" },
+              { text: "23.1%" },
+              { text: "+1.2pp" },
+              { text: "+0.8pp" }
+            ],
+            [
+              { text: "EAL" },
+              { text: "92.1%" },
+              { text: "17.4%" },
+              { text: "+1.0pp" },
+              { text: "+0.7pp" }
+            ]
+          ]
+        }) }}
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {{ govukInsetText({
+        text: "Weekly attendance data is updated every Monday from the Hwb data feed. Term-level and annual data is published by Welsh Government at the end of each term."
+      }) }}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set currentNav = "compare" %}
+{% block pageTitle %}Matching schools — School Data Service{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">12 schools match your criteria</h1>
+      <p class="govuk-body">Showing the top 5 by similarity score. Schools are anonymised.</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <a href="/aup/en/compare-build.html" class="govuk-link govuk-body-s">← Edit criteria</a>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <div class="aup-filter-bar">
+        <span class="govuk-body-s aup-filter-bar__label">Criteria:</span>
+        <strong class="govuk-tag govuk-tag--blue">FSM 10–25%</strong>
+        <strong class="govuk-tag govuk-tag--blue">500–1,000 pupils</strong>
+        <strong class="govuk-tag govuk-tag--blue">Any language</strong>
+        <strong class="govuk-tag govuk-tag--blue">ALN average</strong>
+        <strong class="govuk-tag govuk-tag--blue">South East Wales</strong>
+      </div>
+    </div>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "School" },
+      { text: "Pupils" },
+      { text: "FSM %" },
+      { text: "ALN %" },
+      { text: "Language" },
+      { text: "Similarity" },
+      { text: "" }
+    ],
+    rows: [
+      [
+        { html: "<strong>Aberdare Community School</strong><br><span class='govuk-body-s'>Your school</span>" },
+        { text: "1,107" },
+        { text: "35.6%" },
+        { text: "18.2%" },
+        { text: "English" },
+        { text: "—" },
+        { text: "" }
+      ],
+      [
+        { text: "School A" },
+        { text: "980" },
+        { text: "33.1%" },
+        { text: "17.4%" },
+        { text: "English" },
+        { html: "<strong class='govuk-tag govuk-tag--green'>97%</strong>" },
+        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
+      ],
+      [
+        { text: "School B" },
+        { text: "1,050" },
+        { text: "37.2%" },
+        { text: "19.1%" },
+        { text: "English" },
+        { html: "<strong class='govuk-tag govuk-tag--green'>95%</strong>" },
+        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
+      ],
+      [
+        { text: "School C" },
+        { text: "890" },
+        { text: "31.4%" },
+        { text: "16.8%" },
+        { text: "English" },
+        { html: "<strong class='govuk-tag govuk-tag--green'>91%</strong>" },
+        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
+      ],
+      [
+        { text: "School D" },
+        { text: "1,200" },
+        { text: "38.0%" },
+        { text: "20.3%" },
+        { text: "English" },
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>89%</strong>" },
+        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
+      ],
+      [
+        { text: "School E" },
+        { text: "760" },
+        { text: "29.8%" },
+        { text: "15.9%" },
+        { text: "English" },
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>84%</strong>" },
+        { html: "<input type='checkbox' class='govuk-checkboxes__input'>" }
+      ]
+    ]
+  }) }}
+
+  {{ govukInsetText({ text: "Schools are anonymised to encourage fair comparison rather than competition. You can see similarity scores but not school names. Select up to 8 schools to compare." }) }}
+
+  <a href="/aup/en/compare-view.html" role="button" class="govuk-button">Compare selected schools (4 selected)</a>
+  <a href="/aup/en/compare-build.html" class="govuk-link govuk-!-margin-left-4">Adjust criteria</a>
+
+</div>
+{% endblock %}

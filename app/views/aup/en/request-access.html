@@ -1,0 +1,73 @@
+{% extends "layout_prototype.html" %}
+{% set lang = "en" %}
+{% block pageTitle %}Request access — School Data Service{% endblock %}
+{% block beforeContent %}{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row govuk-!-margin-top-6">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Request access to the School Data Service</h1>
+      <p class="govuk-body">Complete this form and Welsh Government will approve your request within 2 working days.</p>
+
+      {{ govukInsetText({ text: "You will need a Hwb account to sign in once your access is approved. If you do not have one, your local authority can create one for you." }) }}
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="school-search">Your school or organisation</label>
+        <div id="school-search-hint" class="govuk-hint">Start typing your school name or URN</div>
+        {{ govukInput({ id: "school-search", name: "school-search", describedBy: "school-search-hint" }) }}
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="role">Your role</label>
+        {{ govukSelect({
+          id: "role",
+          name: "role",
+          items: [
+            { value: "", text: "Select your role" },
+            { value: "ht", text: "Headteacher" },
+            { value: "data-lead", text: "School data lead" },
+            { value: "middle-leader", text: "Middle leader / subject lead" },
+            { value: "governor", text: "School governor" },
+            { value: "la", text: "Local authority officer" },
+            { value: "consortia", text: "Regional consortia officer" },
+            { value: "estyn", text: "Estyn inspector" },
+            { value: "wg", text: "Welsh Government official" }
+          ]
+        }) }}
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="manager-email">Line manager or headteacher email</label>
+        <div id="manager-email-hint" class="govuk-hint">This person will be contacted to verify your request</div>
+        {{ govukInput({ id: "manager-email", name: "manager-email", type: "email", describedBy: "manager-email-hint" }) }}
+      </div>
+
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-label--s" for="reason">Reason for access</label>
+        {{ govukTextarea({ id: "reason", name: "reason", rows: 3 }) }}
+      </div>
+
+      <a href="/aup/en/request-confirmation.html" role="button" draggable="false" class="govuk-button govuk-!-margin-top-2">Submit request</a>
+      <p class="govuk-body-s"><a href="/aup/en/login.html" class="govuk-link">Cancel and return to sign in</a></p>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="govuk-!-padding-3" style="background: #f3f2f1; border-radius: 4px;">
+        <h2 class="govuk-heading-s">Who can access the portal?</h2>
+        <ul class="govuk-list govuk-list--bullet govuk-body-s">
+          <li>School headteachers and data leads</li>
+          <li>Local authority education officers</li>
+          <li>Regional consortia staff</li>
+          <li>School governors (read-only)</li>
+          <li>Estyn inspectors (read-only)</li>
+          <li>Welsh Government officials</li>
+        </ul>
+        <p class="govuk-body-s">Requests are normally approved within 2 working days. You will receive an email confirmation.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

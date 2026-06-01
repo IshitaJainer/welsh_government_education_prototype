@@ -1,0 +1,129 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set currentNav = "la" %}
+{% set userName = "S. Thomas" %}
+{% set schoolName = "Rhondda Cynon Taf CBC" %}
+{% block pageTitle %}LA overview — School Data Service{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Rhondda Cynon Taf — all schools</h1>
+      <p class="govuk-body">Local authority overview — academic year 2024–25</p>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-notify-banner">
+        <p class="govuk-body-s"><strong>9 schools</strong> below LA attendance average</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <div class="aup-filter-bar">
+        <span class="govuk-body-s aup-filter-bar__label">Filter:</span>
+        {{ govukSelect({ id: "phase", name: "phase", label: { text: "Phase", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "all", text: "All schools", selected: true },
+          { value: "secondary", text: "Secondary" },
+          { value: "primary", text: "Primary" },
+          { value: "special", text: "Special" }
+        ]}) }}
+        {{ govukSelect({ id: "metric", name: "metric", label: { text: "Metric", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "attendance", text: "Attendance", selected: true },
+          { value: "pa", text: "Persistent absence" },
+          { value: "fsm", text: "FSM %" },
+          { value: "attainment", text: "Capped 9" }
+        ]}) }}
+      </div>
+    </div>
+  </div>
+
+  {# Summary metric cards #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-metric-grid">
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Schools in LA</p>
+          <p class="aup-metric-card__value govuk-heading-l">86</p>
+          <p class="aup-metric-card__change govuk-body-s">23 secondary, 58 primary, 5 special</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">LA average attendance</p>
+          <p class="aup-metric-card__value govuk-heading-l">88.2%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--up govuk-body-s">↑ +0.3pp vs last year</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
+          <p class="aup-metric-card__value govuk-heading-l">28.0%</p>
+          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↓ −1.2pp vs last year</p>
+        </div>
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s">Schools needing attention</p>
+          <p class="aup-metric-card__value govuk-heading-l">9</p>
+          <p class="aup-metric-card__change govuk-body-s">Based on attendance flags</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# Visual bar chart of schools #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Attendance — all secondary schools</h2>
+          <a href="/aup/en/la-schools.html" class="govuk-link govuk-body-s">View full table</a>
+        </div>
+        <p class="govuk-body-s">Schools below the LA average are shown in red. Click a school to view its full dashboard.</p>
+        <div class="aup-hbar">
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Aberdare Comm.</a></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:88.4%; background:#d4351c;"><span class="aup-hbar__val">88.4%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Mountain Ash CS</a></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:86.1%; background:#d4351c;"><span class="aup-hbar__val">86.1%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Ysgol y Cymoedd</a></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill" style="width:89.3%; background:#f47738;"><span class="aup-hbar__val">89.3%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Blaengwawr High</a></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:91.2%;"><span class="aup-hbar__val">91.2%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Ferndale Comm.</a></span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:90.4%;"><span class="aup-hbar__val">90.4%</span></div>
+            </div>
+          </div>
+          <div class="aup-hbar__row">
+            <span class="aup-hbar__label govuk-body-s" style="font-weight: bold;">LA average</span>
+            <div class="aup-hbar__track">
+              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:88.2%;"><span class="aup-hbar__val">88.2%</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="govuk-body-s govuk-!-margin-top-2">+ 18 more secondary schools — <a href="/aup/en/la-schools.html" class="govuk-link">view full table</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <a href="/aup/en/la-schools.html" role="button" class="govuk-button govuk-button--secondary">View all schools table</a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
