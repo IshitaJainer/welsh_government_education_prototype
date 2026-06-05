@@ -9,24 +9,10 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Rhondda Cynon Taf — all schools</h1>
-      <p class="govuk-body">Local authority overview — academic year 2024–25</p>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Rhondda Cynon Taf</h1>
+      <p class="govuk-body">Local authority overview of all schools - academic year 2024-25 </p>
     </div>
 
-  </div>
-
-  <div class="govuk-grid-row govuk-!-margin-bottom-4">
-    <div class="govuk-grid-column-full">
-      <div class="aup-filter-bar">
-        <span class="govuk-body-s aup-filter-bar__label">Filter:</span>
-        {{ govukSelect({ id: "phase", name: "phase", label: { text: "Phase", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
-          { value: "all", text: "All schools", selected: true },
-          { value: "secondary", text: "Secondary" },
-          { value: "primary", text: "Primary" },
-          { value: "special", text: "Special" }
-        ]}) }}
-      </div>
-    </div>
   </div>
 
   {# Summary metric cards #}
@@ -47,63 +33,62 @@
           <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
           <p class="aup-metric-card__value govuk-heading-l">28.0%</p>
         </div>
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">Schools needing attention</p>
-          <p class="aup-metric-card__value govuk-heading-l">9</p>
-          <p class="aup-metric-card__change govuk-body-s">Based on attendance flags</p>
-        </div>
       </div>
     </div>
   </div>
 
-  {# Visual bar chart of schools #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
-      <div class="aup-chart-card">
-        <div class="aup-chart-card__header">
-          <h2 class="govuk-heading-s aup-chart-card__title">Attendance — all secondary schools</h2>
-        </div>
-        <p class="govuk-body-s">Schools below the LA average are shown in red. Click a school to view its full dashboard.</p>
-        <div class="aup-hbar">
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Aberdare Comm.</a></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill" style="width:88.4%; background:#d4351c;"><span class="aup-hbar__val">88.4%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Mountain Ash CS</a></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill" style="width:86.1%; background:#d4351c;"><span class="aup-hbar__val">86.1%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Ysgol y Cymoedd</a></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill" style="width:89.3%; background:#f47738;"><span class="aup-hbar__val">89.3%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Blaengwawr High</a></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:91.2%;"><span class="aup-hbar__val">91.2%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><a href="/aup/en/la-school.html" class="govuk-link">Ferndale Comm.</a></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:90.4%;"><span class="aup-hbar__val">90.4%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s" style="font-weight: bold;">LA average</span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:88.2%;"><span class="aup-hbar__val">88.2%</span></div>
-            </div>
-          </div>
-        </div>
-        <p class="govuk-body-s govuk-!-margin-top-2">+ 18 more secondary schools — <a href="/aup/en/la-schools.html" class="govuk-link">view full table</a></p>
+      <div class="aup-filter-bar govuk-!-margin-bottom-4">
+        <span class="govuk-body-s aup-filter-bar__label">Filter:</span>
+        {{ govukSelect({ id: "phase", name: "phase", label: { text: "Phase", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
+          { value: "all", text: "All schools", selected: true },
+          { value: "secondary", text: "Secondary" },
+          { value: "primary", text: "Primary" },
+          { value: "special", text: "Special" }
+        ]}) }}
       </div>
+      {{ govukTable({
+        head: [
+          { text: "School" },
+          { text: "Type" },
+          { text: "Pupils" },
+          { text: "FSM %" },
+          { text: "Attendance" },
+          { text: "Status" }
+        ],
+        rows: [
+          [
+            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Mountain Ash CS</a>" },
+            { text: "Secondary" }, { text: "923" }, { text: "41.0%" }, { text: "86.1%" },
+            { html: "<strong class='govuk-tag govuk-tag--red'>Attention needed</strong>" }
+          ],
+          [
+            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Aberdare Community</a>" },
+            { text: "Secondary" }, { text: "1,107" }, { text: "35.6%" }, { text: "88.4%" },
+            { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" }
+          ],
+          [
+            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ysgol y Cymoedd</a>" },
+            { text: "Secondary" }, { text: "1,340" }, { text: "28.4%" }, { text: "89.3%" },
+            { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" }
+          ],
+          [
+            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Blaengwawr High</a>" },
+            { text: "Secondary" }, { text: "876" }, { text: "22.1%" }, { text: "91.2%" },
+            { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
+          ],
+          [
+            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ferndale Community</a>" },
+            { text: "Secondary" }, { text: "654" }, { text: "31.2%" }, { text: "90.4%" },
+            { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
+          ],
+          [
+            { html: "<span class='govuk-body-s' style='color:#505a5f'>+ 81 more schools...</span>" },
+            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }
+          ]
+        ]
+      }) }}
     </div>
   </div>
 
