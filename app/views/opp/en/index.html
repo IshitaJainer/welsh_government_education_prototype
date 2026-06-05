@@ -10,10 +10,10 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
 
-    <div class="opp-hero">
+    <div class="opp-hero" style="padding-left: 30px; padding-right: 30px;">
       <div class="govuk-width-container">
         <h1 class="govuk-heading-xl opp-hero__heading">Find information about schools in Wales</h1>
-        <p class="govuk-body-l opp-hero__intro">Search for any maintained school in Wales to see attendance, learner outcomes, Estyn inspection findings and more.</p>
+        <p class="govuk-body-l opp-hero__intro">Search for any maintained school in Wales to see attendance, contextual data, learner outcomes and more.</p>
 
         <form action="/opp/en/search.html" method="get" class="opp-search-form">
           <div class="govuk-form-group">
@@ -36,37 +36,36 @@
 
 <div class="govuk-width-container">
   <div class="govuk-grid-row govuk-!-margin-top-8">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
 
       <h2 class="govuk-heading-l">What you can find out</h2>
 
       <ul class="govuk-list govuk-list--bullet govuk-body">
-        <li>How well learners are meeting the new 14–16 learning outcomes</li>
+        <li>Learning outcomes, for example, how well learners are meeting the new 14–16 learning outcomes</li>
         <li>Attendance rates, including persistent absence</li>
         <li>Contextual information such as school size and free school meal eligibility</li>
-        <li>Latest Estyn inspection judgement and findings</li>
-        <li>Contact details and links to the school website</li>
+        <li>Contact details for schools</li>
       </ul>
 
       {{ govukInsetText({
-        text: "This data is provided to support transparency and help inform school choices. It should not be used to rank or compare schools without understanding the context. Many factors outside a school's control influence outcomes."
+        text: "This website is designed to open up access to school data for parents and all others with an interest in their local school. It should not be used to rank or compare schools without understanding the context. Data is updated in the autumn term each year as new data becomes available."
       }) }}
 
-    </div>
+      <h2 class="govuk-heading-m govuk-!-margin-top-6">Attainment information</h2>
 
-    <div class="govuk-grid-column-one-third">
-      <div class="opp-aside">
-        <h2 class="govuk-heading-m">Browse by local authority</h2>
-        <ul class="govuk-list govuk-!-font-size-16">
-          <li><a href="#" class="govuk-link">Caerphilly</a></li>
-          <li><a href="#" class="govuk-link">Cardiff</a></li>
-          <li><a href="#" class="govuk-link">Carmarthenshire</a></li>
-          <li><a href="#" class="govuk-link">Ceredigion</a></li>
-          <li><a href="#" class="govuk-link">Gwynedd</a></li>
-          <li><a href="#" class="govuk-link">Swansea</a></li>
-          <li><a href="#" class="govuk-link govuk-!-font-weight-bold">View all 22 local authorities</a></li>
-        </ul>
-      </div>
+      <p class="govuk-body">The Welsh Government is developing a new approach to reporting on school outcomes as part of a reformed information ecosystem. From Summer 2027, reporting will be organised around the 14 to 16 Learner Entitlement Indicators Framework (LEIF), which covers the four components of the 14 to 16 learner entitlement:</p>
+
+      <ul class="govuk-list govuk-list--bullet govuk-body">
+        <li>Qualifications related to literacy and numeracy</li>
+        <li>Qualifications to encourage breadth</li>
+        <li>Wider learning and experiences across the curriculum</li>
+        <li>Reflections on learning and progress and post-16 planning</li>
+      </ul>
+
+      <h2 class="govuk-heading-m govuk-!-margin-top-6">Contact us</h2>
+
+      <p class="govuk-body">If you have any queries or feedback, please email <a href="mailto:ims@gov.wales" class="govuk-link">ims@gov.wales</a> with 'Query/Feedback about My Local School' in the subject.</p>
+
     </div>
   </div>
 </div>

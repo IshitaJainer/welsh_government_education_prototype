@@ -7,99 +7,143 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">12 schools match your criteria</h1>
-      <p class="govuk-body">Showing the top 5 by similarity score. Schools are anonymised.</p>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">5 schools match your criteria</h1>
+      <p class="govuk-body">Select up to 4 schools to compare.</p>
     </div>
     <div class="govuk-grid-column-one-third">
-      <a href="/aup/en/compare-build.html" class="govuk-link govuk-body-s">← Edit criteria</a>
+      <a href="/aup/en/compare-build.html" class="govuk-link govuk-body-s">← Adjust criteria</a>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-full">
       <div class="aup-filter-bar">
-        <span class="govuk-body-s aup-filter-bar__label">Criteria:</span>
-        <strong class="govuk-tag govuk-tag--blue">FSM 10–25%</strong>
-        <strong class="govuk-tag govuk-tag--blue">500–1,000 pupils</strong>
-        <strong class="govuk-tag govuk-tag--blue">Any language</strong>
-        <strong class="govuk-tag govuk-tag--blue">ALN average</strong>
-        <strong class="govuk-tag govuk-tag--blue">South East Wales</strong>
+        <span class="govuk-body-s aup-filter-bar__label">Criteria applied:</span>
+          <strong class="govuk-tag govuk-tag--blue">500–1,000 pupils</strong>
+          <strong class="govuk-tag govuk-tag--blue">FSM (25–40%)</strong>
+          <strong class="govuk-tag govuk-tag--blue">ALN (15-25%; 25%+)</strong>
+          <strong class="govuk-tag govuk-tag--blue">English medium</strong>
       </div>
     </div>
   </div>
 
-  {{ govukTable({
-    head: [
-      { text: "School" },
-      { text: "Pupils" },
-      { text: "FSM %" },
-      { text: "ALN %" },
-      { text: "Language" },
-      { text: "Similarity" },
-      { text: "" }
-    ],
-    rows: [
-      [
-        { html: "<strong>Aberdare Community School</strong><br><span class='govuk-body-s'>Your school</span>" },
-        { text: "1,107" },
-        { text: "35.6%" },
-        { text: "18.2%" },
-        { text: "English" },
-        { text: "—" },
-        { text: "" }
-      ],
-      [
-        { text: "School A" },
-        { text: "980" },
-        { text: "33.1%" },
-        { text: "17.4%" },
-        { text: "English" },
-        { html: "<strong class='govuk-tag govuk-tag--green'>97%</strong>" },
-        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
-      ],
-      [
-        { text: "School B" },
-        { text: "1,050" },
-        { text: "37.2%" },
-        { text: "19.1%" },
-        { text: "English" },
-        { html: "<strong class='govuk-tag govuk-tag--green'>95%</strong>" },
-        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
-      ],
-      [
-        { text: "School C" },
-        { text: "890" },
-        { text: "31.4%" },
-        { text: "16.8%" },
-        { text: "English" },
-        { html: "<strong class='govuk-tag govuk-tag--green'>91%</strong>" },
-        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
-      ],
-      [
-        { text: "School D" },
-        { text: "1,200" },
-        { text: "38.0%" },
-        { text: "20.3%" },
-        { text: "English" },
-        { html: "<strong class='govuk-tag govuk-tag--yellow'>89%</strong>" },
-        { html: "<input type='checkbox' class='govuk-checkboxes__input' checked>" }
-      ],
-      [
-        { text: "School E" },
-        { text: "760" },
-        { text: "29.8%" },
-        { text: "15.9%" },
-        { text: "English" },
-        { html: "<strong class='govuk-tag govuk-tag--yellow'>84%</strong>" },
-        { html: "<input type='checkbox' class='govuk-checkboxes__input'>" }
-      ]
-    ]
-  }) }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <form action="/aup/en/compare-view.html" method="get">
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header" scope="col">Select</th>
+              <th class="govuk-table__header" scope="col">School</th>
+              <th class="govuk-table__header" scope="col">Pupils</th>
+              <th class="govuk-table__header" scope="col">FSM %</th>
+              <th class="govuk-table__header" scope="col">ALN %</th>
+              <th class="govuk-table__header" scope="col">Language</th>
+              <th class="govuk-table__header" scope="col">Similarity</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row" style="background: #f3f2f1;">
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"><strong>Ysgol Gyfun Cwm Rhymni</strong><br><span class="govuk-body-s">Your school</span></td>
+              <td class="govuk-table__cell">1,107</td>
+              <td class="govuk-table__cell">35.6%</td>
+              <td class="govuk-table__cell">18.2%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell">—</td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes__item" style="margin: 0;">
+                  <input class="govuk-checkboxes__input" id="school-a" name="schools" type="checkbox" value="school-a" checked>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-a"><span class="govuk-visually-hidden">Select School A</span></label>
+                </div>
+              </td>
+              <td class="govuk-table__cell">School A</td>
+              <td class="govuk-table__cell">980</td>
+              <td class="govuk-table__cell">33.1%</td>
+              <td class="govuk-table__cell">17.4%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">97%</strong></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes__item" style="margin: 0;">
+                  <input class="govuk-checkboxes__input" id="school-b" name="schools" type="checkbox" value="school-b" checked>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-b"><span class="govuk-visually-hidden">Select School B</span></label>
+                </div>
+              </td>
+              <td class="govuk-table__cell">School B</td>
+              <td class="govuk-table__cell">1,050</td>
+              <td class="govuk-table__cell">37.2%</td>
+              <td class="govuk-table__cell">19.1%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">95%</strong></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes__item" style="margin: 0;">
+                  <input class="govuk-checkboxes__input" id="school-c" name="schools" type="checkbox" value="school-c" checked>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-c"><span class="govuk-visually-hidden">Select School C</span></label>
+                </div>
+              </td>
+              <td class="govuk-table__cell">School C</td>
+              <td class="govuk-table__cell">890</td>
+              <td class="govuk-table__cell">31.4%</td>
+              <td class="govuk-table__cell">16.8%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">91%</strong></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes__item" style="margin: 0;">
+                  <input class="govuk-checkboxes__input" id="school-d" name="schools" type="checkbox" value="school-d" checked>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-d"><span class="govuk-visually-hidden">Select School D</span></label>
+                </div>
+              </td>
+              <td class="govuk-table__cell">School D</td>
+              <td class="govuk-table__cell">1,200</td>
+              <td class="govuk-table__cell">38.0%</td>
+              <td class="govuk-table__cell">20.3%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--yellow">89%</strong></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">
+                <div class="govuk-checkboxes__item" style="margin: 0;">
+                  <input class="govuk-checkboxes__input" id="school-e" name="schools" type="checkbox" value="school-e">
+                  <label class="govuk-label govuk-checkboxes__label" for="school-e"><span class="govuk-visually-hidden">Select School E</span></label>
+                </div>
+              </td>
+              <td class="govuk-table__cell">School E</td>
+              <td class="govuk-table__cell">760</td>
+              <td class="govuk-table__cell">29.8%</td>
+              <td class="govuk-table__cell">15.9%</td>
+              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--yellow">84%</strong></td>
+            </tr>
+          </tbody>
+        </table>
 
-  {{ govukInsetText({ text: "Schools are anonymised to encourage fair comparison rather than competition. You can see similarity scores but not school names. Select up to 8 schools to compare." }) }}
+        {{ govukInsetText({ text: "Select up to 4 schools to compare." }) }}
 
-  <a href="/aup/en/compare-view.html" role="button" class="govuk-button">Compare selected schools (4 selected)</a>
-  <a href="/aup/en/compare-build.html" class="govuk-link govuk-!-margin-left-4">Adjust criteria</a>
+        <button type="submit" class="govuk-button">Compare selected schools</button>
+      </form>
+    </div>
+  </div>
 
 </div>
+
+<script>
+  var checkboxes = document.querySelectorAll('input[name="schools"]');
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      var checked = document.querySelectorAll('input[name="schools"]:checked');
+      if (checked.length > 4) {
+        this.checked = false;
+      }
+    });
+  });
+</script>
+
 {% endblock %}

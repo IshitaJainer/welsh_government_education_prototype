@@ -40,7 +40,6 @@
           { value: "monitor", text: "Monitor" },
           { value: "ok", text: "On track" }
         ]}) }}
-        <a href="#" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 govuk-!-font-size-14">Export CSV</a>
       </div>
     </div>
   </div>
@@ -53,45 +52,45 @@
       { text: "FSM %" },
       { text: "Attendance" },
       { text: "Persistent absence" },
-      { text: "Status" },
-      { text: "" }
+      { text: "Status" }
     ],
     rows: [
       [
         { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Mountain Ash CS</a>" },
         { text: "Secondary" }, { text: "923" }, { text: "41.0%" }, { text: "86.1%" }, { text: "41.2%" },
-        { html: "<strong class='govuk-tag govuk-tag--red'>Attention needed</strong>" },
-        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+        { html: "<strong class='govuk-tag govuk-tag--red'>Attention needed</strong>" }
       ],
       [
         { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Aberdare Community</a>" },
         { text: "Secondary" }, { text: "1,107" }, { text: "35.6%" }, { text: "88.4%" }, { text: "35.8%" },
-        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" },
-        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" }
       ],
       [
         { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ysgol y Cymoedd</a>" },
         { text: "Secondary" }, { text: "1,340" }, { text: "28.4%" }, { text: "89.3%" }, { text: "29.1%" },
-        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" },
-        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+        { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" }
       ],
       [
         { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Blaengwawr High</a>" },
         { text: "Secondary" }, { text: "876" }, { text: "22.1%" }, { text: "91.2%" }, { text: "22.4%" },
-        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" },
-        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
       ],
       [
         { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ferndale Community</a>" },
         { text: "Secondary" }, { text: "654" }, { text: "31.2%" }, { text: "90.4%" }, { text: "27.8%" },
-        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" },
-        { html: "<a href='/aup/en/la-school.html' class='govuk-link govuk-body-s'>View →</a>" }
+        { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
       ],
       [
         { html: "<span class='govuk-body-s' style='color:#505a5f'>+ 81 more schools...</span>" },
-        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }
+        { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }
       ]
     ]
+  }) }}
+
+  {{ govukButton({
+    text: "Export CSV",
+    classes: "govuk-button--secondary",
+    href: "#"
   }) }}
 
 </div>

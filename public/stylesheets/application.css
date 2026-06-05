@@ -8790,6 +8790,7 @@ p + .govuk-heading-s,
   background-color: #1B1E56;
   color: #ffffff;
   padding: 10px 0;
+  font-family: "GDS Transport", arial, sans-serif;
 }
 .aup-service-bar__inner {
   display: flex;
@@ -8799,10 +8800,12 @@ p + .govuk-heading-s,
 .aup-service-bar__user {
   font-size: 14px;
   color: #ffffff;
+  font-family: "GDS Transport", arial, sans-serif;
 }
 .aup-service-bar__signout {
   font-size: 14px;
   color: #aacae6;
+  font-family: "GDS Transport", arial, sans-serif;
 }
 .aup-service-bar__signout:visited {
   color: #aacae6;

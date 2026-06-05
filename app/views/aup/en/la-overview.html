@@ -29,12 +29,6 @@
           { value: "primary", text: "Primary" },
           { value: "special", text: "Special" }
         ]}) }}
-        {{ govukSelect({ id: "metric", name: "metric", label: { text: "Metric", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
-          { value: "attendance", text: "Attendance", selected: true },
-          { value: "pa", text: "Persistent absence" },
-          { value: "fsm", text: "FSM %" },
-          { value: "attainment", text: "Capped 9" }
-        ]}) }}
       </div>
     </div>
   </div>
@@ -56,7 +50,6 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
           <p class="aup-metric-card__value govuk-heading-l">28.0%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↓ −1.2pp vs last year</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Schools needing attention</p>
@@ -73,7 +66,6 @@
       <div class="aup-chart-card">
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance — all secondary schools</h2>
-          <a href="/aup/en/la-schools.html" class="govuk-link govuk-body-s">View full table</a>
         </div>
         <p class="govuk-body-s">Schools below the LA average are shown in red. Click a school to view its full dashboard.</p>
         <div class="aup-hbar">

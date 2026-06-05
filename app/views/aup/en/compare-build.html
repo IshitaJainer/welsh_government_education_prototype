@@ -5,58 +5,45 @@
 {% block content %}
 <div class="govuk-width-container">
 
-  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+<div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Build your comparator group</h1>
-      <p class="govuk-body">Select the criteria that best describes your school context. The service will find schools with a similar profile for comparison.</p>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Find and contact similar schools</h1>
+      <p class="govuk-body">Criteria have been pre-set based on your school's context. Select different criteria if you would like different comparators.</p>
+      <p class="govuk-body">Once you have found matching schools, you can view their data and contact them directly for peer-learning.</p>
     </div>
   </div>
-
-  {{ govukInsetText({ html: "This replaces the static school families used in AWCDS. You control which criteria matter most to you. Comparison schools are anonymised — you will see them as School A, School B etc." }) }}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">School size (number of pupils)</legend>
+          {{ govukCheckboxes({
+            name: "school-size",
+            items: [
+              { value: "under-500", text: "Under 500" },
+              { value: "500-1000", text: "500 to 1,000", checked: true },
+              { value: "1000+", text: "Over 1,000" },
+              { divider: "or" },
+              { value: "size-any", text: "Do not apply this filter", behaviour: "exclusive" }
+            ]
+          }) }}
+        </fieldset>
+      </div>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">FSM eligibility band</legend>
-          <div class="govuk-hint">Choose the band that best matches your school</div>
-          {{ govukRadios({
+          {{ govukCheckboxes({
             name: "fsm-band",
             items: [
               { value: "0-10", text: "Up to 10%" },
               { value: "10-25", text: "Over 10% and up to 25%", checked: true },
               { value: "25-40", text: "Over 25% and up to 40%" },
-              { value: "40+", text: "Over 40%" }
-            ]
-          }) }}
-        </fieldset>
-      </div>
-
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">School size (number of pupils)</legend>
-          {{ govukRadios({
-            name: "school-size",
-            items: [
-              { value: "under-500", text: "Under 500" },
-              { value: "500-1000", text: "500 to 1,000", checked: true },
-              { value: "1000+", text: "Over 1,000" }
-            ]
-          }) }}
-        </fieldset>
-      </div>
-
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Language medium</legend>
-          {{ govukRadios({
-            name: "language",
-            items: [
-              { value: "english", text: "English medium" },
-              { value: "welsh", text: "Welsh medium" },
-              { value: "bilingual", text: "Bilingual / dual stream" },
-              { value: "any", text: "Any", checked: true }
+              { value: "40+", text: "Over 40%" },
+              { divider: "or" },
+              { value: "fsm-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
           }) }}
         </fieldset>
@@ -65,13 +52,14 @@
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">ALN proportion</legend>
-          {{ govukRadios({
+          {{ govukCheckboxes({
             name: "aln",
             items: [
               { value: "low", text: "Lower than average (below 15%)" },
               { value: "average", text: "Average (15% to 25%)", checked: true },
               { value: "high", text: "Higher than average (over 25%)" },
-              { value: "any", text: "Any" }
+              { divider: "or" },
+              { value: "aln-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
           }) }}
         </fieldset>
@@ -79,16 +67,73 @@
 
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Region (optional)</legend>
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Language medium</legend>
           {{ govukCheckboxes({
-            name: "region",
+            name: "language",
             items: [
-              { value: "se", text: "South East Wales", checked: true },
-              { value: "sw", text: "South West Wales" },
-              { value: "nw", text: "North Wales" },
-              { value: "mid", text: "Mid Wales" }
+              { value: "english", text: "English medium" },
+              { value: "welsh", text: "Welsh medium" },
+              { value: "bilingual", text: "Bilingual / dual stream" },
+              { divider: "or" },
+              { value: "lang-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
             ]
           }) }}
+        </fieldset>
+      </div>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Region or local authority</legend>
+          <div class="govuk-hint">Select a region to match all schools in that area, or choose a specific local authority.</div>
+
+          <label class="govuk-label" for="la-select">Select region or local authority</label>
+          <select class="govuk-select govuk-!-width-full govuk-!-margin-bottom-4" id="la-select" name="la-select">
+            <option value="">All of Wales</option>
+            <optgroup label="─── Regions ───">
+              <option value="se" selected>South East Wales (all)</option>
+              <option value="sw">South West Wales (all)</option>
+              <option value="nw">North Wales (all)</option>
+              <option value="mid">Mid Wales (all)</option>
+            </optgroup>
+            <optgroup label="─── South East Wales ───">
+              <option value="blaenau-gwent">Blaenau Gwent</option>
+              <option value="caerphilly">Caerphilly</option>
+              <option value="cardiff">Cardiff</option>
+              <option value="merthyr">Merthyr Tydfil</option>
+              <option value="monmouthshire">Monmouthshire</option>
+              <option value="newport">Newport</option>
+              <option value="rct">Rhondda Cynon Taf</option>
+              <option value="torfaen">Torfaen</option>
+              <option value="vale">Vale of Glamorgan</option>
+            </optgroup>
+            <optgroup label="─── South West Wales ───">
+              <option value="bridgend">Bridgend</option>
+              <option value="carmarthenshire">Carmarthenshire</option>
+              <option value="ceredigion">Ceredigion</option>
+              <option value="npt">Neath Port Talbot</option>
+              <option value="pembrokeshire">Pembrokeshire</option>
+              <option value="swansea">Swansea</option>
+            </optgroup>
+            <optgroup label="─── North Wales ───">
+              <option value="conwy">Conwy</option>
+              <option value="denbighshire">Denbighshire</option>
+              <option value="flintshire">Flintshire</option>
+              <option value="gwynedd">Gwynedd</option>
+              <option value="anglesey">Isle of Anglesey</option>
+              <option value="wrexham">Wrexham</option>
+            </optgroup>
+            <optgroup label="─── Mid Wales ───">
+              <option value="powys">Powys</option>
+            </optgroup>
+          </select>
+
+          {{ govukCheckboxes({
+            name: "region-any",
+            items: [
+              { value: "region-any", text: "Do not apply this filter", behaviour: "exclusive" }
+            ]
+          }) }}
+
         </fieldset>
       </div>
 
@@ -100,17 +145,15 @@
     <div class="govuk-grid-column-one-third">
       <div class="govuk-!-padding-3" style="background: #f3f2f1; border-radius: 4px; position: sticky; top: 20px;">
         <h2 class="govuk-heading-s">Your school profile</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-0"><strong>Aberdare Community School</strong></p>
-        <p class="govuk-body-s">Secondary · English medium</p>
         {{ govukSummaryList({
           rows: [
             { key: { text: "Pupils" }, value: { text: "1,107" } },
             { key: { text: "FSM eligible" }, value: { text: "35.6%" } },
             { key: { text: "ALN" }, value: { text: "18.2%" } },
+            { key: { text: "Language" }, value: { text: "English medium" } },
             { key: { text: "Region" }, value: { text: "South East Wales" } }
           ]
         }) }}
-        <p class="govuk-body-s">The criteria are pre-set to match your school profile. Adjust them if you want to explore different comparators.</p>
       </div>
     </div>
   </div>

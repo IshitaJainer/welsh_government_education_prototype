@@ -21,80 +21,372 @@
 {% block content %}
 <div class="govuk-width-container">
 
-  {# School header #}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Ysgol Gyfun Cwm Rhymni</h1>
-      <p class="govuk-body govuk-!-color-secondary govuk-!-margin-bottom-1">
-        Fleur-de-lis Road, Pengam, Caerphilly, NP12 3QP
-      </p>
-      <ul class="opp-tags govuk-list govuk-!-margin-bottom-4">
+      <ul class="opp-tags govuk-list govuk-!-margin-bottom-2">
         <li><strong class="govuk-tag govuk-tag--blue">Secondary (11–18)</strong></li>
         <li><strong class="govuk-tag govuk-tag--green">Welsh medium</strong></li>
         <li><strong class="govuk-tag govuk-tag--blue">Community school</strong></li>
-        <li><strong class="govuk-tag govuk-tag--blue">1,247 learners</strong></li>
       </ul>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <div class="opp-school-actions">
-        <a href="#contact" class="govuk-link govuk-body-s govuk-!-display-block govuk-!-margin-bottom-2">Contact this school</a>
-        <a href="/opp/en/school-profile-data.csv" class="govuk-link govuk-body-s govuk-!-display-block">Download data (CSV)</a>
-      </div>
     </div>
   </div>
 
-  {# Summary figures #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
       <div class="opp-summary-grid">
-
         <div class="opp-summary-card">
           <p class="opp-summary-card__label govuk-body-s">Attendance rate</p>
           <p class="opp-summary-card__value govuk-heading-l">93.4%</p>
-          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">
-            Above Wales average (91.8%)
-          </p>
+          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">Above Wales average (91.8%)</p>
         </div>
-
         <div class="opp-summary-card">
-          <p class="opp-summary-card__label govuk-body-s">Learners meeting 14–16 outcomes</p>
-          <p class="opp-summary-card__value govuk-heading-l">71.3%</p>
-          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">
-            Above Wales average (69%)
-          </p>
+          <p class="opp-summary-card__label govuk-body-s">Budget per pupil</p>
+          <p class="opp-summary-card__value govuk-heading-l">£6,175</p>
+          <p class="opp-summary-card__context govuk-body-s">Academic year 2024–25</p>
         </div>
-
         <div class="opp-summary-card">
-          <p class="opp-summary-card__label govuk-body-s">Persistent absence</p>
-          <p class="opp-summary-card__value govuk-heading-l">18.2%</p>
-          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--warning">
-            Slightly above Wales average (17.1%)
-          </p>
+          <p class="opp-summary-card__label govuk-body-s">Number of learners</p>
+          <p class="opp-summary-card__value govuk-heading-l">1,247</p>
+          <p class="opp-summary-card__context govuk-body-s">Academic year 2024–25</p>
         </div>
-
         <div class="opp-summary-card">
           <p class="opp-summary-card__label govuk-body-s">Free school meal eligibility</p>
           <p class="opp-summary-card__value govuk-heading-l">22.4%</p>
-          <p class="opp-summary-card__context govuk-body-s">
-            Wales average: 21.8%
-          </p>
+          <p class="opp-summary-card__context govuk-body-s">Wales average: 21.8%</p>
         </div>
-
       </div>
     </div>
   </div>
 
   <div class="govuk-grid-row">
 
-    {# Main content column #}
     <div class="govuk-grid-column-two-thirds">
 
-      {# Learner outcomes section #}
-      <section class="opp-section" aria-labelledby="outcomes-heading">
-        <h2 class="govuk-heading-l" id="outcomes-heading">How are learners doing?</h2>
-        <p class="govuk-body">This shows the percentage of Year 11 learners who met the Welsh Government's 14–16 learning outcomes in 2024–25. <strong>71.3% of learners at this school met the threshold</strong>, compared to 69% across Wales.</p>
-        <p class="govuk-body">The school has improved each year for the past five years.</p>
+      <div style="border-bottom: 2px solid #b1b4b6; margin-bottom: 24px;">
+        <ul class="govuk-list" id="profile-nav" style="display: flex; gap: 0; margin: 0; padding: 0; list-style: none;">
+          <li>
+            <a href="#" class="profile-tab-link profile-tab-link--active" data-tab="summary" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; font-weight: bold; color: #0b0c0c; border-bottom: 4px solid #1B1E56; margin-bottom: -2px;">Summary</a>
+          </li>
+          <li>
+            <a href="#" class="profile-tab-link" data-tab="pupils" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Pupils</a>
+          </li>
+          <li>
+            <a href="#" class="profile-tab-link" data-tab="resources" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Resources</a>
+          </li>
+          <li>
+            <a href="#" class="profile-tab-link" data-tab="attainment" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Attainment</a>
+          </li>
+          <li>
+            <a href="#" class="profile-tab-link" data-tab="attendance" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Attendance</a>
+          </li>
+          <li>
+            <a href="#" class="profile-tab-link" data-tab="pe-sport" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">PE &amp; Sport</a>
+          </li>
+        </ul>
+      </div>
 
+      <div id="tab-summary" class="profile-tab-content">
+  <h2 class="govuk-heading-l">Summary</h2>
+
+  <div class="govuk-form-group govuk-!-margin-bottom-4">
+    <label class="govuk-label" for="academic-year">
+      Academic year
+    </label>
+    <select class="govuk-select" id="academic-year" name="academic-year">
+      <option value="2025" selected>2024–25</option>
+      <option value="2024">2023–24</option>
+      <option value="2023">2022–23</option>
+    </select>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "Attainment information" },
+      { text: "" }
+    ],
+    rows: [
+      [ { text: "Capped 9 points score (interim measures version)" }, { text: "356.2" } ],
+      [ { text: "Literacy points score" }, { text: "35.9" } ],
+      [ { text: "Numeracy points score" }, { text: "33.2" } ],
+      [ { text: "Science points score" }, { text: "33.9" } ],
+      [ { text: "Welsh Baccalaureate Skills Challenge Certificate points score" }, { text: "41.1" } ]
+    ]
+  }) }}
+
+  {{ govukTable({
+    head: [
+      { text: "Contextual information" },
+      { text: "" }
+    ],
+    rows: [
+      [ { text: "Free school meals (FSM) — 3 year average" }, { text: "29.9%" } ],
+      [ { text: "Pupil Teacher Ratio (PTR)" }, { text: "17.6" } ],
+      [ { text: "% Attendance during the year" }, { text: "86.2%" } ],
+      [ { text: "School budget per pupil" }, { text: "£6,175" } ]
+    ]
+  }) }}
+
+  {{ govukInsetText({
+    text: "These figures should not be used to rank schools without understanding the context. Many factors influence results, including learner backgrounds and local circumstances."
+  }) }}
+</div>
+
+      <div id="tab-pupils" class="profile-tab-content" style="display:none;">
+
+  <h2 class="govuk-heading-l">Pupils</h2>
+
+  <h3 class="govuk-heading-m">Number of pupils, 2025</h3>
+  <p class="govuk-body">Total number of pupils at this school by year group and gender.</p>
+
+  {{ govukTable({
+    head: [
+      { text: "Year group" },
+      { text: "Male" },
+      { text: "Female" },
+      { text: "Total" }
+    ],
+    rows: [
+      [ { text: "Year 7" }, { text: "98" }, { text: "110" }, { text: "208" } ],
+      [ { text: "Year 8" }, { text: "115" }, { text: "110" }, { text: "225" } ],
+      [ { text: "Year 9" }, { text: "109" }, { text: "104" }, { text: "213" } ],
+      [ { text: "Year 10" }, { text: "117" }, { text: "122" }, { text: "239" } ],
+      [ { text: "Year 11" }, { text: "122" }, { text: "102" }, { text: "224" } ],
+      [ { text: "Year 12" }, { text: "35" }, { text: "28" }, { text: "63" } ],
+      [ { text: "Year 13" }, { text: "32" }, { text: "23" }, { text: "55" } ],
+      [ { text: "Total", classes: "govuk-!-font-weight-bold" }, { text: "628", classes: "govuk-!-font-weight-bold" }, { text: "599", classes: "govuk-!-font-weight-bold" }, { text: "1,227", classes: "govuk-!-font-weight-bold" } ]
+    ]
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+  <h3 class="govuk-heading-m">Free school meals (FSM) - 3 year average</h3>
+  <p class="govuk-body">Pupils of statutory school age known to be eligible for free school meals.</p>
+
+  <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
+    <canvas id="fsm-chart" height="80"></canvas>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "Year" },
+      { text: "2019" },
+      { text: "2020" },
+      { text: "2021" },
+      { text: "2022" },
+      { text: "2023" },
+      { text: "2024" },
+      { text: "2025" }
+    ],
+    rows: [
+      [ { text: "This school" }, { text: "27.6%" }, { text: "27.7%" }, { text: "29.9%" }, { text: "30.9%" }, { text: "31.8%" }, { text: "30.3%" }, { text: "29.9%" } ],
+      [ { text: "Local authority" }, { text: "18.5%" }, { text: "19.1%" }, { text: "20.9%" }, { text: "21.4%" }, { text: "21.5%" }, { text: "20.2%" }, { text: "19.9%" } ],
+      [ { text: "Wales" }, { text: "16.5%" }, { text: "17.0%" }, { text: "18.7%" }, { text: "20.4%" }, { text: "21.2%" }, { text: "20.9%" }, { text: "20.1%" } ]
+    ]
+  }) }}
+
+  {{ govukInsetText({ text: "The coronavirus (COVID-19) pandemic may have impacted on the quality of this data and may have resulted in over recording in 2020 to 2022." }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+  <h3 class="govuk-heading-m">Additional learning needs (ALN) and special educational needs (SEN)</h3>
+  <p class="govuk-body">Percentage of pupils subject to SEN or ALN provision by provision type.</p>
+
+  <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
+    <canvas id="aln-chart" height="80"></canvas>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "Provision type" },
+      { text: "2023" },
+      { text: "2024" },
+      { text: "2025" }
+    ],
+    rows: [
+      [ { text: "School Action" }, { text: "1.0%" }, { text: "1.0%" }, { text: "*" } ],
+      [ { text: "School Action Plus" }, { text: "1.3%" }, { text: "1.0%" }, { text: "*" } ],
+      [ { text: "Statement" }, { text: "2.8%" }, { text: "1.9%" }, { text: "*" } ],
+      [ { text: "School maintained IDP" }, { text: "*" }, { text: "1.2%" }, { text: "1.5%" } ],
+      [ { text: "LA maintained IDP" }, { text: "*" }, { text: "1.1%" }, { text: "2.3%" } ]
+    ]
+  }) }}
+
+  {{ govukDetails({
+    summaryText: "What do these categories mean?",
+    html: "<p class='govuk-body-s'><strong>School Action</strong> — teacher provides additional or different interventions to those in the usual curriculum.</p><p class='govuk-body-s'><strong>School Action Plus</strong> — outside specialists provide additional support alongside school.</p><p class='govuk-body-s'><strong>Statement / IDP</strong> — a statutory plan identifying a learner's additional learning needs.</p><p class='govuk-body-s'>* Data suppressed to protect individual privacy.</p>"
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+  <h3 class="govuk-heading-m">English as an Additional Language (EAL)</h3>
+  <p class="govuk-body">Percentage of pupils at stages A, B or C of English language acquisition.</p>
+
+  <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
+    <canvas id="eal-chart" height="80"></canvas>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "Year" },
+      { text: "2019" },
+      { text: "2020" },
+      { text: "2021" },
+      { text: "2022" },
+      { text: "2023" },
+      { text: "2024" },
+      { text: "2025" }
+    ],
+    rows: [
+      [ { text: "This school" }, { text: "1.4%" }, { text: "1.2%" }, { text: "1.3%" }, { text: "0.9%" }, { text: "1.0%" }, { text: "1.7%" }, { text: "1.4%" } ],
+      [ { text: "Local authority" }, { text: "0.6%" }, { text: "0.6%" }, { text: "0.7%" }, { text: "0.6%" }, { text: "0.9%" }, { text: "1.3%" }, { text: "1.5%" } ],
+      [ { text: "Wales" }, { text: "2.9%" }, { text: "2.8%" }, { text: "2.9%" }, { text: "3.0%" }, { text: "3.4%" }, { text: "3.4%" }, { text: "3.7%" } ]
+    ]
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+
+  <h3 class="govuk-heading-m">Black, Asian and Minority Ethnic pupils (BAME)</h3>
+  <p class="govuk-body">Percentage of pupils who recorded their ethnic background as anything other than White British.</p>
+
+  <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
+    <canvas id="bame-chart" height="80"></canvas>
+  </div>
+
+  {{ govukTable({
+    head: [
+      { text: "Year" },
+      { text: "2019" },
+      { text: "2020" },
+      { text: "2021" },
+      { text: "2022" },
+      { text: "2023" },
+      { text: "2024" },
+      { text: "2025" }
+    ],
+    rows: [
+      [ { text: "This school" }, { text: "4.6%" }, { text: "5.0%" }, { text: "5.1%" }, { text: "5.8%" }, { text: "6.3%" }, { text: "6.7%" }, { text: "6.2%" } ],
+      [ { text: "Local authority" }, { text: "4.3%" }, { text: "4.6%" }, { text: "4.9%" }, { text: "5.6%" }, { text: "6.2%" }, { text: "7.1%" }, { text: "7.4%" } ],
+      [ { text: "Wales" }, { text: "10.3%" }, { text: "10.8%" }, { text: "11.4%" }, { text: "11.9%" }, { text: "12.9%" }, { text: "13.7%" }, { text: "14.4%" } ]
+    ]
+  }) }}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  var years = ['2019', '2020', '2021', '2022', '2023', '2024', '2025'];
+  var chartDefaults = {
+    borderWidth: 2,
+    pointRadius: 3,
+    tension: 0.1
+  };
+
+  new Chart(document.getElementById('fsm-chart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        Object.assign({}, chartDefaults, { label: 'This school', data: [27.6,27.7,29.9,30.9,31.8,30.3,29.9], borderColor: '#003078', backgroundColor: '#003078' }),
+        Object.assign({}, chartDefaults, { label: 'Local authority', data: [18.5,19.1,20.9,21.4,21.5,20.2,19.9], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
+        Object.assign({}, chartDefaults, { label: 'Wales', data: [16.5,17.0,18.7,20.4,21.2,20.9,20.1], borderColor: '#d4351c', backgroundColor: '#d4351c' })
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('aln-chart'), {
+    type: 'bar',
+    data: {
+      labels: ['School Action', 'School Action Plus', 'Statement', 'School IDP', 'LA IDP'],
+      datasets: [
+        { label: '2023', data: [1.0, 1.3, 2.8, 0, 0], backgroundColor: '#003078' },
+        { label: '2024', data: [1.0, 1.0, 1.9, 1.2, 1.1], backgroundColor: '#5694ca' },
+        { label: '2025', data: [0, 0, 0, 1.5, 2.3], backgroundColor: '#d4351c' }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('eal-chart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        Object.assign({}, chartDefaults, { label: 'This school', data: [1.4,1.2,1.3,0.9,1.0,1.7,1.4], borderColor: '#003078', backgroundColor: '#003078' }),
+        Object.assign({}, chartDefaults, { label: 'Local authority', data: [0.6,0.6,0.7,0.6,0.9,1.3,1.5], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
+        Object.assign({}, chartDefaults, { label: 'Wales', data: [2.9,2.8,2.9,3.0,3.4,3.4,3.7], borderColor: '#d4351c', backgroundColor: '#d4351c' })
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('bame-chart'), {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [
+        Object.assign({}, chartDefaults, { label: 'This school', data: [4.6,5.0,5.1,5.8,6.3,6.7,6.2], borderColor: '#003078', backgroundColor: '#003078' }),
+        Object.assign({}, chartDefaults, { label: 'Local authority', data: [4.3,4.6,4.9,5.6,6.2,7.1,7.4], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
+        Object.assign({}, chartDefaults, { label: 'Wales', data: [10.3,10.8,11.4,11.9,12.9,13.7,14.4], borderColor: '#d4351c', backgroundColor: '#d4351c' })
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
+      }
+    }
+  });
+</script>
+
+      <div id="tab-resources" class="profile-tab-content" style="display:none;">
+        <h2 class="govuk-heading-l">Resources</h2>
+        {{ govukSummaryList({
+          rows: [
+            { key: { text: "Teacher FTE" }, value: { text: "82.4" } },
+            { key: { text: "Pupil teacher ratio" }, value: { text: "17.6" } },
+            { key: { text: "School budget per pupil" }, value: { text: "£6,175" } },
+            { key: { text: "Financial reserves" }, value: { text: "£284,000" } }
+          ]
+        }) }}
+        {{ govukDetails({
+          summaryText: "What do these measures mean?",
+          html: "
+            <p class='govuk-body-s'><strong>Teacher FTE</strong> — the total number of teachers expressed as full-time equivalents. Part-time teachers are counted as a fraction of a full-time post.</p>
+            <p class='govuk-body-s'><strong>Pupil teacher ratio (PTR)</strong> — the number of pupils per teacher. A lower number means more teachers relative to pupils.</p>
+            <p class='govuk-body-s'><strong>School budget per pupil</strong> — the total school budget divided by the number of pupils. Includes all funding received by the school.</p>
+            <p class='govuk-body-s'><strong>Financial reserves</strong> — the amount of unspent budget carried forward by the school at the end of the financial year.</p>
+          "
+        }) }}
+      </div>
+
+      <div id="tab-attainment" class="profile-tab-content" style="display:none;">
+        <h2 class="govuk-heading-l">Attainment</h2>
+        <p class="govuk-body"><strong>71.3% of Year 11 learners</strong> met the 14–16 learning outcomes threshold in 2024–25, compared to 69% across Wales.</p>
         <div class="opp-chart" aria-label="Bar chart showing learner outcomes">
           <div class="opp-chart__row">
             <span class="opp-chart__label govuk-body-s">This school</span>
@@ -113,52 +405,31 @@
             </div>
           </div>
         </div>
-
-        <div class="opp-trend" aria-label="5-year trend in learner outcomes">
-          <h3 class="govuk-heading-s">5-year trend</h3>
-          <div class="opp-trend__bars" role="img" aria-label="Outcomes improving from 62% in 2020-21 to 71% in 2024-25">
-            <div class="opp-trend__bar-wrap">
-              <span class="opp-trend__pct govuk-body-s">62%</span>
-              <div class="opp-trend__bar" style="height: 62px"></div>
-              <span class="opp-trend__year govuk-body-s">20–21</span>
-            </div>
-            <div class="opp-trend__bar-wrap">
-              <span class="opp-trend__pct govuk-body-s">64%</span>
-              <div class="opp-trend__bar" style="height: 64px"></div>
-              <span class="opp-trend__year govuk-body-s">21–22</span>
-            </div>
-            <div class="opp-trend__bar-wrap">
-              <span class="opp-trend__pct govuk-body-s">66%</span>
-              <div class="opp-trend__bar" style="height: 66px"></div>
-              <span class="opp-trend__year govuk-body-s">22–23</span>
-            </div>
-            <div class="opp-trend__bar-wrap">
-              <span class="opp-trend__pct govuk-body-s">68%</span>
-              <div class="opp-trend__bar" style="height: 68px"></div>
-              <span class="opp-trend__year govuk-body-s">23–24</span>
-            </div>
-            <div class="opp-trend__bar-wrap">
-              <span class="opp-trend__pct govuk-body-s">71%</span>
-              <div class="opp-trend__bar opp-trend__bar--current" style="height: 71px"></div>
-              <span class="opp-trend__year govuk-body-s">24–25</span>
-            </div>
-          </div>
-        </div>
-
-        {{ govukInsetText({
-          text: "These figures show how learners are progressing overall. They don't rank schools against each other. Many factors — including learner backgrounds and local context — influence results. Use this information alongside Estyn inspection findings when forming a view of a school."
+        {{ govukTable({
+          caption: "Points scores — 2022/23 to 2024/25",
+          head: [
+            { text: "Measure" },
+            { text: "2022–23" },
+            { text: "2023–24" },
+            { text: "2024–25" }
+          ],
+          rows: [
+            [ { text: "Capped 9" }, { text: "342.1" }, { text: "348.4" }, { text: "356.2" } ],
+            [ { text: "Literacy" }, { text: "41.2" }, { text: "42.1" }, { text: "43.4" } ],
+            [ { text: "Numeracy" }, { text: "38.4" }, { text: "39.1" }, { text: "40.2" } ],
+            [ { text: "Science" }, { text: "36.1" }, { text: "37.2" }, { text: "38.1" } ],
+            [ { text: "Welsh Bac" }, { text: "44.2" }, { text: "45.1" }, { text: "46.3" } ]
+          ]
         }) }}
+        {{ govukInsetText({
+          text: "Points scores are published for 2022/23 to 2025/26 only. From 2027, attainment will be reported using the new 14-16 Learner Entitlement Indicators Framework (LEIF)."
+        }) }}
+      </div>
 
-      </section>
-
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-      {# Attendance section #}
-      <section class="opp-section" aria-labelledby="attendance-heading">
-        <h2 class="govuk-heading-l" id="attendance-heading">Attendance</h2>
-        <p class="govuk-body"><strong>93.4% of learners attended regularly</strong> in 2024–25. This is above the Wales average of 91.8%.</p>
-        <p class="govuk-body">However, <strong>18.2% of learners were persistently absent</strong>, meaning they missed at least 10% of school sessions. This is slightly above the Wales average of 17.1%.</p>
-
+      <div id="tab-attendance" class="profile-tab-content" style="display:none;">
+        <h2 class="govuk-heading-l">Attendance</h2>
+        <p class="govuk-body"><strong>93.4% of learners attended regularly</strong> in 2024–25, above the Wales average of 91.8%.</p>
+        <p class="govuk-body"><strong>18.2% of learners were persistently absent</strong>, meaning they missed at least 10% of sessions.</p>
         <div class="opp-chart" aria-label="Bar chart showing attendance rates">
           <div class="opp-chart__row">
             <span class="opp-chart__label govuk-body-s">This school</span>
@@ -177,82 +448,29 @@
             </div>
           </div>
         </div>
-
         {{ govukWarningText({
-          text: "Persistent absence is a national challenge. If you have concerns about your child's attendance, contact the school directly.",
+          text: "If you have concerns about your child's attendance, contact the school directly.",
           iconFallbackText: "Warning"
         }) }}
+      </div>
 
-      </section>
+      <div id="tab-pe-sport" class="profile-tab-content" style="display:none;">
+        <h2 class="govuk-heading-l">PE &amp; Sport</h2>
+        <p class="govuk-body">Information about PE and sport at this school is collected through the School Sport Survey, run by Sport Wales.</p>
+        <p class="govuk-body"><a href="https://www.sport.wales/research-and-insight/school-sport-survey/" class="govuk-link">View the School Sport Survey (Sport Wales)</a></p>
 
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-
-      {# Estyn section #}
-      <section class="opp-section" aria-labelledby="estyn-heading">
-        <h2 class="govuk-heading-l" id="estyn-heading">What Estyn said</h2>
-
-        <div class="opp-estyn">
-          <p class="govuk-body-s govuk-!-margin-bottom-1">Last inspected: <strong>March 2024</strong></p>
-          <p class="govuk-heading-m govuk-!-margin-bottom-2">
-            Overall judgement: <strong class="govuk-tag govuk-tag--green">Good</strong>
-          </p>
-          <p class="govuk-body">Estyn — the schools inspectorate for Wales — judged this school as Good. Inspectors noted strong Welsh language provision, committed leadership and improving learner wellbeing. Some areas for improvement were identified around consistency of feedback to learners.</p>
-          <a href="#" class="govuk-link">Read the full Estyn report (opens in new tab)</a>
-        </div>
-
-      </section>
+      </div>
 
     </div>
 
-    {# Sidebar #}
     <div class="govuk-grid-column-one-third">
 
-      <div class="opp-aside govuk-!-margin-bottom-6">
-        <h2 class="govuk-heading-s">About this school</h2>
-        <dl class="govuk-summary-list govuk-summary-list--no-border govuk-!-font-size-16">
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">School type</dt>
-            <dd class="govuk-summary-list__value">Secondary</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Age range</dt>
-            <dd class="govuk-summary-list__value">11 to 18</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Language</dt>
-            <dd class="govuk-summary-list__value">Welsh medium</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Learners</dt>
-            <dd class="govuk-summary-list__value">1,247</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Local authority</dt>
-            <dd class="govuk-summary-list__value">Caerphilly</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Governance</dt>
-            <dd class="govuk-summary-list__value">Community</dd>
-          </div>
-          <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">FSM eligible</dt>
-            <dd class="govuk-summary-list__value">22.4%</dd>
-          </div>
-        </dl>
-      </div>
-
       <div class="opp-aside govuk-!-margin-bottom-6" id="contact">
-        <h2 class="govuk-heading-s">Contact</h2>
+        <h2 class="govuk-heading-s">Contact this school</h2>
         <p class="govuk-body-s">Fleur-de-lis Road, Pengam,<br>Caerphilly, NP12 3QP</p>
-        <p class="govuk-body-s">
-          <a href="tel:01443875548" class="govuk-link">01443 875548</a>
-        </p>
-        <p class="govuk-body-s">
-          <a href="mailto:cwmrhymni@caerphilly.gov.uk" class="govuk-link">cwmrhymni@caerphilly.gov.uk</a>
-        </p>
-        <p class="govuk-body-s">
-          <a href="#" class="govuk-link">ysgolcwmrhymni.cymru</a>
-        </p>
+        <p class="govuk-body-s"><a href="tel:01443875548" class="govuk-link">01443 875548</a></p>
+        <p class="govuk-body-s"><a href="mailto:cwmrhymni@caerphilly.gov.uk" class="govuk-link">cwmrhymni@caerphilly.gov.uk</a></p>
+        <p class="govuk-body-s"><a href="#" class="govuk-link">ysgolcwmrhymni.cymru</a></p>
       </div>
 
       <div class="opp-aside govuk-!-margin-bottom-6">
@@ -260,30 +478,56 @@
         <ul class="govuk-list govuk-!-font-size-16">
           <li class="opp-nearby-school">
             <a href="#" class="govuk-link">Ysgol Gyfun Rhymni</a>
-            <span class="govuk-body-s govuk-!-color-secondary">Secondary · 2.4 miles</span>
+            <span class="govuk-body-s" style="color:#505a5f">Secondary · 2.4 miles</span>
           </li>
           <li class="opp-nearby-school">
             <a href="#" class="govuk-link">Heolddu Comprehensive</a>
-            <span class="govuk-body-s govuk-!-color-secondary">Secondary · 3.1 miles</span>
+            <span class="govuk-body-s" style="color:#505a5f">Secondary · 3.1 miles</span>
           </li>
           <li class="opp-nearby-school">
             <a href="#" class="govuk-link">Ysgol Gyfun Tregwyr</a>
-            <span class="govuk-body-s govuk-!-color-secondary">Secondary · 4.7 miles</span>
+            <span class="govuk-body-s" style="color:#505a5f">Secondary · 4.7 miles</span>
           </li>
         </ul>
         <a href="/opp/en/search.html" class="govuk-link govuk-body-s">Find more schools in Caerphilly</a>
       </div>
 
+            <div class="opp-aside govuk-!-margin-bottom-6">
+        <h2 class="govuk-heading-s">Estyn inspection</h2>
+        <a href="#" class="govuk-link govuk-body-s">Read the full Estyn report</a>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Last inspected: <strong>March 2024</strong></p>
+      </div>
+
       <div class="opp-aside">
         <h2 class="govuk-heading-s">Download data</h2>
-        <p class="govuk-body-s">You can download the data shown on this page. Please use it responsibly — do not use it to rank schools without reading the guidance on how to interpret school data.</p>
-        <a href="#" class="govuk-button govuk-button--secondary govuk-!-width-full govuk-!-margin-top-2">
-          Download as CSV
-        </a>
+        <p class="govuk-body-s">Do not use this data to rank schools without reading the guidance.</p>
+        <a href="#" class="govuk-button govuk-button--secondary govuk-!-width-full govuk-!-margin-top-2">Download as CSV</a>
       </div>
 
     </div>
 
   </div>
 </div>
+
+<script>
+  document.querySelectorAll('.profile-tab-link').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var tab = this.getAttribute('data-tab');
+      document.querySelectorAll('.profile-tab-content').forEach(function(content) {
+        content.style.display = 'none';
+      });
+      document.querySelectorAll('.profile-tab-link').forEach(function(l) {
+        l.style.fontWeight = 'normal';
+        l.style.color = '#1d70b8';
+        l.style.borderBottom = '4px solid transparent';
+      });
+      document.getElementById('tab-' + tab).style.display = 'block';
+      this.style.fontWeight = 'bold';
+      this.style.color = '#0b0c0c';
+      this.style.borderBottom = '4px solid #1B1E56';
+    });
+  });
+</script>
+
 {% endblock %}

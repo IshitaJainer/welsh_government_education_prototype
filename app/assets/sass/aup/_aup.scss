@@ -6,6 +6,7 @@
   background-color: #1B1E56;
   color: govuk-colour("white");
   padding: govuk-spacing(2) 0;
+  font-family: "GDS Transport", arial, sans-serif;
 
   &__inner {
     display: flex;
@@ -16,11 +17,13 @@
   &__user {
     font-size: 14px;
     color: govuk-colour("white");
+    font-family: "GDS Transport", arial, sans-serif;
   }
 
   &__signout {
     font-size: 14px;
     color: #aacae6;
+    font-family: "GDS Transport", arial, sans-serif;
 
     &:visited {
       color: #aacae6;
