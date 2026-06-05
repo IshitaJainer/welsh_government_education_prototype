@@ -1,0 +1,42 @@
+{% extends "layout_prototype.html" %}
+
+{% block header %}
+  {{ prototypeHeader({
+    "lang": lang | default("en"),
+    "alternative": {
+      "href": alternativeHref | default("#")
+    }
+  }) }}
+{% endblock %}
+
+{% block beforeContent %}
+  <div class="aup-service-bar">
+    <div class="govuk-width-container aup-service-bar__inner">
+      <span class="aup-service-bar__user">
+        Signed in as: <strong>{{ userName | default("S. Thomas") }}</strong> —
+        {{ schoolName | default("Rhondda Cynon Taf CBC") }}
+      </span>
+      <a href="/aup/en/login.html" class="govuk-link aup-service-bar__signout">Sign out</a>
+    </div>
+  </div>
+
+  <nav class="aup-nav govuk-width-container" aria-label="Portal navigation">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/la-overview.html" class="aup-nav__link {{ 'aup-nav__link--active' if currentNav == 'overview' }}">
+          Overview
+        </a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/la-schools.html" class="aup-nav__link {{ 'aup-nav__link--active' if currentNav == 'within-la' }}">
+          Within LA
+        </a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/la-school.html" class="aup-nav__link {{ 'aup-nav__link--active' if currentNav == 'at-la-level' }}">
+          At LA level
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}

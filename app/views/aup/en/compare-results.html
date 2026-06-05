@@ -56,24 +56,24 @@
               <td class="govuk-table__cell">
                 <div class="govuk-checkboxes__item" style="margin: 0;">
                   <input class="govuk-checkboxes__input" id="school-a" name="schools" type="checkbox" value="school-a" checked>
-                  <label class="govuk-label govuk-checkboxes__label" for="school-a"><span class="govuk-visually-hidden">Select School A</span></label>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-a"><span class="govuk-visually-hidden">Select Ysgol Gyfun Bro Morgannwg</span></label>
                 </div>
               </td>
-              <td class="govuk-table__cell">School A</td>
+              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Ysgol Gyfun Bro Morgannwg</a></td>
               <td class="govuk-table__cell">980</td>
               <td class="govuk-table__cell">33.1%</td>
               <td class="govuk-table__cell">17.4%</td>
-              <td class="govuk-table__cell">English</td>
+              <td class="govuk-table__cell">Welsh</td>
               <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">97%</strong></td>
             </tr>
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">
                 <div class="govuk-checkboxes__item" style="margin: 0;">
                   <input class="govuk-checkboxes__input" id="school-b" name="schools" type="checkbox" value="school-b" checked>
-                  <label class="govuk-label govuk-checkboxes__label" for="school-b"><span class="govuk-visually-hidden">Select School B</span></label>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-b"><span class="govuk-visually-hidden">Select Heolddu Comprehensive School</span></label>
                 </div>
               </td>
-              <td class="govuk-table__cell">School B</td>
+              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Heolddu Comprehensive School</a></td>
               <td class="govuk-table__cell">1,050</td>
               <td class="govuk-table__cell">37.2%</td>
               <td class="govuk-table__cell">19.1%</td>
@@ -84,10 +84,10 @@
               <td class="govuk-table__cell">
                 <div class="govuk-checkboxes__item" style="margin: 0;">
                   <input class="govuk-checkboxes__input" id="school-c" name="schools" type="checkbox" value="school-c" checked>
-                  <label class="govuk-label govuk-checkboxes__label" for="school-c"><span class="govuk-visually-hidden">Select School C</span></label>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-c"><span class="govuk-visually-hidden">Select Bedwas High School</span></label>
                 </div>
               </td>
-              <td class="govuk-table__cell">School C</td>
+              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Bedwas High School</a></td>
               <td class="govuk-table__cell">890</td>
               <td class="govuk-table__cell">31.4%</td>
               <td class="govuk-table__cell">16.8%</td>
@@ -98,10 +98,10 @@
               <td class="govuk-table__cell">
                 <div class="govuk-checkboxes__item" style="margin: 0;">
                   <input class="govuk-checkboxes__input" id="school-d" name="schools" type="checkbox" value="school-d" checked>
-                  <label class="govuk-label govuk-checkboxes__label" for="school-d"><span class="govuk-visually-hidden">Select School D</span></label>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-d"><span class="govuk-visually-hidden">Select Lewis School Pengam</span></label>
                 </div>
               </td>
-              <td class="govuk-table__cell">School D</td>
+              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Lewis School Pengam</a></td>
               <td class="govuk-table__cell">1,200</td>
               <td class="govuk-table__cell">38.0%</td>
               <td class="govuk-table__cell">20.3%</td>
@@ -112,10 +112,10 @@
               <td class="govuk-table__cell">
                 <div class="govuk-checkboxes__item" style="margin: 0;">
                   <input class="govuk-checkboxes__input" id="school-e" name="schools" type="checkbox" value="school-e">
-                  <label class="govuk-label govuk-checkboxes__label" for="school-e"><span class="govuk-visually-hidden">Select School E</span></label>
+                  <label class="govuk-label govuk-checkboxes__label" for="school-e"><span class="govuk-visually-hidden">Select Risca Comprehensive School</span></label>
                 </div>
               </td>
-              <td class="govuk-table__cell">School E</td>
+              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Risca Comprehensive School</a></td>
               <td class="govuk-table__cell">760</td>
               <td class="govuk-table__cell">29.8%</td>
               <td class="govuk-table__cell">15.9%</td>
@@ -126,6 +126,10 @@
         </table>
 
         {{ govukInsetText({ text: "Select up to 4 schools to compare." }) }}
+        {{ govukDetails({
+        summaryText: "How is the similarity score calculated?",
+        text: "The similarity score shows how closely each school matches the criteria you selected. Each criterion you chose to apply is weighted equally. A school that matches all your criteria perfectly would score 100%. Schools that partially match, for example falling near the boundary of a band, will score lower. Criteria you chose not to apply are not counted."
+      }) }}
 
         <button type="submit" class="govuk-button">Compare selected schools</button>
       </form>
