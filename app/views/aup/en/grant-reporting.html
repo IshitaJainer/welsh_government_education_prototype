@@ -1,0 +1,209 @@
+{% extends "aup/layout_aup.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}Grant reporting - School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell (2024–25)</p>
+    </div>
+  </div>
+
+  {{ govukInsetText({
+    html: "<strong>This feature is in development.</strong> Grant reporting will replace the current process of completing a template and publishing it on your school website. You'll submit a structured return through this platform instead."
+  }) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {# ---- PHASE 1: SCHOOL IDENTIFICATION ---- #}
+      <div style="border-left: 4px solid #5694ca; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">School identification</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Confirm which school this return is for.</p>
+
+        {{ govukSelect({
+          id: "school",
+          name: "school",
+          label: { text: "School", classes: "govuk-label--s" },
+          items: [
+            { value: "", text: "Select a school" },
+            { value: "abercastell", text: "Ysgol Gyfun Abercastell", selected: true },
+            { value: "rhymni", text: "Ysgol Gyfun Rhymni" },
+            { value: "brynmawr", text: "Ysgol Gyfun Bryn Mawr" }
+          ]
+        }) }}
+      </div>
+
+      {# ---- PHASE 2: SPEND ENTRIES ---- #}
+      <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend entries</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Add each area of grant spend separately. You can add multiple entries.</p>
+
+        {{ govukTable({
+          head: [
+            { text: "Category" },
+            { text: "Key area" },
+            { text: "Description" },
+            { text: "Amount" },
+            { text: "Success criterion" },
+            { text: "" }
+          ],
+          rows: [
+            [
+              { text: "Targeted staff intervention" },
+              { text: "High-quality teaching and learning" },
+              { text: "Hired literacy support tutor" },
+              { text: "£30,000" },
+              { text: "X% improvement in lowest achievers' scores" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ],
+            [
+              { text: "Attendance intervention" },
+              { text: "Reducing persistent absence" },
+              { text: "Family liaison officer" },
+              { text: "£8,500" },
+              { text: "Reduce PA rate by 3%" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ]
+          ]
+        }) }}
+
+        <h3 class="govuk-heading-s">Add a spend entry</h3>
+
+        {{ govukSelect({
+          id: "spend-category",
+          name: "spend-category",
+          label: { text: "Category of spend", classes: "govuk-label--s" },
+          hint: { text: "Select the type of activity this funding supports." },
+          items: [
+            { value: "", text: "Select a category" },
+            { value: "staff", text: "Targeted staff intervention" },
+            { value: "teaching", text: "Teaching and learning resources" },
+            { value: "attendance", text: "Attendance intervention" },
+            { value: "wellbeing", text: "Wellbeing and pastoral support" },
+            { value: "cpd", text: "Staff CPD and development" },
+            { value: "enrichment", text: "Enrichment and extracurricular" },
+            { value: "other", text: "Other" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "key-area",
+          name: "key-area",
+          label: { text: "Key area this spend is primarily aimed at", classes: "govuk-label--s" },
+          hint: { text: "Select from the 8 key areas." },
+          items: [
+            { value: "", text: "Select a key area" },
+            { value: "hqt", text: "High-quality teaching and learning" },
+            { value: "literacy", text: "Literacy and numeracy" },
+            { value: "attendance", text: "Attendance and engagement" },
+            { value: "wellbeing", text: "Wellbeing and mental health" },
+            { value: "transitions", text: "Transitions" },
+            { value: "enrichment", text: "Enrichment" },
+            { value: "leadership", text: "Leadership and governance" },
+            { value: "family", text: "Family and community engagement" }
+          ]
+        }) }}
+
+        {{ govukTextarea({
+          id: "spend-description",
+          name: "spend-description",
+          label: { text: "Describe the spend", classes: "govuk-label--s" },
+          hint: { text: "Briefly describe what this funding is being used for." },
+          rows: 3
+        }) }}
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="annual-amount">Annual amount (£)</label>
+          <input class="govuk-input govuk-input--width-10" id="annual-amount" name="annual-amount" type="text" inputmode="numeric">
+        </div>
+
+        {{ govukTextarea({
+          id: "success-criterion",
+          name: "success-criterion",
+          label: { text: "Describe the success criterion", classes: "govuk-label--s" },
+          hint: { text: "What measurable outcome would indicate this spend has been successful?" },
+          rows: 3
+        }) }}
+
+        {{ govukButton({
+          text: "Add entry",
+          classes: "govuk-button--secondary"
+        }) }}
+      </div>
+
+      {# ---- PHASE 3: EVALUATION ---- #}
+      <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Evaluation of impact</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">For each spend entry, rate how well the success criterion was achieved and describe the impact on learners.</p>
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="success-rating">How well was the success criterion achieved?</label>
+          <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
+          {{ govukSelect({
+            id: "success-rating",
+            name: "success-rating",
+            items: [
+              { value: "", text: "Select a rating" },
+              { value: "1", text: "1 — Not achieved" },
+              { value: "2", text: "2" },
+              { value: "3", text: "3" },
+              { value: "4", text: "4" },
+              { value: "5", text: "5 — Partially achieved" },
+              { value: "6", text: "6" },
+              { value: "7", text: "7" },
+              { value: "8", text: "8" },
+              { value: "9", text: "9" },
+              { value: "10", text: "10 — Fully achieved" }
+            ]
+          }) }}
+        </div>
+
+        {{ govukTextarea({
+          id: "impact-detail",
+          name: "impact-detail",
+          label: { text: "Describe the impact", classes: "govuk-label--s" },
+          hint: { text: "Describe what changed for learners as a result of this spend. Include any evidence. For example: scores for X group improved by X%. Children built a strong relationship with the tutor that increased their interest in learning." },
+          rows: 5
+        }) }}
+      </div>
+
+      {# ---- SUBMIT ---- #}
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+      <h2 class="govuk-heading-m">Submit your return</h2>
+      <p class="govuk-body">Once you have added all spend entries and evaluations, submit your return. </p>
+
+      {{ govukWarningText({
+        text: "Check all entries before submitting. Once submitted, changes can only be made by contacting your local authority.",
+        iconFallbackText: "Warning"
+      }) }}
+
+      <div class="govuk-button-group">
+        {{ govukButton({ text: "Submit return" }) }}
+        {{ govukButton({ text: "Save as draft", classes: "govuk-button--secondary" }) }}
+      </div>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-chart-card govuk-!-margin-bottom-4">
+        <h2 class="govuk-heading-s">Return status</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Status: <strong class="govuk-tag govuk-tag--yellow">Draft</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Entries added: <strong>2</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Total spend recorded: <strong>£38,500</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Deadline: <strong>31 July 2025</strong></p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}

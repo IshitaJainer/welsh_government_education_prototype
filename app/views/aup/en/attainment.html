@@ -109,8 +109,24 @@
         }) }}
 
         {{ govukInsetText({
-          text: "Virtual comparator: 8 schools with a similar contextual profile based on FSM %, school size and rurality. The comparator is system-generated and updated each academic year."
-        }) }}
+  html: "<details class='govuk-details govuk-!-margin-bottom-0'>
+    <summary class='govuk-details__summary'>
+      <span class='govuk-details__summary-text'>What is the virtual comparator?</span>
+    </summary>
+    <div class='govuk-details__text'>
+      <p class='govuk-body-s'>The virtual comparator is a modelled estimate using national data to predict how a school with your characteristics would typically perform.</p>
+      <p class='govuk-body-s'>The model takes into account:</p>
+      <ul class='govuk-list govuk-list--bullet govuk-body-s'>
+        <li>free school meal (FSM) eligibility rate</li>
+        <li>additional learning needs (ALN)</li>
+        <li>school size</li>
+        <li>rurality</li>
+        <li>and additioanal contextual factors</li>
+      </ul>
+      <p class='govuk-body-s govuk-!-margin-bottom-0'>If your result is above the comparator, your school is performing better than the model would predict given your context. The comparator is updated each academic year.</p>
+    </div>
+  </details>"
+}) }}
 
       </div>
     </div>

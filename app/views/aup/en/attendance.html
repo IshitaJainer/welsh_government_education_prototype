@@ -99,68 +99,6 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <div class="aup-chart-card govuk-!-margin-bottom-6">
-        <h2 class="govuk-heading-s">Attendance by learner characteristic</h2>
-        <p class="govuk-body-s aup-chart-card__desc">Filter simultaneously by multiple characteristics using the dropdowns below.</p>
-
-        <div class="aup-filter-bar govuk-!-margin-bottom-4">
-          {{ govukSelect({
-            id: "att-gender",
-            name: "att-gender",
-            label: { text: "Gender", classes: "govuk-visually-hidden" },
-            classes: "govuk-select--small",
-            items: [
-              { value: "all", text: "All genders", selected: true },
-              { value: "f", text: "Female" },
-              { value: "m", text: "Male" }
-            ]
-          }) }}
-          {{ govukSelect({
-            id: "att-fsm",
-            name: "att-fsm",
-            label: { text: "FSM", classes: "govuk-visually-hidden" },
-            classes: "govuk-select--small",
-            items: [
-              { value: "all", text: "All learners", selected: true },
-              { value: "fsm", text: "FSM eligible" },
-              { value: "nonfsm", text: "Non-FSM" }
-            ]
-          }) }}
-          {{ govukSelect({
-            id: "att-aln",
-            name: "att-aln",
-            label: { text: "ALN", classes: "govuk-visually-hidden" },
-            classes: "govuk-select--small",
-            items: [
-              { value: "all", text: "All learners", selected: true },
-              { value: "aln", text: "ALN" },
-              { value: "nonaln", text: "No ALN" }
-            ]
-          }) }}
-        </div>
-
-        {{ govukTable({
-          head: [
-            { text: "Characteristic" },
-            { text: "Attendance rate" },
-            { text: "vs Wales average" },
-            { text: "vs comparator" }
-          ],
-          rows: [
-            [ { text: "All learners" }, { text: "93.4%" }, { text: "1.6% above" }, { text: "1.3% above" } ],
-            [ { text: "Female" }, { text: "94.1%" }, { text: "2.3% above" }, { text: "1.9% above" } ],
-            [ { text: "Male" }, { text: "91.3%" }, { text: "0.6% above" }, { text: "0.4% above" } ],
-            [ { text: "FSM eligible" }, { text: "84.2%" }, { text: "0.6% below" }, { text: "1.1% below" } ],
-            [ { text: "ALN" }, { text: "88.6%" }, { text: "1.2% above" }, { text: "0.8% above" } ],
-            [ { text: "EAL" }, { text: "92.1%" }, { text: "1.0% above" }, { text: "0.7% above" } ]
-          ]
-        }) }}
-      </div>
-    </div>
-  </div>
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
 
     <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">

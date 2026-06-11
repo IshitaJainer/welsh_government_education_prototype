@@ -1,0 +1,596 @@
+{% extends "aup/layout_aup.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "leif" %}
+
+{% block pageTitle %}LEIF — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">14 to 16 Learner Entitlement Indicators</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell — 2030/31</p>
+    </div>
+    <div class="govuk-grid-column-one-third aup-export-row">
+      {{ govukButton({
+        text: "Export to CSV",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+      }) }}
+    </div>
+  </div>
+
+  {{- govukInsetText({
+    text: "These indicators are based on the Learner Entitlement Indicators Framework (LEIF). They show the range of qualifications learners are entered for and their outcomes. Wording and definitions are subject to change."
+  }) -}}
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Qualifications in literacy and numeracy</h2>
+      <p class="govuk-body-s govuk-!-margin-bottom-4"><em>Overview of entries across qualifications in Cymraeg, English, mathematics and numeracy</em></p>
+    </div>
+  </div>
+
+  {# --- English --- #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <details class="govuk-details leif-subject-details govuk-!-margin-bottom-0" open>
+          <summary class="govuk-details__summary leif-subject-summary">
+            <span class="govuk-details__summary-text govuk-heading-s govuk-!-margin-bottom-0">English</span>
+          </summary>
+          <div class="govuk-details__text leif-subject-body">
+
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Learners entered for qualifications</h3>
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Percentage of year 11 learners entered for qualifications in English.</p>
+
+            <div class="leif-tab-group govuk-!-margin-bottom-4" data-leif-tabs>
+              <div class="leif-tabs" role="tablist">
+                <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="english-entries-current">2030/31</button>
+                <button class="leif-tab" role="tab" aria-selected="false" data-tab="english-entries-trend">Change over time</button>
+              </div>
+              <div class="leif-tab-panel" id="english-entries-current" data-panel>
+                <div class="leif-bar-chart">
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">This school</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:68%;background:#003078;" title="GCSE Double Award: 68%"></div>
+                      <div class="leif-bar-chart__segment" style="width:14%;background:#f47738;" title="GCSE Single Award: 14%"></div>
+                      <div class="leif-bar-chart__segment" style="width:10%;background:#942514;" title="Entry/Foundation: 10%"></div>
+                      <div class="leif-bar-chart__segment" style="width:8%;background:#b1b4b6;" title="None: 8%"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">Wales</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:62%;background:#003078;"></div>
+                      <div class="leif-bar-chart__segment" style="width:16%;background:#f47738;"></div>
+                      <div class="leif-bar-chart__segment" style="width:12%;background:#942514;"></div>
+                      <div class="leif-bar-chart__segment" style="width:10%;background:#b1b4b6;"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                </div>
+                <div class="leif-legend govuk-body-s">
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#003078;"></span>GCSE Double Award</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#f47738;"></span>GCSE Single Award</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#942514;"></span>Entry/Foundation</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#b1b4b6;"></span>None</span>
+                </div>
+              </div>
+              <div class="leif-tab-panel leif-tab-panel--hidden" id="english-entries-trend" data-panel>
+                <canvas id="chart-english-entries-trend" height="160"></canvas>
+              </div>
+            </div>
+
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Outcomes</h3>
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Percentage of year 11 learners entered for GCSE English Language and Literature Double Award achieving the selected grade.</p>
+
+            <div class="leif-tab-group govuk-!-margin-bottom-2" data-leif-tabs>
+              <div class="leif-tabs" role="tablist">
+                <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="english-outcomes-current">2030/31</button>
+                <button class="leif-tab" role="tab" aria-selected="false" data-tab="english-outcomes-trend">Change over time</button>
+              </div>
+              <div class="leif-tab-panel" id="english-outcomes-current" data-panel>
+                <div class="leif-outcomes-controls govuk-!-margin-bottom-3">
+                  <div class="leif-outcomes-control-row">
+                    {{ govukSelect({
+                      id: "english-grade",
+                      name: "english-grade",
+                      label: { text: "Grade range", classes: "govuk-body-s govuk-!-margin-bottom-1" },
+                      classes: "govuk-select--small",
+                      items: [
+                        { value: "astar-bb", text: "A*A*–BB", selected: true },
+                        { value: "astar-cc", text: "A*A*–CC" },
+                        { value: "astar-dd", text: "A*A*–DD" }
+                      ]
+                    }) }}
+                    <div class="leif-comparators govuk-body-s">
+                      <strong class="govuk-body-s">Show comparators:</strong>
+                      <label class="leif-comparator-toggle"><input type="checkbox" checked> Local Authority</label>
+                      <label class="leif-comparator-toggle"><input type="checkbox" checked> Wales</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="leif-outcomes-chart">
+                  <canvas id="chart-english-outcomes" height="140"></canvas>
+                </div>
+              </div>
+              <div class="leif-tab-panel leif-tab-panel--hidden" id="english-outcomes-trend" data-panel>
+                <div class="leif-outcomes-controls govuk-!-margin-bottom-3">
+                  <div class="leif-outcomes-control-row">
+                    {{ govukSelect({
+                      id: "english-grade-trend",
+                      name: "english-grade-trend",
+                      label: { text: "Grade range", classes: "govuk-body-s govuk-!-margin-bottom-1" },
+                      classes: "govuk-select--small",
+                      items: [
+                        { value: "astar-bb", text: "A*A*–BB", selected: true },
+                        { value: "astar-cc", text: "A*A*–CC" },
+                        { value: "astar-dd", text: "A*A*–DD" }
+                      ]
+                    }) }}
+                    <div class="leif-comparators govuk-body-s">
+                      <strong class="govuk-body-s">Show comparators:</strong>
+                      <label class="leif-comparator-toggle"><input type="checkbox" checked> Local Authority</label>
+                      <label class="leif-comparator-toggle"><input type="checkbox" checked> Wales</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="leif-outcomes-chart">
+                  <canvas id="chart-english-outcomes-trend" height="140"></canvas>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {# --- Cymraeg --- #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <details class="govuk-details leif-subject-details govuk-!-margin-bottom-0">
+          <summary class="govuk-details__summary leif-subject-summary">
+            <span class="govuk-details__summary-text govuk-heading-s govuk-!-margin-bottom-0">Cymraeg</span>
+          </summary>
+          <div class="govuk-details__text leif-subject-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Percentage of year 11 learners entered for qualifications in Cymraeg.</p>
+            <div class="leif-tab-group govuk-!-margin-bottom-4" data-leif-tabs>
+              <div class="leif-tabs" role="tablist">
+                <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="cymraeg-entries-current">2030/31</button>
+                <button class="leif-tab" role="tab" aria-selected="false" data-tab="cymraeg-entries-trend">Change over time</button>
+              </div>
+              <div class="leif-tab-panel" id="cymraeg-entries-current" data-panel>
+                <div class="leif-bar-chart">
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">This school</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:72%;background:#003078;" title="GCSE Cymraeg: 72%"></div>
+                      <div class="leif-bar-chart__segment" style="width:18%;background:#f47738;" title="GCSE Cymraeg Second Language: 18%"></div>
+                      <div class="leif-bar-chart__segment" style="width:10%;background:#b1b4b6;" title="None: 10%"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">Wales</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:55%;background:#003078;"></div>
+                      <div class="leif-bar-chart__segment" style="width:28%;background:#f47738;"></div>
+                      <div class="leif-bar-chart__segment" style="width:17%;background:#b1b4b6;"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                </div>
+                <div class="leif-legend govuk-body-s">
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#003078;"></span>GCSE Cymraeg</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#f47738;"></span>GCSE Cymraeg Second Language</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#b1b4b6;"></span>None</span>
+                </div>
+              </div>
+              <div class="leif-tab-panel leif-tab-panel--hidden" id="cymraeg-entries-trend" data-panel>
+                <canvas id="chart-cymraeg-trend" height="160"></canvas>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {# --- Mathematics and Numeracy --- #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <details class="govuk-details leif-subject-details govuk-!-margin-bottom-0">
+          <summary class="govuk-details__summary leif-subject-summary">
+            <span class="govuk-details__summary-text govuk-heading-s govuk-!-margin-bottom-0">Mathematics and Numeracy</span>
+          </summary>
+          <div class="govuk-details__text leif-subject-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Percentage of year 11 learners entered for qualifications in mathematics and numeracy.</p>
+            <div class="leif-tab-group govuk-!-margin-bottom-4" data-leif-tabs>
+              <div class="leif-tabs" role="tablist">
+                <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="maths-entries-current">2030/31</button>
+                <button class="leif-tab" role="tab" aria-selected="false" data-tab="maths-entries-trend">Change over time</button>
+              </div>
+              <div class="leif-tab-panel" id="maths-entries-current" data-panel>
+                <div class="leif-bar-chart">
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">This school</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:74%;background:#003078;" title="GCSE Mathematics: 74%"></div>
+                      <div class="leif-bar-chart__segment" style="width:15%;background:#f47738;" title="GCSE Mathematics Numeracy: 15%"></div>
+                      <div class="leif-bar-chart__segment" style="width:8%;background:#942514;" title="Entry/Foundation: 8%"></div>
+                      <div class="leif-bar-chart__segment" style="width:3%;background:#b1b4b6;" title="None: 3%"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">Wales</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:70%;background:#003078;"></div>
+                      <div class="leif-bar-chart__segment" style="width:17%;background:#f47738;"></div>
+                      <div class="leif-bar-chart__segment" style="width:9%;background:#942514;"></div>
+                      <div class="leif-bar-chart__segment" style="width:4%;background:#b1b4b6;"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                </div>
+                <div class="leif-legend govuk-body-s">
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#003078;"></span>GCSE Mathematics</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#f47738;"></span>GCSE Mathematics Numeracy</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#942514;"></span>Entry/Foundation</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#b1b4b6;"></span>None</span>
+                </div>
+              </div>
+              <div class="leif-tab-panel leif-tab-panel--hidden" id="maths-entries-trend" data-panel>
+                <canvas id="chart-maths-trend" height="160"></canvas>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {# =========================================================
+     SECTION 2: QUALIFICATIONS TO ENCOURAGE BREADTH
+  ========================================================= #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Qualifications to encourage breadth</h2>
+      <p class="govuk-body-s govuk-!-margin-bottom-4"><em>Overview of entries across qualifications in science and other subjects</em></p>
+    </div>
+  </div>
+
+  {# --- Science --- #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <details class="govuk-details leif-subject-details govuk-!-margin-bottom-0" open>
+          <summary class="govuk-details__summary leif-subject-summary">
+            <span class="govuk-details__summary-text govuk-heading-s govuk-!-margin-bottom-0">Science</span>
+          </summary>
+          <div class="govuk-details__text leif-subject-body">
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Percentage of year 11 learners entered for science qualifications.</p>
+            <div class="leif-tab-group govuk-!-margin-bottom-4" data-leif-tabs>
+              <div class="leif-tabs" role="tablist">
+                <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="science-entries-current">2030/31</button>
+                <button class="leif-tab" role="tab" aria-selected="false" data-tab="science-entries-trend">Change over time</button>
+              </div>
+              <div class="leif-tab-panel" id="science-entries-current" data-panel>
+                <div class="leif-bar-chart">
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">This school</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:48%;background:#003078;" title="GCSE The Sciences (Double Award): 48%"></div>
+                      <div class="leif-bar-chart__segment" style="width:13%;background:#f47738;" title="All three separate sciences: 13%"></div>
+                      <div class="leif-bar-chart__segment" style="width:22%;background:#4c2c92;" title="GCSE Integrated Science (Single Award): 22%"></div>
+                      <div class="leif-bar-chart__segment" style="width:9%;background:#942514;" title="Entry/Foundation: 9%"></div>
+                      <div class="leif-bar-chart__segment" style="width:8%;background:#b1b4b6;" title="None: 8%"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                  <div class="leif-bar-chart__row">
+                    <span class="leif-bar-chart__label govuk-body-s">Wales</span>
+                    <div class="leif-bar-chart__track">
+                      <div class="leif-bar-chart__segment" style="width:44%;background:#003078;"></div>
+                      <div class="leif-bar-chart__segment" style="width:11%;background:#f47738;"></div>
+                      <div class="leif-bar-chart__segment" style="width:24%;background:#4c2c92;"></div>
+                      <div class="leif-bar-chart__segment" style="width:10%;background:#942514;"></div>
+                      <div class="leif-bar-chart__segment" style="width:11%;background:#b1b4b6;"></div>
+                    </div>
+                    <span class="leif-bar-chart__pct govuk-body-s">100%</span>
+                  </div>
+                </div>
+                <div class="leif-legend govuk-body-s">
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#003078;"></span>GCSE The Sciences (Double Award)</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#f47738;"></span>All three separate sciences</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#4c2c92;"></span>GCSE Integrated Science (Single Award)</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#942514;"></span>Entry/Foundation</span>
+                  <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#b1b4b6;"></span>None or fewer than three</span>
+                </div>
+              </div>
+              <div class="leif-tab-panel leif-tab-panel--hidden" id="science-entries-trend" data-panel>
+                <canvas id="chart-science-trend" height="160"></canvas>
+              </div>
+            </div>
+
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Outcomes by qualification</h3>
+            <p class="govuk-body-s govuk-!-margin-bottom-3">Select a qualification to see outcomes for year 11 learners.</p>
+
+            {{ govukTable({
+              head: [
+                { text: "Qualification" },
+                { text: "Entries" },
+                { text: "A*–B" },
+                { text: "A*–C" },
+                { text: "vs Wales (A*–C)" }
+              ],
+              rows: [
+                [
+                  { text: "GCSE The Sciences (Double Award)" },
+                  { text: "48%" },
+                  { text: "31%" },
+                  { text: "62%" },
+                  { html: "<strong class='govuk-tag govuk-tag--green'>3.1% above</strong>" }
+                ],
+                [
+                  { text: "GCSE Physics" },
+                  { text: "5%" },
+                  { text: "44%" },
+                  { text: "78%" },
+                  { html: "<strong class='govuk-tag govuk-tag--green'>1.4% above</strong>" }
+                ],
+                [
+                  { text: "GCSE Chemistry" },
+                  { text: "4%" },
+                  { text: "41%" },
+                  { text: "75%" },
+                  { html: "<strong class='govuk-tag govuk-tag--green'>2.2% above</strong>" }
+                ],
+                [
+                  { text: "GCSE Biology" },
+                  { text: "4%" },
+                  { text: "43%" },
+                  { text: "76%" },
+                  { html: "<strong class='govuk-tag govuk-tag--yellow'>0.3% above</strong>" }
+                ],
+                [
+                  { text: "GCSE Integrated Science (Single Award)" },
+                  { text: "22%" },
+                  { text: "18%" },
+                  { text: "41%" },
+                  { html: "<strong class='govuk-tag govuk-tag--red'>1.8% below</strong>" }
+                ]
+              ]
+            }) }}
+
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  {# =========================================================
+     SECTION 3: ATTENDANCE
+  ========================================================= #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Attendance</h2>
+      <p class="govuk-body-s govuk-!-margin-bottom-4"><em>Attendance levels for Year 10 and Year 11 learners</em></p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+
+        <div class="leif-attendance-controls govuk-!-margin-bottom-4">
+          {{ govukSelect({
+            id: "leif-year-group",
+            name: "leif-year-group",
+            label: { text: "Year group", classes: "govuk-body-s govuk-!-margin-bottom-1" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "year10", text: "Year 10", selected: true },
+              { value: "year11", text: "Year 11" }
+            ]
+          }) }}
+        </div>
+
+        <div class="leif-tab-group" data-leif-tabs>
+          <div class="leif-tabs" role="tablist">
+            <button class="leif-tab leif-tab--active" role="tab" aria-selected="true" data-tab="att-current">2030/31</button>
+            <button class="leif-tab" role="tab" aria-selected="false" data-tab="att-trend">Change over time</button>
+          </div>
+
+          <div class="leif-tab-panel" id="att-current" data-panel>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-3">Percentage of sessions attended</h3>
+            <div class="leif-att-chart">
+              <div class="leif-att-row">
+                <span class="leif-att-label govuk-body-s">Year group</span>
+                <div class="leif-att-track">
+                  <div class="leif-att-bar" style="width:97.6%;" title="97.6%"></div>
+                </div>
+                <span class="leif-att-value govuk-body-s">97.6%</span>
+              </div>
+              <div class="leif-att-row">
+                <span class="leif-att-label govuk-body-s">Whole school</span>
+                <div class="leif-att-track">
+                  <div class="leif-att-bar" style="width:98.3%;" title="98.3%"></div>
+                </div>
+                <span class="leif-att-value govuk-body-s">98.3%</span>
+              </div>
+              <div class="leif-att-row">
+                <span class="leif-att-label govuk-body-s">Contextualised comparator</span>
+                <div class="leif-att-track">
+                  <div class="leif-att-bar leif-att-bar--comparator" style="width:95.6%;" title="95.6%"></div>
+                </div>
+                <span class="leif-att-value govuk-body-s">95.6%</span>
+              </div>
+              <div class="leif-att-row">
+                <span class="leif-att-label govuk-body-s">Local Authority</span>
+                <div class="leif-att-track">
+                  <div class="leif-att-bar leif-att-bar--la" style="width:98.4%;" title="98.4%"></div>
+                </div>
+                <span class="leif-att-value govuk-body-s">98.4%</span>
+              </div>
+              <div class="leif-att-row">
+                <span class="leif-att-label govuk-body-s">Wales</span>
+                <div class="leif-att-track">
+                  <div class="leif-att-bar leif-att-bar--wales" style="width:97.5%;" title="97.5%"></div>
+                </div>
+                <span class="leif-att-value govuk-body-s">97.5%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="leif-tab-panel leif-tab-panel--hidden" id="att-trend" data-panel>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-3">Attendance over time</h3>
+            <canvas id="chart-attendance-trend" height="200"></canvas>
+            <div class="leif-legend govuk-body-s govuk-!-margin-top-2">
+              <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#003078;"></span>This school</span>
+              <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#f47738;"></span>Local Authority</span>
+              <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#4c2c92;"></span>Wales</span>
+              <span class="leif-legend__item"><span class="leif-legend__swatch" style="background:#942514;"></span>Contextualised comparator</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.leif-tab-group { border: 1px solid #b1b4b6; border-radius: 4px; overflow: hidden; }
+.leif-tabs { display: flex; border-bottom: 1px solid #b1b4b6; background: #f3f2f1; }
+.leif-tab { padding: 8px 16px; border: none; background: transparent; cursor: pointer; font-size: 16px; font-family: inherit; color: #1d70b8; border-right: 1px solid #b1b4b6; }
+.leif-tab:last-child { border-right: none; }
+.leif-tab--active { background: #ffffff; color: #0b0c0c; font-weight: 700; border-bottom: 3px solid #1d70b8; margin-bottom: -1px; }
+.leif-tab-panel { padding: 16px; }
+.leif-tab-panel--hidden { display: none; }
+.leif-subject-details { margin-bottom: 0; }
+.leif-subject-summary { padding: 12px 0; }
+.leif-subject-body { padding-top: 8px; }
+.leif-bar-chart { margin-bottom: 12px; }
+.leif-bar-chart__row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.leif-bar-chart__label { width: 100px; min-width: 100px; text-align: right; font-size: 14px; }
+.leif-bar-chart__track { flex: 1; height: 28px; display: flex; border-radius: 2px; overflow: hidden; background: #f3f2f1; }
+.leif-bar-chart__segment { height: 100%; transition: width 0.3s; }
+.leif-bar-chart__pct { width: 36px; font-size: 14px; }
+.leif-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.leif-legend__item { display: flex; align-items: center; gap: 6px; }
+.leif-legend__swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; }
+.leif-outcomes-controls { border-bottom: 1px solid #b1b4b6; padding-bottom: 12px; }
+.leif-outcomes-control-row { display: flex; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.leif-comparators { display: flex; gap: 12px; align-items: center; }
+.leif-comparator-toggle { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.leif-att-chart { margin-bottom: 8px; }
+.leif-att-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.leif-att-label { width: 200px; min-width: 200px; font-size: 14px; }
+.leif-att-track { flex: 1; height: 24px; background: #f3f2f1; border-radius: 2px; overflow: hidden; }
+.leif-att-bar { height: 100%; background: #003078; border-radius: 2px; }
+.leif-att-bar--comparator { background: #942514; }
+.leif-att-bar--la { background: #f47738; }
+.leif-att-bar--wales { background: #4c2c92; }
+.leif-att-value { width: 48px; font-size: 14px; font-weight: 700; }
+.leif-outcomes-chart { margin-top: 12px; }
+.leif-attendance-controls { display: flex; align-items: flex-end; gap: 16px; }
+</style>
+
+<script>
+(function () {
+  document.querySelectorAll('[data-leif-tabs]').forEach(function (group) {
+    var tabs = group.querySelectorAll('.leif-tab');
+    var panels = group.querySelectorAll('[data-panel]');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('leif-tab--active'); t.setAttribute('aria-selected', 'false'); });
+        panels.forEach(function (p) { p.classList.add('leif-tab-panel--hidden'); });
+        tab.classList.add('leif-tab--active');
+        tab.setAttribute('aria-selected', 'true');
+        var target = document.getElementById(tab.dataset.tab);
+        if (target) { target.classList.remove('leif-tab-panel--hidden'); }
+      });
+    });
+  });
+
+  var script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js';
+  script.onload = function () {
+    var years = ['2027/28', '2028/29', '2029/30', '2030/31'];
+    var lineDefaults = {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 13 }, boxWidth: 12 } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: false, ticks: { callback: function(v) { return v + '%'; } } }
+      }
+    };
+
+    var attEl = document.getElementById('chart-attendance-trend');
+    if (attEl) {
+      new Chart(attEl, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'This school', data: [95.1, 96.3, 97.0, 97.6], borderColor: '#003078', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Local Authority', data: [96.8, 97.2, 98.0, 98.4], borderColor: '#f47738', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Wales', data: [96.2, 96.8, 97.1, 97.5], borderColor: '#4c2c92', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Contextualised comparator', data: [91.2, 93.1, 94.8, 95.6], borderColor: '#942514', backgroundColor: 'transparent', tension: 0.3 }
+          ]
+        },
+        options: lineDefaults
+      });
+    }
+
+    var engEl = document.getElementById('chart-english-outcomes');
+    if (engEl) {
+      new Chart(engEl, {
+        type: 'bar',
+        data: {
+          labels: ['This school', 'Local Authority', 'Wales', 'Comparator'],
+          datasets: [{ label: 'A*A*–BB', data: [38, 34, 35, 33], backgroundColor: ['#003078', '#f47738', '#4c2c92', '#942514'] }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, max: 60, ticks: { callback: function(v) { return v + '%'; } } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    var engTrendEl = document.getElementById('chart-english-outcomes-trend');
+    if (engTrendEl) {
+      new Chart(engTrendEl, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'This school', data: [33, 35, 36, 38], borderColor: '#003078', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Local Authority', data: [31, 32, 33, 34], borderColor: '#f47738', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Wales', data: [32, 33, 34, 35], borderColor: '#4c2c92', backgroundColor: 'transparent', tension: 0.3 }
+          ]
+        },
+        options: lineDefaults
+      });
+    }
+  };
+  document.head.appendChild(script);
+})();
+</script>
+
+{% endblock %}
