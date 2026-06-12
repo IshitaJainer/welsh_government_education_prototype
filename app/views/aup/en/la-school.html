@@ -18,11 +18,7 @@
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Aberdare Community School</h1>
       <p class="govuk-body">Secondary · English medium · URN 6744106 · Rhondda Cynon Taf</p>
     </div>
-    <div class="govuk-grid-column-one-third">
-      <div class="aup-notify-banner">
-        <p class="govuk-body-s">Attendance below LA average for <strong>3 consecutive years</strong></p>
-      </div>
-    </div>
+
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
@@ -30,24 +26,17 @@
       <div class="aup-metric-grid">
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Attendance</p>
-          <p class="aup-metric-card__value govuk-heading-l" style="color:#d4351c">88.4%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↓ −0.9pp vs last year</p>
+          <p class="aup-metric-card__value govuk-heading-l">88.4%</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
           <p class="aup-metric-card__value govuk-heading-l">35.8%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">↑ above LA avg (31.2%)</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">FSM eligible</p>
           <p class="aup-metric-card__value govuk-heading-l">35.6%</p>
-          <p class="aup-metric-card__change govuk-body-s">FSM quartile group 5 (&gt;30%)</p>
         </div>
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">FSM quartile</p>
-          <p class="aup-metric-card__value govuk-heading-l">Q4</p>
-          <p class="aup-metric-card__change govuk-body-s">Within FSM benchmarking group</p>
-        </div>
+
       </div>
     </div>
   </div>
@@ -92,12 +81,12 @@
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group</h2>
         </div>
         {{ govukTable({
-          head: [ { text: "Group" }, { text: "Attendance" }, { text: "PA %" }, { text: "Status" } ],
+          head: [ { text: "Group" }, { text: "Attendance" }, { text: "PA %" } ],
           rows: [
-            [ { text: "All pupils" }, { text: "88.4%" }, { text: "35.8%" }, { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" } ],
-            [ { text: "FSM eligible" }, { text: "80.5%" }, { text: "48.2%" }, { html: "<strong class='govuk-tag govuk-tag--red'>Attention</strong>" } ],
-            [ { text: "Non-FSM" }, { text: "90.4%" }, { text: "28.1%" }, { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" } ],
-            [ { text: "ALN" }, { text: "81.2%" }, { text: "51.0%" }, { html: "<strong class='govuk-tag govuk-tag--red'>Attention</strong>" } ]
+            [ { text: "All pupils" }, { text: "88.4%" }, { text: "35.8%" }],
+            [ { text: "FSM eligible" }, { text: "80.5%" }, { text: "48.2%" } ],
+            [ { text: "Non-FSM" }, { text: "90.4%" }, { text: "28.1%" } ],
+            [ { text: "ALN" }, { text: "81.2%" }, { text: "51.0%" } ]
           ]
         }) }}
       </div>

@@ -51,25 +51,11 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
           <p class="aup-metric-card__value govuk-heading-l">93.4%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--up govuk-body-s">0.8% above last year</p>
         </div>
 
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
           <p class="aup-metric-card__value govuk-heading-l">18.2%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">1.4% above last year</p>
-        </div>
-
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">Learners meeting LEIF threshold</p>
-          <p class="aup-metric-card__value govuk-heading-l">71.3%</p>
-          <p class="aup-metric-card__change aup-metric-card__change--up govuk-body-s">3.1% above last year</p>
-        </div>
-
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">FSM gap (LEIF threshold)</p>
-          <p class="aup-metric-card__value govuk-heading-l">−18.6pp</p>
-          <p class="aup-metric-card__change aup-metric-card__change--down govuk-body-s">2.1% below last year</p>
         </div>
 
       </div>
@@ -128,121 +114,11 @@
       </div>
     </div>
 
-    {# Attainment chart #}
-    <div class="govuk-grid-column-one-half">
-      <div class="aup-chart-card">
-        <div class="aup-chart-card__header">
-          <h2 class="govuk-heading-s aup-chart-card__title">LEIF threshold — 5-year trend</h2>
-          <a href="/aup/en/attainment.html" class="govuk-link govuk-body-s">View full breakdown</a>
-        </div>
-        <p class="govuk-body-s aup-chart-card__desc">Year 11 learners meeting the 14-16 Learner Entitlement Indicators Framework threshold. School is above Wales average.</p>
 
-        <div class="aup-trend">
-          <div class="aup-trend__bars">
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">62%</span>
-              <div class="aup-trend__bar" style="height:62px"></div>
-              <span class="aup-trend__yr govuk-body-s">20-21</span>
-            </div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">64%</span>
-              <div class="aup-trend__bar" style="height:64px"></div>
-              <span class="aup-trend__yr govuk-body-s">21-22</span>
-            </div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">66%</span>
-              <div class="aup-trend__bar" style="height:66px"></div>
-              <span class="aup-trend__yr govuk-body-s">22-23</span>
-            </div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">68%</span>
-              <div class="aup-trend__bar" style="height:68px"></div>
-              <span class="aup-trend__yr govuk-body-s">23-24</span>
-            </div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">71%</span>
-              <div class="aup-trend__bar aup-trend__bar--current" style="height:71px"></div>
-              <span class="aup-trend__yr govuk-body-s">24-25</span>
-            </div>
-            <div class="aup-trend__divider"></div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">69%</span>
-              <div class="aup-trend__bar aup-trend__bar--national" style="height:69px"></div>
-              <span class="aup-trend__yr govuk-body-s">Wales</span>
-            </div>
-            <div class="aup-trend__bar-wrap">
-              <span class="aup-trend__pct govuk-body-s">70%</span>
-              <div class="aup-trend__bar aup-trend__bar--comparator" style="height:70px"></div>
-              <span class="aup-trend__yr govuk-body-s">Comp.</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
 
   </div>
 
-  {# Disaggregation table #}
-  <div class="govuk-grid-row govuk-!-margin-top-6">
-    <div class="govuk-grid-column-full">
-      <div class="aup-chart-card">
-        <div class="aup-chart-card__header">
-          <h2 class="govuk-heading-s aup-chart-card__title">Learner group breakdown - LEIF threshold</h2>
-          <a href="/aup/en/attainment.html" class="govuk-link govuk-body-s">Export data</a>
-        </div>
-        <p class="govuk-body-s aup-chart-card__desc">How different groups of Year 11 learners are performing against the LEIF threshold. Disaggregated data is only visible to authorised users.</p>
-
-        {{ govukTable({
-          head: [
-            { text: "Learner group" },
-            { text: "% meeting threshold" },
-            { text: "vs Wales average" },
-            { text: "vs comparator" },
-            { text: "Status" }
-          ],
-          rows: [
-            [
-              { text: "All learners" },
-              { text: "71.3%" },
-              { text: "2.3% above" },
-              { text: "1.2% above" },
-              { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
-            ],
-            [
-              { text: "Female" },
-              { text: "76.4%" },
-              { text: "3.1% above" },
-              { text: "2.4% above" },
-              { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
-            ],
-            [
-              { text: "Male" },
-              { text: "66.1%" },
-              { text: "1.4% above" },
-              { text: "0.3% above" },
-              { html: "<strong class='govuk-tag govuk-tag--yellow'>Monitor</strong>" }
-            ],
-            [
-              { text: "FSM eligible" },
-              { text: "52.7%" },
-              { text: "1.4% below" },
-              { text: "2.1% below" },
-              { html: "<strong class='govuk-tag govuk-tag--red'>Attention needed</strong>" }
-            ],
-            [
-              { text: "ALN" },
-              { text: "41.2%" },
-              { text: "0.8% above" },
-              { text: "1.1% above" },
-              { html: "<strong class='govuk-tag govuk-tag--green'>On track</strong>" }
-            ]
-          ]
-        }) }}
-
-      </div>
-    </div>
-  </div>
+  
 <div class="govuk-!-margin-top-6">
     {{ govukButton({
       text: "Download this report",

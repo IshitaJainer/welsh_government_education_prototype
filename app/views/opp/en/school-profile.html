@@ -320,41 +320,7 @@
 
       <div id="tab-attainment" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Attainment</h2>
-        <p class="govuk-body"><strong>71.3% of Year 11 learners</strong> met the 14-16 learning outcomes threshold in 2024-25, compared to 69% across Wales.</p>
-        <div class="opp-chart" aria-label="Bar chart showing learner outcomes">
-          <div class="opp-chart__row">
-            <span class="opp-chart__label govuk-body-s">This school</span>
-            <div class="opp-chart__track">
-              <div class="opp-chart__bar opp-chart__bar--school" style="width: 71.3%">
-                <span class="opp-chart__bar-value">71.3%</span>
-              </div>
-            </div>
-          </div>
-          <div class="opp-chart__row">
-            <span class="opp-chart__label govuk-body-s">Wales average</span>
-            <div class="opp-chart__track">
-              <div class="opp-chart__bar opp-chart__bar--national" style="width: 69%">
-                <span class="opp-chart__bar-value">69%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        {{ govukTable({
-          caption: "Points scores — 2022/23 to 2024/25",
-          head: [
-            { text: "Measure" }, { text: "2022-23" }, { text: "2023-24" }, { text: "2024-25" }
-          ],
-          rows: [
-            [ { text: "Capped 9" }, { text: "342.1" }, { text: "348.4" }, { text: "356.2" } ],
-            [ { text: "Literacy" }, { text: "41.2" }, { text: "42.1" }, { text: "43.4" } ],
-            [ { text: "Numeracy" }, { text: "38.4" }, { text: "39.1" }, { text: "40.2" } ],
-            [ { text: "Science" }, { text: "36.1" }, { text: "37.2" }, { text: "38.1" } ],
-            [ { text: "Welsh Bac" }, { text: "44.2" }, { text: "45.1" }, { text: "46.3" } ]
-          ]
-        }) }}
-        {{ govukInsetText({
-          text: "Points scores are published for 2022/23 to 2025/26 only. From 2027, attainment will be reported using the new 14-16 Learner Entitlement Indicators Framework (LEIF)."
-        }) }}
+        
       </div>
 
       <div id="tab-attendance" class="profile-tab-content" style="display:none;">
@@ -398,7 +364,6 @@
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Attendance rate</p>
           <p class="opp-summary-card__value govuk-heading-l">93.4%</p>
-          <p class="opp-summary-card__context govuk-body-s opp-summary-card__context--positive">1.6% above Wales average</p>
         </div>
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Budget per pupil</p>
