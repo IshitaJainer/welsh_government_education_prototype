@@ -1,0 +1,20 @@
+{% extends "aup/layout_aup.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "attainment" %}
+
+{% block pageTitle %}Attainment — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Attainment</h1>
+      {{ govukInsetText({
+        text: "Attainment data for this school is not yet available. This section is in development and will be updated in a future release."
+      }) }}
+    </div>
+  </div>
+</div>
+{% endblock %}

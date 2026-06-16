@@ -70,6 +70,10 @@
     display: flex;
     gap: govuk-spacing(2);
     align-items: flex-start;
+
+    @include govuk-media-query($until: tablet) {
+    flex-wrap: wrap;
+    }
   }
 
   &__input {
@@ -79,6 +83,10 @@
   &__button {
     margin-bottom: 0;
     white-space: nowrap;
+
+    @include govuk-media-query($until: tablet) {
+    width: 100%;
+    }
   }
 }
 

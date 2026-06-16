@@ -8596,12 +8596,22 @@ p + .govuk-heading-s,
   gap: 10px;
   align-items: flex-start;
 }
+@media (max-width: 40.0525em) {
+  .opp-search-form__row {
+    flex-wrap: wrap;
+  }
+}
 .opp-search-form__input {
   flex: 1;
 }
 .opp-search-form__button {
   margin-bottom: 0;
   white-space: nowrap;
+}
+@media (max-width: 40.0525em) {
+  .opp-search-form__button {
+    width: 100%;
+  }
 }
 
 .opp-summary-grid {

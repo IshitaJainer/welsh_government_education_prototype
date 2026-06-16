@@ -214,20 +214,21 @@
         <h3 class="govuk-heading-m">Free school meals (FSM) — 3 year average</h3>
         <p class="govuk-body">Pupils of statutory school age known to be eligible for free school meals.</p>
 
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
-          <canvas id="fsm-chart" height="80"></canvas>
-        </div>
 
         {{ govukTable({
-          head: [
-            { text: "Year" }, { text: "2019" }, { text: "2020" }, { text: "2021" },
-            { text: "2022" }, { text: "2023" }, { text: "2024" }, { text: "2025" }
-          ],
-          rows: [
-            [ { text: "This school" }, { text: "27.6%" }, { text: "27.7%" }, { text: "29.9%" }, { text: "30.9%" }, { text: "31.8%" }, { text: "30.3%" }, { text: "29.9%" } ],
-            [ { text: "Local authority" }, { text: "18.5%" }, { text: "19.1%" }, { text: "20.9%" }, { text: "21.4%" }, { text: "21.5%" }, { text: "20.2%" }, { text: "19.9%" } ],
-            [ { text: "Wales" }, { text: "16.5%" }, { text: "17.0%" }, { text: "18.7%" }, { text: "20.4%" }, { text: "21.2%" }, { text: "20.9%" }, { text: "20.1%" } ]
-          ]
+            head: [
+              { text: "Year" },
+              { text: "FSM eligibility" }
+            ],
+            rows: [
+              [ { text: "2019" }, { text: "27.6%" } ],
+              [ { text: "2020" }, { text: "27.7%" } ],
+              [ { text: "2021" }, { text: "29.9%" } ],
+              [ { text: "2022" }, { text: "30.9%" } ],
+              [ { text: "2023" }, { text: "31.8%" } ],
+              [ { text: "2024" }, { text: "30.3%" } ],
+              [ { text: "2025" }, { text: "29.9%" } ]
+            ]
         }) }}
 
         {{ govukInsetText({ text: "The coronavirus (COVID-19) pandemic may have impacted on the quality of this data and may have resulted in over recording in 2020 to 2022." }) }}
@@ -236,10 +237,6 @@
 
         <h3 class="govuk-heading-m">Additional learning needs (ALN) and special educational needs (SEN)</h3>
         <p class="govuk-body">Percentage of pupils subject to SEN or ALN provision by provision type.</p>
-
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
-          <canvas id="aln-chart" height="80"></canvas>
-        </div>
 
         {{ govukTable({
           head: [
@@ -264,19 +261,19 @@
         <h3 class="govuk-heading-m">English as an Additional Language (EAL)</h3>
         <p class="govuk-body">Percentage of pupils at stages A, B or C of English language acquisition.</p>
 
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
-          <canvas id="eal-chart" height="80"></canvas>
-        </div>
-
         {{ govukTable({
           head: [
-            { text: "Year" }, { text: "2019" }, { text: "2020" }, { text: "2021" },
-            { text: "2022" }, { text: "2023" }, { text: "2024" }, { text: "2025" }
+            { text: "Year" },
+            { text: "EAL pupils" }
           ],
           rows: [
-            [ { text: "This school" }, { text: "1.4%" }, { text: "1.2%" }, { text: "1.3%" }, { text: "0.9%" }, { text: "1.0%" }, { text: "1.7%" }, { text: "1.4%" } ],
-            [ { text: "Local authority" }, { text: "0.6%" }, { text: "0.6%" }, { text: "0.7%" }, { text: "0.6%" }, { text: "0.9%" }, { text: "1.3%" }, { text: "1.5%" } ],
-            [ { text: "Wales" }, { text: "2.9%" }, { text: "2.8%" }, { text: "2.9%" }, { text: "3.0%" }, { text: "3.4%" }, { text: "3.4%" }, { text: "3.7%" } ]
+            [ { text: "2019" }, { text: "1.4%" } ],
+            [ { text: "2020" }, { text: "1.2%" } ],
+            [ { text: "2021" }, { text: "1.3%" } ],
+            [ { text: "2022" }, { text: "0.9%" } ],
+            [ { text: "2023" }, { text: "1.0%" } ],
+            [ { text: "2024" }, { text: "1.7%" } ],
+            [ { text: "2025" }, { text: "1.4%" } ]
           ]
         }) }}
 
@@ -285,19 +282,19 @@
         <h3 class="govuk-heading-m">Black, Asian and Minority Ethnic pupils (BAME)</h3>
         <p class="govuk-body">Percentage of pupils who recorded their ethnic background as anything other than White British.</p>
 
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 20px;">
-          <canvas id="bame-chart" height="80"></canvas>
-        </div>
-
         {{ govukTable({
           head: [
-            { text: "Year" }, { text: "2019" }, { text: "2020" }, { text: "2021" },
-            { text: "2022" }, { text: "2023" }, { text: "2024" }, { text: "2025" }
+            { text: "Year" },
+            { text: "BAME pupils" }
           ],
           rows: [
-            [ { text: "This school" }, { text: "4.6%" }, { text: "5.0%" }, { text: "5.1%" }, { text: "5.8%" }, { text: "6.3%" }, { text: "6.7%" }, { text: "6.2%" } ],
-            [ { text: "Local authority" }, { text: "4.3%" }, { text: "4.6%" }, { text: "4.9%" }, { text: "5.6%" }, { text: "6.2%" }, { text: "7.1%" }, { text: "7.4%" } ],
-            [ { text: "Wales" }, { text: "10.3%" }, { text: "10.8%" }, { text: "11.4%" }, { text: "11.9%" }, { text: "12.9%" }, { text: "13.7%" }, { text: "14.4%" } ]
+            [ { text: "2019" }, { text: "4.6%" } ],
+            [ { text: "2020" }, { text: "5.0%" } ],
+            [ { text: "2021" }, { text: "5.1%" } ],
+            [ { text: "2022" }, { text: "5.8%" } ],
+            [ { text: "2023" }, { text: "6.3%" } ],
+            [ { text: "2024" }, { text: "6.7%" } ],
+            [ { text: "2025" }, { text: "6.2%" } ]
           ]
         }) }}
       </div>
@@ -320,7 +317,9 @@
 
       <div id="tab-attainment" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Attainment</h2>
-        
+        {{ govukInsetText({
+          text: "Attainment data for this school is not yet available. This section is in development and will be updated in a future release."
+        }) }}
       </div>
 
       <div id="tab-attendance" class="profile-tab-content" style="display:none;">
@@ -378,7 +377,6 @@
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Free school meal eligibility</p>
           <p class="opp-summary-card__value govuk-heading-l">22.4%</p>
-          <p class="opp-summary-card__context govuk-body-s">Wales average: 21.8%</p>
         </div>
       </div>
     </div>
@@ -386,63 +384,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  var years = ['2019', '2020', '2021', '2022', '2023', '2024', '2025'];
-  var chartDefaults = { borderWidth: 2, pointRadius: 3, tension: 0.1 };
 
-  new Chart(document.getElementById('fsm-chart'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: [
-        Object.assign({}, chartDefaults, { label: 'This school', data: [27.6,27.7,29.9,30.9,31.8,30.3,29.9], borderColor: '#003078', backgroundColor: '#003078' }),
-        Object.assign({}, chartDefaults, { label: 'Local authority', data: [18.5,19.1,20.9,21.4,21.5,20.2,19.9], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
-        Object.assign({}, chartDefaults, { label: 'Wales', data: [16.5,17.0,18.7,20.4,21.2,20.9,20.1], borderColor: '#d4351c', backgroundColor: '#d4351c' })
-      ]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } } } }
-  });
-
-  new Chart(document.getElementById('aln-chart'), {
-    type: 'bar',
-    data: {
-      labels: ['School Action', 'School Action Plus', 'Statement', 'School IDP', 'LA IDP'],
-      datasets: [
-        { label: '2023', data: [1.0, 1.3, 2.8, 0, 0], backgroundColor: '#003078' },
-        { label: '2024', data: [1.0, 1.0, 1.9, 1.2, 1.1], backgroundColor: '#5694ca' },
-        { label: '2025', data: [0, 0, 0, 1.5, 2.3], backgroundColor: '#d4351c' }
-      ]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } } } }
-  });
-
-  new Chart(document.getElementById('eal-chart'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: [
-        Object.assign({}, chartDefaults, { label: 'This school', data: [1.4,1.2,1.3,0.9,1.0,1.7,1.4], borderColor: '#003078', backgroundColor: '#003078' }),
-        Object.assign({}, chartDefaults, { label: 'Local authority', data: [0.6,0.6,0.7,0.6,0.9,1.3,1.5], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
-        Object.assign({}, chartDefaults, { label: 'Wales', data: [2.9,2.8,2.9,3.0,3.4,3.4,3.7], borderColor: '#d4351c', backgroundColor: '#d4351c' })
-      ]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } } } }
-  });
-
-  new Chart(document.getElementById('bame-chart'), {
-    type: 'line',
-    data: {
-      labels: years,
-      datasets: [
-        Object.assign({}, chartDefaults, { label: 'This school', data: [4.6,5.0,5.1,5.8,6.3,6.7,6.2], borderColor: '#003078', backgroundColor: '#003078' }),
-        Object.assign({}, chartDefaults, { label: 'Local authority', data: [4.3,4.6,4.9,5.6,6.2,7.1,7.4], borderColor: '#5694ca', backgroundColor: '#5694ca' }),
-        Object.assign({}, chartDefaults, { label: 'Wales', data: [10.3,10.8,11.4,11.9,12.9,13.7,14.4], borderColor: '#d4351c', backgroundColor: '#d4351c' })
-      ]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: false, grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } } } }
-  });
-</script>
 
 <script>
   document.querySelectorAll('.profile-tab-link').forEach(function(link) {
