@@ -78,6 +78,7 @@
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">3 years</button>
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="all" style="font-size: 14px; padding: 6px 12px;">All time</button>
         </div>
+        <p id="trend-single-year-msg" class="govuk-body-s" style="color:#505a5f; margin-bottom: 12px; display: none;">Showing data for 2024-25 only. Select 3 years or all time to see the trend.</p>
 
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
           <canvas id="att-trend-chart" height="80"></canvas>
@@ -113,7 +114,7 @@
             classes: "govuk-select--small",
             items: [
               { value: "fsm", text: "FSM eligibility", selected: true },
-              { value: "gender", text: "Gender" },
+              { value: "Sex", text: "Sex" },
               { value: "aln", text: "ALN" },
               { value: "eal", text: "EAL" }
             ]
@@ -139,9 +140,9 @@
     <div class="govuk-grid-column-full">
       <div class="aup-chart-card govuk-!-margin-bottom-6">
         <div class="aup-chart-card__header">
-          <h2 class="govuk-heading-s aup-chart-card__title">Actual vs modelled attendance (2024-25)</h2>
+          <h2 class="govuk-heading-s aup-chart-card__title">Attendance vs Contextual Comparator</h2>
         </div>
-        <p class="govuk-body-s">The modelled outcome shows the expected attendance for a school with a similar contextual profile. Use the filter to see how different learner groups compare to their modelled outcome.</p>
+        <p class="govuk-body-s">Details on what this chart shows to be added here</p>
 
         <div class="aup-filter-bar govuk-!-margin-bottom-4">
           <span class="govuk-body-s aup-filter-bar__label">Filter by:</span>
@@ -166,13 +167,13 @@
         </div>
 
         <ul style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;">
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Actual attendance</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px; opacity: 0.5;"></span> Modelled attendance</li>
+          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Attendance</li>
+          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px; opacity: 0.5;"></span> Contextual comparator</li>
         </ul>
 
         {{ govukDetails({
-          summaryText: "How is the modelled outcome calculated?",
-          text: "The modelled attendance is calculated based on schools with a similar contextual profile — taking into account FSM eligibility, school size and ALN proportion. It shows what attendance might be expected given your school's context. A result above the modelled outcome suggests strong performance relative to similar schools."
+          summaryText: "Contextual Comparator",
+          text: "Narrative on the calculation of the contextual comparator"
         }) }}
 
       </div>
@@ -180,7 +181,7 @@
   </div>
 
       {{ govukInsetText({
-        text: "Weekly attendance data is updated every Monday from the Hwb data feed. Term-level and annual data is published by Welsh Government at the end of each term."
+        text: "Narrative on where data comes from to be added here."
       }) }}
     </div>
   </div>
@@ -190,27 +191,27 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   var data = {
-    overall: {
-      '1':   { labels: ['Start of 2024–25', 'End of 2024–25'], school: [93.4, 93.4], la: [88.2, 88.2], wales: [91.8, 91.8] },
-      '3':   { labels: ['2022–23','2023–24','2024–25'], school: [91.2,92.1,93.4], la: [87.1,87.8,88.2], wales: [90.1,91.0,91.8] },
-      'all': { labels: ['2019–20','2020–21','2021–22','2022–23','2023–24','2024–25'], school: [94.1,88.2,90.4,91.2,92.1,93.4], la: [92.0,86.0,86.5,87.1,87.8,88.2], wales: [94.7,86.7,88.2,90.1,91.0,91.8] }
-    },
-    pa: {
-      '1':   { labels: ['Start of 2024–25', 'End of 2024–25'], school: [18.2, 18.2], la: [22.1, 22.1], wales: [17.1, 17.1] },
-      '3':   { labels: ['2022–23','2023–24','2024–25'], school: [20.1,19.4,18.2], la: [24.0,23.1,22.1], wales: [18.9,18.0,17.1] },
-      'all': { labels: ['2019–20','2020–21','2021–22','2022–23','2023–24','2024–25'], school: [14.2,22.1,21.4,20.1,19.4,18.2], la: [18.0,28.0,26.1,24.0,23.1,22.1], wales: [13.4,20.9,19.8,18.9,18.0,17.1] }
-    },
-    auth: {
-      '1':   { labels: ['Start of 2024–25', 'End of 2024–25'], school: [3.8, 3.8], la: [4.2, 4.2], wales: [4.1, 4.1] },
-      '3':   { labels: ['2022–23','2023–24','2024–25'], school: [4.1,4.0,3.8], la: [4.4,4.3,4.2], wales: [4.3,4.2,4.1] },
-      'all': { labels: ['2019–20','2020–21','2021–22','2022–23','2023–24','2024–25'], school: [4.8,3.2,3.9,4.1,4.0,3.8], la: [5.0,3.4,4.1,4.4,4.3,4.2], wales: [4.9,3.3,4.0,4.3,4.2,4.1] }
-    },
-    unauth: {
-      '1':   { labels: ['Start of 2024–25', 'End of 2024–25'], school: [2.8, 2.8], la: [3.1, 3.1], wales: [2.1, 2.1] },
-      '3':   { labels: ['2022–23','2023–24','2024–25'], school: [2.4,2.6,2.8], la: [2.8,3.0,3.1], wales: [1.8,2.0,2.1] },
-      'all': { labels: ['2019–20','2020–21','2021–22','2022–23','2023–24','2024–25'], school: [1.9,1.4,2.1,2.4,2.6,2.8], la: [2.2,1.6,2.4,2.8,3.0,3.1], wales: [1.4,1.1,1.6,1.8,2.0,2.1] }
-    }
-  };
+  overall: {
+    '1':   { labels: ['2025'], school: [93.4], la: [88.2], wales: [91.8] },
+    '3':   { labels: ['2023','2024','2025'], school: [91.2,92.1,93.4], la: [87.1,87.8,88.2], wales: [90.1,91.0,91.8] },
+    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [94.1,88.2,90.4,91.2,92.1,93.4], la: [92.0,86.0,86.5,87.1,87.8,88.2], wales: [94.7,86.7,88.2,90.1,91.0,91.8] }
+  },
+  pa: {
+    '1':   { labels: ['2025'], school: [18.2], la: [22.1], wales: [17.1] },
+    '3':   { labels: ['2023','2024','2025'], school: [20.1,19.4,18.2], la: [24.0,23.1,22.1], wales: [18.9,18.0,17.1] },
+    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [14.2,22.1,21.4,20.1,19.4,18.2], la: [18.0,28.0,26.1,24.0,23.1,22.1], wales: [13.4,20.9,19.8,18.9,18.0,17.1] }
+  },
+  auth: {
+    '1':   { labels: ['2025'], school: [3.8], la: [4.2], wales: [4.1] },
+    '3':   { labels: ['2023','2024','2025'], school: [4.1,4.0,3.8], la: [4.4,4.3,4.2], wales: [4.3,4.2,4.1] },
+    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [4.8,3.2,3.9,4.1,4.0,3.8], la: [5.0,3.4,4.1,4.4,4.3,4.2], wales: [4.9,3.3,4.0,4.3,4.2,4.1] }
+  },
+  unauth: {
+    '1':   { labels: ['2025'], school: [2.8], la: [3.1], wales: [2.1] },
+    '3':   { labels: ['2023','2024','2025'], school: [2.4,2.6,2.8], la: [2.8,3.0,3.1], wales: [1.8,2.0,2.1] },
+    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [1.9,1.4,2.1,2.4,2.6,2.8], la: [2.2,1.6,2.4,2.8,3.0,3.1], wales: [1.4,1.1,1.6,1.8,2.0,2.1] }
+  }
+};
 
   var ctx = document.getElementById('att-trend-chart').getContext('2d');
   var chart = new Chart(ctx, {
@@ -227,7 +228,7 @@
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { display: false } },
+        x: { grid: { display: false }, offset: true },
         y: { grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
       }
     }
@@ -243,6 +244,7 @@
     chart.data.datasets[1].data = d.la;
     chart.data.datasets[2].data = d.wales;
     chart.update();
+    document.getElementById('trend-single-year-msg').style.display = currentRange === '1' ? 'block' : 'none';
   }
 
   document.getElementById('att-measure').addEventListener('change', function() {
@@ -267,6 +269,7 @@
 
   document.querySelector('.att-time-btn--active').style.background = '#1B1E56';
   document.querySelector('.att-time-btn--active').style.color = 'white';
+   document.getElementById('trend-single-year-msg').style.display = 'block';
 </script>
 
 <script>
@@ -278,7 +281,7 @@
       unauth: [4.1, 1.9],
       pa: [28.4, 14.1]
     },
-    gender: {
+    Sex: {
       labels: ['Female', 'Male'],
       attendance: [94.1, 91.3],
       auth: [3.6, 4.1],
@@ -335,40 +338,23 @@
 </script>
 
 <script>
-  var modelledData = {
-    all:     { actual: 93.4, modelled: 91.2 },
-    fsm:     { actual: 84.2, modelled: 83.1 },
-    nonfsm:  { actual: 90.4, modelled: 92.8 },
-    aln:     { actual: 88.6, modelled: 87.4 },
-    female:  { actual: 94.1, modelled: 92.0 },
-    male:    { actual: 91.3, modelled: 90.4 }
+var modelledData = {
+    all:    { attendance: 93.4, comparator: 91.2 },
+    fsm:    { attendance: 84.2, comparator: 83.1 },
+    nonfsm: { attendance: 90.4, comparator: 92.8 },
+    aln:    { attendance: 88.6, comparator: 87.4 },
+    female: { attendance: 94.1, comparator: 92.0 },
+    male:   { attendance: 91.3, comparator: 90.4 }
   };
 
   var mctx = document.getElementById('modelled-chart').getContext('2d');
   var modelledChart = new Chart(mctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-      labels: ['Start of 2024–25', 'End of 2024–25'],
+      labels: ['2025'],
       datasets: [
-        {
-          label: 'Actual attendance',
-          data: [93.4, 93.4],
-          borderColor: '#003078',
-          backgroundColor: '#003078',
-          borderWidth: 2,
-          pointRadius: 4,
-          tension: 0.1
-        },
-        {
-          label: 'Modelled attendance',
-          data: [91.2, 91.2],
-          borderColor: '#5694ca',
-          backgroundColor: '#5694ca',
-          borderWidth: 2,
-          borderDash: [6, 3],
-          pointRadius: 4,
-          tension: 0.1
-        }
+        { label: 'Attendance', data: [93.4], backgroundColor: '#003078', barPercentage: 0.3, categoryPercentage: 0.5 },
+        { label: 'Contextual comparator', data: [91.2], backgroundColor: '#5694ca', barPercentage: 0.3, categoryPercentage: 0.5 }
       ]
     },
     options: {
@@ -397,10 +383,8 @@
 
   document.getElementById('modelled-filter').addEventListener('change', function() {
     var d = modelledData[this.value];
-    var label = this.options[this.selectedIndex].text;
-    modelledChart.data.labels = ['Start of 2024–25', 'End of 2024–25'];
-    modelledChart.data.datasets[0].data = [d.actual, d.actual];
-    modelledChart.data.datasets[1].data = [d.modelled, d.modelled];
+    modelledChart.data.datasets[0].data = [d.attendance];
+    modelledChart.data.datasets[1].data = [d.comparator];
     modelledChart.update();
   });
 </script>

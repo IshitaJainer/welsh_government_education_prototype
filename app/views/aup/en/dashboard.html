@@ -43,19 +43,27 @@
     </div>
   </div>
 
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <p class="govuk-body">This page shows a summary of your school's attendance and absence data for the selected academic year.</p>
+    </div>
+  </div>
+
   {# Summary metric cards #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
-      <div class="aup-metric-grid">
+      <div class="aup-metric-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 60%;">
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of possible sessions attended by all registered pupils.">Overall attendance</p>
           <p class="aup-metric-card__value govuk-heading-l">93.4%</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-0">0.8% above last year</p>
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of pupils who missed 20% or more of possible sessions.">Persistent absence</p>
           <p class="aup-metric-card__value govuk-heading-l">18.2%</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-0">1.2% below last year</p>
         </div>
 
       </div>
@@ -65,7 +73,7 @@
   <div class="govuk-grid-row">
 
     {# Attendance chart #}
-    <div class="govuk-grid-column-one-half">
+    <div class="govuk-grid-column-full">
       <div class="aup-chart-card">
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group</h2>
