@@ -67,12 +67,12 @@
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 entries-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
         </div>
 
-        <div style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <div id="entries-comparator-controls" style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
           <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-            <input type="checkbox" id="entries-show-la" checked style="margin: 0;"> LA
+            <input type="checkbox" id="entries-show-la" style="margin: 0;"> LA
           </label>
           <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-            <input type="checkbox" id="entries-show-wales" checked style="margin: 0;"> Wales
+            <input type="checkbox" id="entries-show-wales" style="margin: 0;"> Wales
           </label>
           <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
             <input type="checkbox" id="entries-show-ctx" checked style="margin: 0;"> Contextualised comparator
@@ -83,7 +83,7 @@
           <canvas id="entries-chart"></canvas>
         </div>
 
-        <ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
+        <ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
       </div>
     </div>
   </div>
@@ -145,16 +145,16 @@
             <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
               <canvas id="outcomes-chart"></canvas>
             </div>
-            <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
+            <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
           </div>
           <div style="min-width: 200px; padding-top: 20px;">
             <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div id="outcomes-comparator-controls" style="display: flex; flex-direction: column; gap: 10px;">
               <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="outcomes-show-la" checked style="margin: 0;"> LA
+                <input type="checkbox" id="outcomes-show-la" style="margin: 0;"> LA
               </label>
               <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="outcomes-show-wales" checked style="margin: 0;"> Wales
+                <input type="checkbox" id="outcomes-show-wales" style="margin: 0;"> Wales
               </label>
               <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
                 <input type="checkbox" id="outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
@@ -171,6 +171,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
+  Chart.defaults.font.family = 'Arial, sans-serif';
+  Chart.defaults.font.size = 14;
+
   var COLOURS = {
     school: '#003078',
     la:     '#5694ca',
@@ -184,6 +187,15 @@
     wales:  'Wales',
     ctx:    'Contextualised comparator'
   };
+
+  var COMP_GROUPS = {
+    'sex-comparison': { a: 'Female', b: 'Male' },
+    'fsm-comparison': { a: 'FSM eligible', b: 'Non-FSM eligible' }
+  };
+
+  var FONT = { family: 'Arial, sans-serif', size: 13 };
+
+  var COMPARATOR_IDS = ['la', 'wales', 'ctx'];
 
   function hexToRgba(hex, alpha) {
     var r = parseInt(hex.slice(1,3),16);
@@ -206,59 +218,182 @@
     return Math.min(200, Math.max(50, barCount * 24));
   }
 
+  function isComparisonBreakdown(breakdown) {
+    return breakdown === 'sex-comparison' || breakdown === 'fsm-comparison';
+  }
+
+  // ─── COMPARATOR SELECTION ─────────────────────────────────────────────────
+  // In comparison+time mode: radio behaviour — this school always on, one other max.
+  // In all other modes: normal checkbox behaviour, up to 3 comparators.
+
+  function enforceRadioBehaviour(prefix, changedId) {
+    // Uncheck the other two comparator options
+    COMPARATOR_IDS.forEach(function(key) {
+      var id = prefix + '-show-' + key;
+      if (id !== changedId) {
+        document.getElementById(id).checked = false;
+      }
+    });
+  }
+
+  function getActiveComparators(prefix) {
+    var c = ['school'];
+    COMPARATOR_IDS.forEach(function(key) {
+      if (document.getElementById(prefix + '-show-' + key).checked) c.push(key);
+    });
+    return c;
+  }
+
+  // ─── LINE CHART FOR COMPARISON+TIME ──────────────────────────────────────
+  // Renders up to 4 lines: group A and group B for each of up to 2 comparators.
+  // Fills the gap between group A and group B lines for each comparator.
+
+  function buildCompTimeLineChart(canvas, d, comparators, breakdown) {
+    var groups = COMP_GROUPS[breakdown];
+    canvas.height = 120;
+
+    // Build datasets. For each comparator, emit line A then line B.
+    // Fill is applied from line B up to line A using Chart.js fill target index.
+    var datasets = [];
+
+    comparators.forEach(function(key) {
+      var colour = COLOURS[key];
+      var aDataset = {
+        label: LABELS[key] + ' — ' + groups.a,
+        data: d[key].a,
+        borderColor: colour,
+        backgroundColor: hexToRgba(colour, 0.15),
+        borderWidth: 2,
+        pointRadius: 4,
+        tension: 0.1,
+        fill: false  // will be updated below once we know index of B
+      };
+      var bDataset = {
+        label: LABELS[key] + ' — ' + groups.b,
+        data: d[key].b,
+        borderColor: colour,
+        backgroundColor: hexToRgba(colour, 0.15),
+        borderWidth: 2,
+        borderDash: [5, 4],
+        pointRadius: 4,
+        tension: 0.1,
+        fill: false
+      };
+      datasets.push(aDataset);
+      datasets.push(bDataset);
+    });
+
+    // Now set fill: A fills to B (the next dataset index)
+    // datasets[0] = comp0 A, datasets[1] = comp0 B
+    // datasets[2] = comp1 A, datasets[3] = comp1 B
+    for (var i = 0; i < datasets.length; i += 2) {
+      datasets[i].fill = {
+        target: i + 1,
+        above: hexToRgba(COLOURS[comparators[Math.floor(i/2)]], 0.12),
+        below: hexToRgba(COLOURS[comparators[Math.floor(i/2)]], 0.12)
+      };
+    }
+
+    var allValues = [];
+    datasets.forEach(function(ds) { ds.data.forEach(function(v){ allValues.push(v); }); });
+    var yAxis = dynamicYAxis(datasets.map(function(ds){ return ds.data; }));
+
+    return new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: { labels: d.labels, datasets: datasets },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function(c){ return c.dataset.label + ': ' + c.parsed.y + '%'; } } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: FONT } },
+          y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v){ return v + '%'; } } }
+        }
+      }
+    });
+  }
+
+  function renderLegend(elId, comparators, isTime, isEntries, breakdown) {
+    var el = document.getElementById(elId);
+    el.innerHTML = '';
+    var isComp = isComparisonBreakdown(breakdown);
+
+    if (isTime && isComp) {
+      var groups = COMP_GROUPS[breakdown];
+      comparators.forEach(function(key) {
+        var colour = COLOURS[key];
+        // Solid line swatch for group A
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="display:inline-block;width:20px;height:3px;background:' + colour + ';"></span>'
+          + ' ' + LABELS[key] + ' — ' + groups.a + '</li>';
+        // Dashed line swatch for group B
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="display:inline-block;width:20px;height:3px;background:repeating-linear-gradient(90deg,' + colour + ' 0,' + colour + ' 5px,transparent 5px,transparent 9px);"></span>'
+          + ' ' + LABELS[key] + ' — ' + groups.b + '</li>';
+      });
+    } else if (!isTime && isEntries && !isComp) {
+      comparators.forEach(function(key) {
+        var colour = COLOURS[key];
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+' — entered</li>';
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+hexToRgba(colour,0.5)+';border-radius:2px;"></span> '+LABELS[key]+' — not entered</li>';
+      });
+    } else {
+      comparators.forEach(function(key) {
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+COLOURS[key]+';border-radius:2px;"></span> '+LABELS[key]+'</li>';
+      });
+    }
+  }
+
   // ─── ENTRIES DATA ─────────────────────────────────────────────────────────
 
   var entriesData = {
-    all:             { '1': { school: 78, la: 55, wales: 62, ctx: 68 }, '3': { labels: ['2023','2024','2025'], school: [72,75,78], la: [48,52,55], wales: [57,60,62], ctx: [62,65,68] } },
-    female:          { '1': { school: 82, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [76,79,82], la: [53,57,60], wales: [61,64,66], ctx: [66,69,72] } },
-    male:            { '1': { school: 74, la: 50, wales: 58, ctx: 64 }, '3': { labels: ['2023','2024','2025'], school: [68,71,74], la: [43,47,50], wales: [53,56,58], ctx: [58,61,64] } },
-    'sex-comparison':{ '1': { labels: ['Female','Male'], school: [82,74], la: [60,50], wales: [66,58], ctx: [72,64] }, '3': { labels: ['2023','2024','2025'], school: [79,82,85], la: [54,57,60], wales: [62,64,66], ctx: [67,70,72] } },
-    fsm:             { '1': { school: 61, la: 40, wales: 46, ctx: 52 }, '3': { labels: ['2023','2024','2025'], school: [54,57,61], la: [34,37,40], wales: [40,43,46], ctx: [45,49,52] } },
-    nonfsm:          { '1': { school: 85, la: 63, wales: 70, ctx: 76 }, '3': { labels: ['2023','2024','2025'], school: [79,82,85], la: [56,60,63], wales: [64,67,70], ctx: [70,73,76] } },
-    'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [61,85], la: [40,63], wales: [46,70], ctx: [52,76] }, '3': { labels: ['2023','2024','2025'], school: [55,58,61], la: [34,37,40], wales: [40,43,46], ctx: [46,49,52] } }
+    all:    { '1': { school: 78, la: 55, wales: 62, ctx: 68 }, '3': { labels: ['2023','2024','2025'], school: [72,75,78], la: [48,52,55], wales: [57,60,62], ctx: [62,65,68] } },
+    female: { '1': { school: 82, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [76,79,82], la: [53,57,60], wales: [61,64,66], ctx: [66,69,72] } },
+    male:   { '1': { school: 74, la: 50, wales: 58, ctx: 64 }, '3': { labels: ['2023','2024','2025'], school: [68,71,74], la: [43,47,50], wales: [53,56,58], ctx: [58,61,64] } },
+    fsm:    { '1': { school: 61, la: 40, wales: 46, ctx: 52 }, '3': { labels: ['2023','2024','2025'], school: [54,57,61], la: [34,37,40], wales: [40,43,46], ctx: [45,49,52] } },
+    nonfsm: { '1': { school: 85, la: 63, wales: 70, ctx: 76 }, '3': { labels: ['2023','2024','2025'], school: [79,82,85], la: [56,60,63], wales: [64,67,70], ctx: [70,73,76] } },
+    'sex-comparison': {
+      '1': { labels: ['Female','Male'], school: [82,74], la: [60,50], wales: [66,58], ctx: [72,64] },
+      '3': {
+        labels: ['2023','2024','2025'],
+        school: { a: [53,54,56], b: [47,46,44] },
+        la:     { a: [51,52,53], b: [49,48,47] },
+        wales:  { a: [52,53,53], b: [48,47,47] },
+        ctx:    { a: [53,54,54], b: [47,46,46] }
+      }
+    },
+    'fsm-comparison': {
+      '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [61,85], la: [40,63], wales: [46,70], ctx: [52,76] },
+      '3': {
+        labels: ['2023','2024','2025'],
+        school: { a: [28,29,30], b: [72,71,70] },
+        la:     { a: [31,32,33], b: [69,68,67] },
+        wales:  { a: [30,31,31], b: [70,69,69] },
+        ctx:    { a: [29,30,31], b: [71,70,69] }
+      }
+    }
   };
 
   var entriesRange = '1';
   var entriesBreakdown = 'all';
   var entriesChartInstance = null;
 
-  function getActiveComparators(prefix) {
-    var c = ['school'];
-    if (document.getElementById(prefix+'-show-la').checked)    c.push('la');
-    if (document.getElementById(prefix+'-show-wales').checked) c.push('wales');
-    if (document.getElementById(prefix+'-show-ctx').checked)   c.push('ctx');
-    return c;
-  }
-
-  function renderLegend(elId, comparators, isTime, isEntries) {
-    var el = document.getElementById(elId);
-    el.innerHTML = '';
-    comparators.forEach(function(key) {
-      var colour = COLOURS[key];
-      if (isTime || !isEntries) {
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+'</li>';
-      } else {
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+' — entered</li>';
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+hexToRgba(colour,0.5)+';border-radius:2px;"></span> '+LABELS[key]+' — not entered</li>';
-      }
-    });
-  }
-
-  function isComparisonBreakdown(breakdown) {
-    return breakdown === 'sex-comparison' || breakdown === 'fsm-comparison';
-  }
-
   function buildEntriesChart() {
     var d = entriesData[entriesBreakdown][entriesRange];
     var isTime = entriesRange === '3';
+    var isComp = isComparisonBreakdown(entriesBreakdown);
     var comparators = getActiveComparators('entries');
-    var isComparison = isComparisonBreakdown(entriesBreakdown);
 
     if (entriesChartInstance) { entriesChartInstance.destroy(); }
     var canvas = document.getElementById('entries-chart');
     var ctx = canvas.getContext('2d');
 
-    if (isTime) {
+    if (isTime && isComp) {
+      entriesChartInstance = buildCompTimeLineChart(canvas, d, comparators, entriesBreakdown);
+
+    } else if (isTime && !isComp) {
       canvas.height = 80;
       var yAxis = dynamicYAxis(comparators.map(function(k){ return d[k]; }));
       entriesChartInstance = new Chart(ctx, {
@@ -273,73 +408,107 @@
           responsive: true,
           plugins: { legend: { display: false } },
           scales: {
-            x: { grid: { display: false } },
-            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+            x: { grid: { display: false }, ticks: { font: FONT } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
+
+    } else if (!isTime && !isComp) {
+      canvas.height = canvasHeight(comparators.length);
+      var labels = comparators.map(function(k){ return LABELS[k]; });
+      var entered = comparators.map(function(k){ return d[k]; });
+      var notEntered = entered.map(function(v){ return 100-v; });
+      entriesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Entered',     data: entered,    backgroundColor: comparators.map(function(k){ return COLOURS[k]; }),              barThickness: 24, stack: 'stack' },
+            { label: 'Not entered', data: notEntered, backgroundColor: comparators.map(function(k){ return hexToRgba(COLOURS[k],0.5); }), barThickness: 24, stack: 'stack' }
+          ]
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          scales: {
+            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
+            y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
+          }
+        }
+      });
+
     } else {
-      if (!isComparison) {
-        canvas.height = canvasHeight(comparators.length);
-        var labels = comparators.map(function(k){ return LABELS[k]; });
-        var entered = comparators.map(function(k){ return d[k]; });
-        var notEntered = entered.map(function(v){ return 100-v; });
-        entriesChartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [
-              { label: 'Entered',     data: entered,    backgroundColor: comparators.map(function(k){ return COLOURS[k]; }),              barThickness: 24, stack: 'stack' },
-              { label: 'Not entered', data: notEntered, backgroundColor: comparators.map(function(k){ return hexToRgba(COLOURS[k],0.5); }), barThickness: 24, stack: 'stack' }
-            ]
-          },
-          options: {
-            indexAxis: 'y', responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
-            scales: {
-              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-              y: { stacked: true, grid: { display: false } }
-            }
+      var numBars = d.labels.length * comparators.length;
+      canvas.height = canvasHeight(numBars);
+      var datasets = [];
+      comparators.forEach(function(key) {
+        var colour = COLOURS[key];
+        var ent = d[key];
+        var notEnt = ent.map(function(v){ return 100-v; });
+        datasets.push({ label: LABELS[key]+' — Entered',     data: ent,    backgroundColor: colour,                 barThickness: 24, stack: key });
+        datasets.push({ label: LABELS[key]+' — Not entered', data: notEnt, backgroundColor: hexToRgba(colour,0.5), barThickness: 24, stack: key });
+      });
+      entriesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: d.labels, datasets: datasets },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          scales: {
+            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
+            y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
           }
-        });
-      } else {
-        var numBars = d.labels.length * comparators.length;
-        canvas.height = canvasHeight(numBars);
-        var datasets = [];
-        comparators.forEach(function(key) {
-          var colour = COLOURS[key];
-          var ent = d[key];
-          var notEnt = ent.map(function(v){ return 100-v; });
-          datasets.push({ label: LABELS[key]+' — Entered',     data: ent,    backgroundColor: colour,                 barThickness: 24, stack: key });
-          datasets.push({ label: LABELS[key]+' — Not entered', data: notEnt, backgroundColor: hexToRgba(colour,0.5), barThickness: 24, stack: key });
-        });
-        entriesChartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: { labels: d.labels, datasets: datasets },
-          options: {
-            indexAxis: 'y', responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
-            scales: {
-              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-              y: { stacked: true, grid: { display: false } }
-            }
-          }
-        });
-      }
+        }
+      });
     }
 
-    renderLegend('entries-legend', comparators, isTime, true);
+    renderLegend('entries-legend', comparators, isTime, true, entriesBreakdown);
   }
 
-  document.getElementById('entries-breakdown').addEventListener('change', function() { entriesBreakdown = this.value; buildEntriesChart(); });
+  function setupComparatorControls(prefix, buildFn, getCurrentBreakdown, getCurrentRange) {
+    COMPARATOR_IDS.forEach(function(key) {
+      var el = document.getElementById(prefix + '-show-' + key);
+      el.addEventListener('change', function() {
+        var isComp = isComparisonBreakdown(getCurrentBreakdown());
+        var isTime = getCurrentRange() === '3';
+        if (isComp && isTime && this.checked) {
+          enforceRadioBehaviour(prefix, prefix + '-show-' + key);
+        }
+        buildFn();
+      });
+    });
+  }
+
+  document.getElementById('entries-breakdown').addEventListener('change', function() {
+    entriesBreakdown = this.value;
+    // When switching to comparison+time, ensure only one comparator is active
+    if (isComparisonBreakdown(entriesBreakdown) && entriesRange === '3') {
+      ensureSingleComparator('entries');
+    }
+    buildEntriesChart();
+  });
+
   document.querySelectorAll('.entries-time-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.entries-time-btn').forEach(function(b){ b.classList.remove('entries-time-btn--active'); b.style.background=''; b.style.color=''; });
-      this.classList.add('entries-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
-      entriesRange = this.getAttribute('data-range'); buildEntriesChart();
+      document.querySelectorAll('.entries-time-btn').forEach(function(b){
+        b.classList.remove('entries-time-btn--active'); b.style.background=''; b.style.color='';
+      });
+      this.classList.add('entries-time-btn--active');
+      this.style.background='#1B1E56'; this.style.color='white';
+      entriesRange = this.getAttribute('data-range');
+      if (isComparisonBreakdown(entriesBreakdown) && entriesRange === '3') {
+        ensureSingleComparator('entries');
+      }
+      buildEntriesChart();
     });
   });
-  ['entries-show-la','entries-show-wales','entries-show-ctx'].forEach(function(id){ document.getElementById(id).addEventListener('change', buildEntriesChart); });
+
+  setupComparatorControls('entries', buildEntriesChart,
+    function(){ return entriesBreakdown; },
+    function(){ return entriesRange; }
+  );
+
   document.querySelector('.entries-time-btn--active').style.background='#1B1E56';
   document.querySelector('.entries-time-btn--active').style.color='white';
   buildEntriesChart();
@@ -348,76 +517,124 @@
 
   var outcomesData = {
     'astar': {
-      all:             { '1': { school: 12, la: 5,  wales: 7,  ctx: 9  }, '3': { labels: ['2023','2024','2025'], school: [8,10,12],  la: [3,4,5],   wales: [5,6,7],   ctx: [6,8,9]   } },
-      female:          { '1': { school: 15, la: 7,  wales: 9,  ctx: 11 }, '3': { labels: ['2023','2024','2025'], school: [10,13,15], la: [4,6,7],   wales: [6,8,9],   ctx: [8,10,11] } },
-      male:            { '1': { school: 9,  la: 4,  wales: 5,  ctx: 7  }, '3': { labels: ['2023','2024','2025'], school: [6,7,9],   la: [2,3,4],   wales: [3,4,5],   ctx: [4,6,7]   } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [15,9],  la: [7,4],  wales: [9,5],  ctx: [11,7]  }, '3': { labels: ['2023','2024','2025'], school: [12,14,15], la: [5,6,7],   wales: [7,8,9],   ctx: [9,10,11] } },
-      fsm:             { '1': { school: 5,  la: 2,  wales: 3,  ctx: 4  }, '3': { labels: ['2023','2024','2025'], school: [3,4,5],   la: [1,2,2],   wales: [2,3,3],   ctx: [3,4,4]   } },
-      nonfsm:          { '1': { school: 16, la: 8,  wales: 10, ctx: 12 }, '3': { labels: ['2023','2024','2025'], school: [11,14,16], la: [5,7,8],  wales: [7,9,10],  ctx: [9,11,12] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [5,16],  la: [2,8],  wales: [3,10], ctx: [4,12] }, '3': { labels: ['2023','2024','2025'], school: [3,4,5],   la: [1,2,2],   wales: [2,3,3],   ctx: [3,4,4]   } }
+      all:    { '1': { school: 12, la: 5,  wales: 7,  ctx: 9  }, '3': { labels: ['2023','2024','2025'], school: [8,10,12],  la: [3,4,5],   wales: [5,6,7],   ctx: [6,8,9]   } },
+      female: { '1': { school: 15, la: 7,  wales: 9,  ctx: 11 }, '3': { labels: ['2023','2024','2025'], school: [10,13,15], la: [4,6,7],   wales: [6,8,9],   ctx: [8,10,11] } },
+      male:   { '1': { school: 9,  la: 4,  wales: 5,  ctx: 7  }, '3': { labels: ['2023','2024','2025'], school: [6,7,9],   la: [2,3,4],   wales: [3,4,5],   ctx: [4,6,7]   } },
+      fsm:    { '1': { school: 5,  la: 2,  wales: 3,  ctx: 4  }, '3': { labels: ['2023','2024','2025'], school: [3,4,5],   la: [1,2,2],   wales: [2,3,3],   ctx: [3,4,4]   } },
+      nonfsm: { '1': { school: 16, la: 8,  wales: 10, ctx: 12 }, '3': { labels: ['2023','2024','2025'], school: [11,14,16], la: [5,7,8],  wales: [7,9,10],  ctx: [9,11,12] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [15,9], la: [7,4], wales: [9,5], ctx: [11,7] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [56,57,58], b: [44,43,42] }, la: { a: [53,54,55], b: [47,46,45] }, wales: { a: [55,56,56], b: [45,44,44] }, ctx: { a: [54,55,56], b: [46,45,44] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [5,16], la: [2,8], wales: [3,10], ctx: [4,12] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [27,28,29], b: [73,72,71] }, la: { a: [30,31,32], b: [70,69,68] }, wales: { a: [29,30,30], b: [71,70,70] }, ctx: { a: [28,29,30], b: [72,71,70] } }
+      }
     },
     'astar-a': {
-      all:             { '1': { school: 28, la: 14, wales: 18, ctx: 22 }, '3': { labels: ['2023','2024','2025'], school: [22,25,28], la: [10,12,14], wales: [14,16,18], ctx: [17,20,22] } },
-      female:          { '1': { school: 33, la: 18, wales: 22, ctx: 26 }, '3': { labels: ['2023','2024','2025'], school: [27,30,33], la: [13,16,18], wales: [18,20,22], ctx: [21,24,26] } },
-      male:            { '1': { school: 23, la: 11, wales: 14, ctx: 18 }, '3': { labels: ['2023','2024','2025'], school: [17,20,23], la: [7,9,11],  wales: [10,12,14], ctx: [13,16,18] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [33,23], la: [18,11], wales: [22,14], ctx: [26,18] }, '3': { labels: ['2023','2024','2025'], school: [27,30,33], la: [13,16,18], wales: [17,20,22], ctx: [21,24,26] } },
-      fsm:             { '1': { school: 13, la: 6,  wales: 8,  ctx: 10 }, '3': { labels: ['2023','2024','2025'], school: [9,11,13],  la: [4,5,6],   wales: [5,7,8],   ctx: [7,9,10]  } },
-      nonfsm:          { '1': { school: 36, la: 19, wales: 24, ctx: 29 }, '3': { labels: ['2023','2024','2025'], school: [28,32,36], la: [13,16,19], wales: [18,21,24], ctx: [22,26,29] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [13,36], la: [6,19], wales: [8,24], ctx: [10,29] }, '3': { labels: ['2023','2024','2025'], school: [9,11,13], la: [4,5,6],   wales: [5,7,8],   ctx: [7,9,10]  } }
+      all:    { '1': { school: 28, la: 14, wales: 18, ctx: 22 }, '3': { labels: ['2023','2024','2025'], school: [22,25,28], la: [10,12,14], wales: [14,16,18], ctx: [17,20,22] } },
+      female: { '1': { school: 33, la: 18, wales: 22, ctx: 26 }, '3': { labels: ['2023','2024','2025'], school: [27,30,33], la: [13,16,18], wales: [18,20,22], ctx: [21,24,26] } },
+      male:   { '1': { school: 23, la: 11, wales: 14, ctx: 18 }, '3': { labels: ['2023','2024','2025'], school: [17,20,23], la: [7,9,11],  wales: [10,12,14], ctx: [13,16,18] } },
+      fsm:    { '1': { school: 13, la: 6,  wales: 8,  ctx: 10 }, '3': { labels: ['2023','2024','2025'], school: [9,11,13],  la: [4,5,6],   wales: [5,7,8],   ctx: [7,9,10]  } },
+      nonfsm: { '1': { school: 36, la: 19, wales: 24, ctx: 29 }, '3': { labels: ['2023','2024','2025'], school: [28,32,36], la: [13,16,19], wales: [18,21,24], ctx: [22,26,29] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [33,23], la: [18,11], wales: [22,14], ctx: [26,18] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [57,58,59], b: [43,42,41] }, la: { a: [54,55,56], b: [46,45,44] }, wales: { a: [56,57,57], b: [44,43,43] }, ctx: { a: [55,56,57], b: [45,44,43] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [13,36], la: [6,19], wales: [8,24], ctx: [10,29] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [26,27,28], b: [74,73,72] }, la: { a: [29,30,31], b: [71,70,69] }, wales: { a: [28,29,29], b: [72,71,71] }, ctx: { a: [27,28,29], b: [73,72,71] } }
+      }
     },
     'astar-b': {
-      all:             { '1': { school: 46, la: 28, wales: 34, ctx: 39 }, '3': { labels: ['2023','2024','2025'], school: [38,42,46], la: [22,25,28], wales: [28,31,34], ctx: [32,36,39] } },
-      female:          { '1': { school: 52, la: 33, wales: 39, ctx: 44 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,33], wales: [33,36,39], ctx: [37,41,44] } },
-      male:            { '1': { school: 40, la: 23, wales: 29, ctx: 34 }, '3': { labels: ['2023','2024','2025'], school: [32,36,40], la: [17,20,23], wales: [23,26,29], ctx: [27,31,34] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [52,40], la: [33,23], wales: [39,29], ctx: [44,34] }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,33], wales: [31,35,39], ctx: [36,40,44] } },
-      fsm:             { '1': { school: 26, la: 14, wales: 18, ctx: 21 }, '3': { labels: ['2023','2024','2025'], school: [20,23,26], la: [10,12,14], wales: [13,16,18], ctx: [16,19,21] } },
-      nonfsm:          { '1': { school: 57, la: 37, wales: 44, ctx: 50 }, '3': { labels: ['2023','2024','2025'], school: [49,53,57], la: [29,33,37], wales: [36,40,44], ctx: [42,46,50] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [26,57], la: [14,37], wales: [18,44], ctx: [21,50] }, '3': { labels: ['2023','2024','2025'], school: [20,23,26], la: [10,12,14], wales: [13,16,18], ctx: [16,19,21] } }
+      all:    { '1': { school: 46, la: 28, wales: 34, ctx: 39 }, '3': { labels: ['2023','2024','2025'], school: [38,42,46], la: [22,25,28], wales: [28,31,34], ctx: [32,36,39] } },
+      female: { '1': { school: 52, la: 33, wales: 39, ctx: 44 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,33], wales: [33,36,39], ctx: [37,41,44] } },
+      male:   { '1': { school: 23, la: 11, wales: 14, ctx: 18 }, '3': { labels: ['2023','2024','2025'], school: [17,20,23], la: [7,9,11],  wales: [10,12,14], ctx: [13,16,18] } },
+      fsm:    { '1': { school: 26, la: 14, wales: 18, ctx: 21 }, '3': { labels: ['2023','2024','2025'], school: [20,23,26], la: [10,12,14], wales: [13,16,18], ctx: [16,19,21] } },
+      nonfsm: { '1': { school: 57, la: 37, wales: 44, ctx: 50 }, '3': { labels: ['2023','2024','2025'], school: [49,53,57], la: [29,33,37], wales: [36,40,44], ctx: [42,46,50] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [52,40], la: [33,23], wales: [39,29], ctx: [44,34] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [56,57,58], b: [44,43,42] }, la: { a: [53,54,55], b: [47,46,45] }, wales: { a: [55,56,56], b: [45,44,44] }, ctx: { a: [54,55,56], b: [46,45,44] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [26,57], la: [14,37], wales: [18,44], ctx: [21,50] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [28,29,30], b: [72,71,70] }, la: { a: [31,32,33], b: [69,68,67] }, wales: { a: [30,31,31], b: [70,69,69] }, ctx: { a: [29,30,31], b: [71,70,69] } }
+      }
     },
     'astar-c': {
-      all:             { '1': { school: 62, la: 40, wales: 47, ctx: 54 }, '3': { labels: ['2023','2024','2025'], school: [54,58,62], la: [33,37,40], wales: [40,44,47], ctx: [46,50,54] } },
-      female:          { '1': { school: 68, la: 46, wales: 53, ctx: 60 }, '3': { labels: ['2023','2024','2025'], school: [60,64,68], la: [38,42,46], wales: [46,50,53], ctx: [53,57,60] } },
-      male:            { '1': { school: 56, la: 34, wales: 41, ctx: 48 }, '3': { labels: ['2023','2024','2025'], school: [48,52,56], la: [27,31,34], wales: [34,38,41], ctx: [40,44,48] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [68,56], la: [46,34], wales: [53,41], ctx: [60,48] }, '3': { labels: ['2023','2024','2025'], school: [60,64,68], la: [38,42,46], wales: [44,49,53], ctx: [52,56,60] } },
-      fsm:             { '1': { school: 38, la: 22, wales: 27, ctx: 31 }, '3': { labels: ['2023','2024','2025'], school: [30,34,38], la: [16,19,22], wales: [20,24,27], ctx: [24,28,31] } },
-      nonfsm:          { '1': { school: 74, la: 52, wales: 60, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [44,48,52], wales: [52,56,60], ctx: [58,62,66] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [38,74], la: [22,52], wales: [27,60], ctx: [31,66] }, '3': { labels: ['2023','2024','2025'], school: [30,34,38], la: [16,19,22], wales: [20,24,27], ctx: [24,28,31] } }
+      all:    { '1': { school: 62, la: 40, wales: 47, ctx: 54 }, '3': { labels: ['2023','2024','2025'], school: [54,58,62], la: [33,37,40], wales: [40,44,47], ctx: [46,50,54] } },
+      female: { '1': { school: 68, la: 46, wales: 53, ctx: 60 }, '3': { labels: ['2023','2024','2025'], school: [60,64,68], la: [38,42,46], wales: [46,50,53], ctx: [53,57,60] } },
+      male:   { '1': { school: 56, la: 34, wales: 41, ctx: 48 }, '3': { labels: ['2023','2024','2025'], school: [48,52,56], la: [27,31,34], wales: [34,38,41], ctx: [40,44,48] } },
+      fsm:    { '1': { school: 38, la: 22, wales: 27, ctx: 31 }, '3': { labels: ['2023','2024','2025'], school: [30,34,38], la: [16,19,22], wales: [20,24,27], ctx: [24,28,31] } },
+      nonfsm: { '1': { school: 74, la: 52, wales: 60, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [44,48,52], wales: [52,56,60], ctx: [58,62,66] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [68,56], la: [46,34], wales: [53,41], ctx: [60,48] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [57,58,59], b: [43,42,41] }, la: { a: [54,55,56], b: [46,45,44] }, wales: { a: [56,57,57], b: [44,43,43] }, ctx: { a: [55,56,57], b: [45,44,43] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [38,74], la: [22,52], wales: [27,60], ctx: [31,66] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [27,28,29], b: [73,72,71] }, la: { a: [30,31,32], b: [70,69,68] }, wales: { a: [29,30,30], b: [71,70,70] }, ctx: { a: [28,29,30], b: [72,71,70] } }
+      }
     },
     'astar-d': {
-      all:             { '1': { school: 74, la: 54, wales: 61, ctx: 67 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [46,50,54], wales: [53,57,61], ctx: [59,63,67] } },
-      female:          { '1': { school: 79, la: 59, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [51,55,59], wales: [58,62,66], ctx: [64,68,72] } },
-      male:            { '1': { school: 69, la: 49, wales: 56, ctx: 62 }, '3': { labels: ['2023','2024','2025'], school: [61,65,69], la: [41,45,49], wales: [48,52,56], ctx: [54,58,62] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [79,69], la: [59,49], wales: [66,56], ctx: [72,62] }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [51,55,59], wales: [56,62,66], ctx: [63,68,72] } },
-      fsm:             { '1': { school: 52, la: 34, wales: 40, ctx: 45 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,34], wales: [32,36,40], ctx: [37,41,45] } },
-      nonfsm:          { '1': { school: 84, la: 66, wales: 73, ctx: 78 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [65,69,73], ctx: [70,74,78] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [52,84], la: [34,66], wales: [40,73], ctx: [45,78] }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,34], wales: [32,36,40], ctx: [37,41,45] } }
+      all:    { '1': { school: 74, la: 54, wales: 61, ctx: 67 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [46,50,54], wales: [53,57,61], ctx: [59,63,67] } },
+      female: { '1': { school: 79, la: 59, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [51,55,59], wales: [58,62,66], ctx: [64,68,72] } },
+      male:   { '1': { school: 69, la: 49, wales: 56, ctx: 62 }, '3': { labels: ['2023','2024','2025'], school: [61,65,69], la: [41,45,49], wales: [48,52,56], ctx: [54,58,62] } },
+      fsm:    { '1': { school: 52, la: 34, wales: 40, ctx: 45 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,34], wales: [32,36,40], ctx: [37,41,45] } },
+      nonfsm: { '1': { school: 84, la: 66, wales: 73, ctx: 78 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [65,69,73], ctx: [70,74,78] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [79,69], la: [59,49], wales: [66,56], ctx: [72,62] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [56,57,58], b: [44,43,42] }, la: { a: [53,54,55], b: [47,46,45] }, wales: { a: [55,56,56], b: [45,44,44] }, ctx: { a: [54,55,56], b: [46,45,44] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [52,84], la: [34,66], wales: [40,73], ctx: [45,78] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [28,29,30], b: [72,71,70] }, la: { a: [31,32,33], b: [69,68,67] }, wales: { a: [30,31,31], b: [70,69,69] }, ctx: { a: [29,30,31], b: [71,70,69] } }
+      }
     },
     'astar-e': {
-      all:             { '1': { school: 83, la: 65, wales: 71, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [75,79,83], la: [57,61,65], wales: [63,67,71], ctx: [69,73,77] } },
-      female:          { '1': { school: 87, la: 70, wales: 76, ctx: 82 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [74,78,82] } },
-      male:            { '1': { school: 79, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [52,56,60], wales: [58,62,66], ctx: [64,68,72] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [87,79], la: [70,60], wales: [76,66], ctx: [82,72] }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [66,72,76], ctx: [73,78,82] } },
-      fsm:             { '1': { school: 63, la: 44, wales: 50, ctx: 56 }, '3': { labels: ['2023','2024','2025'], school: [55,59,63], la: [36,40,44], wales: [42,46,50], ctx: [48,52,56] } },
-      nonfsm:          { '1': { school: 91, la: 74, wales: 80, ctx: 86 }, '3': { labels: ['2023','2024','2025'], school: [83,87,91], la: [66,70,74], wales: [72,76,80], ctx: [78,82,86] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [63,91], la: [44,74], wales: [50,80], ctx: [56,86] }, '3': { labels: ['2023','2024','2025'], school: [55,59,63], la: [36,40,44], wales: [42,46,50], ctx: [48,52,56] } }
+      all:    { '1': { school: 83, la: 65, wales: 71, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [75,79,83], la: [57,61,65], wales: [63,67,71], ctx: [69,73,77] } },
+      female: { '1': { school: 87, la: 70, wales: 76, ctx: 82 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [74,78,82] } },
+      male:   { '1': { school: 79, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [52,56,60], wales: [58,62,66], ctx: [64,68,72] } },
+      fsm:    { '1': { school: 63, la: 44, wales: 50, ctx: 56 }, '3': { labels: ['2023','2024','2025'], school: [55,59,63], la: [36,40,44], wales: [42,46,50], ctx: [48,52,56] } },
+      nonfsm: { '1': { school: 91, la: 74, wales: 80, ctx: 86 }, '3': { labels: ['2023','2024','2025'], school: [83,87,91], la: [66,70,74], wales: [72,76,80], ctx: [78,82,86] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [87,79], la: [70,60], wales: [76,66], ctx: [82,72] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [57,58,59], b: [43,42,41] }, la: { a: [54,55,56], b: [46,45,44] }, wales: { a: [56,57,57], b: [44,43,43] }, ctx: { a: [55,56,57], b: [45,44,43] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [63,91], la: [44,74], wales: [50,80], ctx: [56,86] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [27,28,29], b: [73,72,71] }, la: { a: [30,31,32], b: [70,69,68] }, wales: { a: [29,30,30], b: [71,70,70] }, ctx: { a: [28,29,30], b: [72,71,70] } }
+      }
     },
     'astar-f': {
-      all:             { '1': { school: 90, la: 74, wales: 80, ctx: 85 }, '3': { labels: ['2023','2024','2025'], school: [82,86,90], la: [66,70,74], wales: [72,76,80], ctx: [77,81,85] } },
-      female:          { '1': { school: 93, la: 78, wales: 84, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [85,89,93], la: [70,74,78], wales: [76,80,84], ctx: [81,85,89] } },
-      male:            { '1': { school: 87, la: 70, wales: 76, ctx: 81 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [73,77,81] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [93,87], la: [78,70], wales: [84,76], ctx: [89,81] }, '3': { labels: ['2023','2024','2025'], school: [85,89,93], la: [70,74,78], wales: [76,80,84], ctx: [81,85,89] } },
-      fsm:             { '1': { school: 74, la: 55, wales: 61, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [47,51,55], wales: [53,57,61], ctx: [58,62,66] } },
-      nonfsm:          { '1': { school: 96, la: 82, wales: 88, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [88,92,96], la: [74,78,82], wales: [80,84,88], ctx: [84,88,92] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [74,96], la: [55,82], wales: [61,88], ctx: [66,92] }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [47,51,55], wales: [53,57,61], ctx: [58,62,66] } }
+      all:    { '1': { school: 90, la: 74, wales: 80, ctx: 85 }, '3': { labels: ['2023','2024','2025'], school: [82,86,90], la: [66,70,74], wales: [72,76,80], ctx: [77,81,85] } },
+      female: { '1': { school: 93, la: 78, wales: 84, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [85,89,93], la: [70,74,78], wales: [76,80,84], ctx: [81,85,89] } },
+      male:   { '1': { school: 87, la: 70, wales: 76, ctx: 81 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [73,77,81] } },
+      fsm:    { '1': { school: 74, la: 55, wales: 61, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [47,51,55], wales: [53,57,61], ctx: [58,62,66] } },
+      nonfsm: { '1': { school: 96, la: 82, wales: 88, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [88,92,96], la: [74,78,82], wales: [80,84,88], ctx: [84,88,92] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [93,87], la: [78,70], wales: [84,76], ctx: [89,81] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [56,57,58], b: [44,43,42] }, la: { a: [53,54,55], b: [47,46,45] }, wales: { a: [55,56,56], b: [45,44,44] }, ctx: { a: [54,55,56], b: [46,45,44] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [74,96], la: [55,82], wales: [61,88], ctx: [66,92] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [28,29,30], b: [72,71,70] }, la: { a: [31,32,33], b: [69,68,67] }, wales: { a: [30,31,31], b: [70,69,69] }, ctx: { a: [29,30,31], b: [71,70,69] } }
+      }
     },
     'astar-g': {
-      all:             { '1': { school: 96, la: 82, wales: 87, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [90,93,96], la: [74,78,82], wales: [80,84,87], ctx: [85,89,92] } },
-      female:          { '1': { school: 98, la: 86, wales: 91, ctx: 95 }, '3': { labels: ['2023','2024','2025'], school: [92,95,98], la: [78,82,86], wales: [84,88,91], ctx: [89,92,95] } },
-      male:            { '1': { school: 94, la: 78, wales: 83, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [88,91,94], la: [70,74,78], wales: [76,80,83], ctx: [81,85,89] } },
-      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [98,94], la: [86,78], wales: [91,83], ctx: [95,89] }, '3': { labels: ['2023','2024','2025'], school: [92,95,98], la: [78,82,86], wales: [83,88,91], ctx: [89,92,95] } },
-      fsm:             { '1': { school: 84, la: 66, wales: 72, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [64,68,72], ctx: [69,73,77] } },
-      nonfsm:          { '1': { school: 99, la: 90, wales: 94, ctx: 97 }, '3': { labels: ['2023','2024','2025'], school: [95,97,99], la: [84,87,90], wales: [89,92,94], ctx: [93,95,97] } },
-      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [84,99], la: [66,90], wales: [72,94], ctx: [77,97] }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [64,68,72], ctx: [69,73,77] } }
+      all:    { '1': { school: 96, la: 82, wales: 87, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [90,93,96], la: [74,78,82], wales: [80,84,87], ctx: [85,89,92] } },
+      female: { '1': { school: 98, la: 86, wales: 91, ctx: 95 }, '3': { labels: ['2023','2024','2025'], school: [92,95,98], la: [78,82,86], wales: [84,88,91], ctx: [89,92,95] } },
+      male:   { '1': { school: 94, la: 78, wales: 83, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [88,91,94], la: [70,74,78], wales: [76,80,83], ctx: [81,85,89] } },
+      fsm:    { '1': { school: 84, la: 66, wales: 72, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [64,68,72], ctx: [69,73,77] } },
+      nonfsm: { '1': { school: 99, la: 90, wales: 94, ctx: 97 }, '3': { labels: ['2023','2024','2025'], school: [95,97,99], la: [84,87,90], wales: [89,92,94], ctx: [93,95,97] } },
+      'sex-comparison': {
+        '1': { labels: ['Female','Male'], school: [98,94], la: [86,78], wales: [91,83], ctx: [95,89] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [57,58,59], b: [43,42,41] }, la: { a: [54,55,56], b: [46,45,44] }, wales: { a: [56,57,57], b: [44,43,43] }, ctx: { a: [55,56,57], b: [45,44,43] } }
+      },
+      'fsm-comparison': {
+        '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [84,99], la: [66,90], wales: [72,94], ctx: [77,97] },
+        '3': { labels: ['2023','2024','2025'], school: { a: [27,28,29], b: [73,72,71] }, la: { a: [30,31,32], b: [70,69,68] }, wales: { a: [29,30,30], b: [71,70,70] }, ctx: { a: [28,29,30], b: [72,71,70] } }
+      }
     }
   };
 
@@ -429,14 +646,17 @@
   function buildOutcomesChart() {
     var d = outcomesData[outcomesGrade][outcomesBreakdown][outcomesRange];
     var isTime = outcomesRange === '3';
+    var isComp = isComparisonBreakdown(outcomesBreakdown);
     var comparators = getActiveComparators('outcomes');
-    var isComparison = isComparisonBreakdown(outcomesBreakdown);
 
     if (outcomesChartInstance) { outcomesChartInstance.destroy(); }
     var canvas = document.getElementById('outcomes-chart');
     var ctx = canvas.getContext('2d');
 
-    if (isTime) {
+    if (isTime && isComp) {
+      outcomesChartInstance = buildCompTimeLineChart(canvas, d, comparators, outcomesBreakdown);
+
+    } else if (isTime && !isComp) {
       canvas.height = 80;
       var yAxis = dynamicYAxis(comparators.map(function(k){ return d[k]; }));
       outcomesChartInstance = new Chart(ctx, {
@@ -451,68 +671,100 @@
           responsive: true,
           plugins: { legend: { display: false } },
           scales: {
-            x: { grid: { display: false } },
-            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+            x: { grid: { display: false }, ticks: { font: FONT } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
-    } else {
-      var barCount = isComparison ? d.labels.length * comparators.length : comparators.length;
-      canvas.height = canvasHeight(barCount);
 
-      if (!isComparison) {
-        outcomesChartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: comparators.map(function(k){ return LABELS[k]; }),
-            datasets: [{ label: '% of entries', data: comparators.map(function(k){ return d[k]; }), backgroundColor: comparators.map(function(k){ return COLOURS[k]; }), barThickness: 24 }]
-          },
-          options: {
-            indexAxis: 'y', responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
-            scales: {
-              x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-              y: { grid: { display: false } }
-            }
+    } else if (!isTime && !isComp) {
+      canvas.height = canvasHeight(comparators.length);
+      outcomesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: comparators.map(function(k){ return LABELS[k]; }),
+          datasets: [{ label: '% of entries', data: comparators.map(function(k){ return d[k]; }), backgroundColor: comparators.map(function(k){ return COLOURS[k]; }), barThickness: 24 }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
+          scales: {
+            x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
+            y: { grid: { display: false }, ticks: { font: FONT } }
           }
-        });
-      } else {
-        outcomesChartInstance = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: d.labels,
-            datasets: comparators.map(function(key) {
-              return { label: LABELS[key], data: d[key], backgroundColor: COLOURS[key], barThickness: 24 };
-            })
-          },
-          options: {
-            indexAxis: 'y', responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
-            scales: {
-              x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-              y: { grid: { display: false } }
-            }
+        }
+      });
+
+    } else {
+      var numBars = d.labels.length * comparators.length;
+      canvas.height = canvasHeight(numBars);
+      outcomesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: d.labels,
+          datasets: comparators.map(function(key) {
+            return { label: LABELS[key], data: d[key], backgroundColor: COLOURS[key], barThickness: 24 };
+          })
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          scales: {
+            x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
+            y: { grid: { display: false }, ticks: { font: FONT } }
           }
-        });
-      }
+        }
+      });
     }
 
-    renderLegend('outcomes-legend', comparators, isTime, false);
+    renderLegend('outcomes-legend', comparators, isTime, false, outcomesBreakdown);
   }
 
   document.getElementById('outcomes-grade').addEventListener('change', function() { outcomesGrade = this.value; buildOutcomesChart(); });
-  document.getElementById('outcomes-breakdown').addEventListener('change', function() { outcomesBreakdown = this.value; buildOutcomesChart(); });
+  document.getElementById('outcomes-breakdown').addEventListener('change', function() {
+    outcomesBreakdown = this.value;
+    if (isComparisonBreakdown(outcomesBreakdown) && outcomesRange === '3') {
+      ensureSingleComparator('outcomes');
+    }
+    buildOutcomesChart();
+  });
+
   document.querySelectorAll('.outcomes-time-btn').forEach(function(btn) {
     btn.addEventListener('click', function() {
-      document.querySelectorAll('.outcomes-time-btn').forEach(function(b){ b.classList.remove('outcomes-time-btn--active'); b.style.background=''; b.style.color=''; });
-      this.classList.add('outcomes-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
-      outcomesRange = this.getAttribute('data-range'); buildOutcomesChart();
+      document.querySelectorAll('.outcomes-time-btn').forEach(function(b){
+        b.classList.remove('outcomes-time-btn--active'); b.style.background=''; b.style.color='';
+      });
+      this.classList.add('outcomes-time-btn--active');
+      this.style.background='#1B1E56'; this.style.color='white';
+      outcomesRange = this.getAttribute('data-range');
+      if (isComparisonBreakdown(outcomesBreakdown) && outcomesRange === '3') {
+        ensureSingleComparator('outcomes');
+      }
+      buildOutcomesChart();
     });
   });
-  ['outcomes-show-la','outcomes-show-wales','outcomes-show-ctx'].forEach(function(id){ document.getElementById(id).addEventListener('change', buildOutcomesChart); });
+
+  setupComparatorControls('outcomes', buildOutcomesChart,
+    function(){ return outcomesBreakdown; },
+    function(){ return outcomesRange; }
+  );
+
   document.querySelector('.outcomes-time-btn--active').style.background='#1B1E56';
   document.querySelector('.outcomes-time-btn--active').style.color='white';
   buildOutcomesChart();
+
+  // ─── SHARED UTILITY ───────────────────────────────────────────────────────
+  // Ensures only one non-school comparator is checked when entering comparison+time mode.
+  // Prefers ctx; falls back to whichever is already checked; defaults to ctx if none.
+
+  function ensureSingleComparator(prefix) {
+    var checked = COMPARATOR_IDS.filter(function(k){ return document.getElementById(prefix+'-show-'+k).checked; });
+    if (checked.length <= 1) return;
+    // More than one checked — keep the first, uncheck the rest
+    for (var i = 1; i < checked.length; i++) {
+      document.getElementById(prefix+'-show-'+checked[i]).checked = false;
+    }
+  }
 
 </script>
 
