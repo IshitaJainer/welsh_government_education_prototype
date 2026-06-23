@@ -1,0 +1,268 @@
+{% extends "aup/layout_aup.html" %}
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant reporting — WG view — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell — 2024–25</p>
+    </div>
+    <div class="govuk-grid-column-one-third aup-export-row">
+      {{ govukButton({
+        text: "Download as PDF",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+      }) }}
+    </div>
+  </div>
+
+  {# Status banner #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div style="background: #f3f2f1; padding: 16px 20px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap;">
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Status: <strong class="govuk-tag govuk-tag--green">Submitted</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Submitted: <strong>14 July 2025</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Deadline: <strong>31 July 2025</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">PDG lead: <strong>Mrs A. Jenkins</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Governor lead: <strong>Mr D. Thomas</strong></p>
+      </div>
+    </div>
+  </div>
+
+  {# Metric cards #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-metric-grid" style="grid-template-columns: repeat(4, 1fr);">
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="Total PDG allocation for this academic year">PDG allocation</p>
+          <p class="aup-metric-card__value govuk-heading-l">£114,600</p>
+        </div>
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="Total school budget for this academic year">Total school budget</p>
+          <p class="aup-metric-card__value govuk-heading-l">£2.1m</p>
+        </div>
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="Proportion of pupils eligible for free school meals">eFSM eligibility</p>
+          <p class="aup-metric-card__value govuk-heading-l">29.9%</p>
+        </div>
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="Number of spend entries submitted">Spend entries</p>
+          <p class="aup-metric-card__value govuk-heading-l">5</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {# Spend breakdown chart + outcomes summary #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+       <h2 class="govuk-heading-s">Spend by category</h2>
+        <p class="govuk-body-s">How the PDG allocation is distributed across the three strategy areas.</p>
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="spend-chart" height="80"></canvas>
+        </div>
+        <ul style="display: flex; flex-direction: column; gap: 6px; list-style: none; padding: 0; margin: 0; font-size: 14px;">
+          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Learning and teaching — £62,000</li>
+          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px;"></span> Community focused schools — £30,500</li>
+          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#f47738; border-radius:2px;"></span> Wider strategies — £22,100</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Intended outcomes</h2>
+        <p class="govuk-body-s">Outcomes and success criteria for this academic year.</p>
+        {{ govukTable({
+          head: [
+            { text: "Intended outcome", classes: "govuk-!-width-one-half" },
+            { text: "Success criteria" }
+          ],
+          rows: [
+            [
+              { text: "Improve literacy attainment of eFSM learners" },
+              { text: "10% increase in reading age scores for target group" }
+            ],
+            [
+              { text: "Reduce persistent absence among eligible pupils" },
+              { text: "PA rate below 20% for eFSM cohort" }
+            ],
+            [
+              { text: "Improve wellbeing outcomes for vulnerable learners" },
+              { text: "80% of target pupils report improved wellbeing" }
+            ]
+          ]
+        }) }}
+      </div>
+    </div>
+
+  </div>
+
+  {# Strategy statement #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Statement of intent</h2>
+        <p class="govuk-body-s">Narrative summary of the school's PDG strategy and key priorities for this academic year will appear here.</p>
+      </div>
+    </div>
+  </div>
+
+  {# Spend entries table #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Spend entries</h2>
+        <p class="govuk-body-s">All submitted spend entries for 2024–25.</p>
+        {{ govukTable({
+          head: [
+            { text: "Category" },
+            { text: "Key area" },
+            { text: "Description" },
+            { text: "Amount" },
+            { text: "Success criterion" }
+          ],
+          rows: [
+            [
+              { text: "Learning and teaching" },
+              { text: "Literacy and numeracy" },
+              { text: "Literacy support tutor — 3 days per week" },
+              { text: "£30,000" },
+              { text: "10% improvement in reading scores for target group" }
+            ],
+            [
+              { text: "Learning and teaching" },
+              { text: "High-quality teaching and learning" },
+              { text: "Staff CPD programme — evidence-informed pedagogy" },
+              { text: "£18,000" },
+              { text: "All eFSM pupils taught by CPD-trained staff" }
+            ],
+            [
+              { text: "Learning and teaching" },
+              { text: "Literacy and numeracy" },
+              { text: "Numeracy intervention resources" },
+              { text: "£14,000" },
+              { text: "Improved numeracy outcomes at end of KS3" }
+            ],
+            [
+              { text: "Community focused schools" },
+              { text: "Attendance and engagement" },
+              { text: "Family liaison officer — 5 days per week" },
+              { text: "£30,500" },
+              { text: "PA rate below 20% for eFSM cohort" }
+            ],
+            [
+              { text: "Wider strategies" },
+              { text: "Wellbeing and mental health" },
+              { text: "ELSA and THRIVE practitioners" },
+              { text: "£22,100" },
+              { text: "80% of target pupils report improved wellbeing" }
+            ]
+          ]
+        }) }}
+        <p class="govuk-body-s govuk-!-margin-top-2"><strong>Total spend recorded: £114,600</strong></p>
+      </div>
+    </div>
+  </div>
+
+  {# Review of outcomes — previous year #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Review of outcomes — 2023–24</h2>
+        <p class="govuk-body-s">Impact of PDG activity in the previous academic year.</p>
+        {{ govukTable({
+          head: [
+            { text: "Activity", classes: "govuk-!-width-one-third" },
+            { text: "Impact" }
+          ],
+          rows: [
+            [
+              { text: "Literacy support tutor" },
+              { text: "Targeted learners improved reading age by an average of 8 months. 12 of 18 target pupils met expected progress." }
+            ],
+            [
+              { text: "Family liaison officer" },
+              { text: "PA rate for eFSM cohort reduced from 26% to 22%. Stronger family engagement recorded in 70% of cases." }
+            ],
+            [
+              { text: "Wellbeing programme" },
+              { text: "75% of target pupils reported improved wellbeing. Two pupils required referral to external support services." }
+            ]
+          ]
+        }) }}
+      </div>
+    </div>
+  </div>
+
+  {# Externally provided programmes #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Externally provided programmes</h2>
+        <p class="govuk-body-s">Programmes purchased in the previous academic year.</p>
+        {{ govukTable({
+          head: [
+            { text: "Programme" },
+            { text: "Provider" }
+          ],
+          rows: [
+            [ { text: "THRIVE" }, { text: "Thrive Approach" } ],
+            [ { text: "ELSA" }, { text: "ELSA Support" } ],
+            [ { text: "Accelerated Reader" }, { text: "Renaissance Learning" } ]
+          ]
+        }) }}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  var sctx = document.getElementById('spend-chart').getContext('2d');
+  new Chart(sctx, {
+    type: 'bar',
+    data: {
+      labels: ['Learning and teaching', 'Community focused schools', 'Wider strategies'],
+      datasets: [{
+        data: [62000, 30500, 22100],
+        backgroundColor: ['#003078', '#5694ca', '#f47738'],
+        barThickness: 32
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return '£' + context.parsed.x.toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { callback: function(v){ return '£' + (v >= 1000 ? (v/1000)+'k' : v); } } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

@@ -1,20 +1,519 @@
 {% extends "aup/layout_aup.html" %}
-
 {% set lang = "en" %}
 {% set alternativeHref = "#" %}
 {% set currentNav = "attainment" %}
 
-{% block pageTitle %}Attainment — School Data Service{% endblock %}
+{% block pageTitle %}Entries and Attainment — School Data Service{% endblock %}
 
 {% block content %}
 <div class="govuk-width-container">
-  <div class="govuk-grid-row">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">Attainment</h1>
-      {{ govukInsetText({
-        text: "Attainment data for this school is not yet available. This section is in development and will be updated in a future release."
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Entries and Attainment</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell (2024-25)</p>
+    </div>
+    <div class="govuk-grid-column-one-third aup-export-row">
+      {{ govukButton({
+        text: "Export to CSV",
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
       }) }}
     </div>
   </div>
+
+  {{ govukInsetText({
+    text: "Data shown is for illustrative purposes only. Narrative context for this section will be added here."
+  }) }}
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <h2 class="govuk-heading-m">Subject X</h2>
+      <p class="govuk-body-s">Context about Subject X and its significance for this school will appear here.</p>
+    </div>
+  </div>
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6">
+
+  {# Chart 1 — Entries #}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card govuk-!-margin-bottom-2">
+        <div class="aup-chart-card__header">
+          <h3 class="govuk-heading-s aup-chart-card__title">Entries</h3>
+        </div>
+        <p class="govuk-body-s">Proportion of year 11 pupils entered for Subject X. Context about entry patterns and what influences them will appear here.</p>
+
+        <div class="aup-filter-bar govuk-!-margin-bottom-4">
+          <span class="govuk-body-s aup-filter-bar__label">Breakdown:</span>
+          {{ govukSelect({
+            id: "entries-breakdown",
+            name: "entries-breakdown",
+            label: { text: "Breakdown", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "all", text: "All pupils", selected: true },
+              { value: "female", text: "Female" },
+              { value: "male", text: "Male" },
+              { value: "sex-comparison", text: "Female vs Male" },
+              { value: "fsm", text: "FSM eligible" },
+              { value: "nonfsm", text: "Non-FSM eligible" },
+              { value: "fsm-comparison", text: "FSM eligible vs Non-FSM eligible" }
+            ]
+          }) }}
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 entries-time-btn entries-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 entries-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
+        </div>
+
+        <div style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="entries-show-la" checked style="margin: 0;"> LA
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="entries-show-wales" checked style="margin: 0;"> Wales
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="entries-show-ctx" checked style="margin: 0;"> Contextualised comparator
+          </label>
+        </div>
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="entries-chart"></canvas>
+        </div>
+
+        <ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6 govuk-!-margin-top-6">
+
+  {# Chart 2 — Outcomes #}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card govuk-!-margin-bottom-6">
+        <div class="aup-chart-card__header">
+          <h3 class="govuk-heading-s aup-chart-card__title">Outcomes</h3>
+        </div>
+        <p class="govuk-body-s">Percentage of entries achieving the selected grade range. Context about outcomes and what influences them will appear here.</p>
+
+        <div class="aup-filter-bar govuk-!-margin-bottom-2" style="flex-wrap: wrap; gap: 12px;">
+          <span class="govuk-body-s aup-filter-bar__label">Grade range:</span>
+          {{ govukSelect({
+            id: "outcomes-grade",
+            name: "outcomes-grade",
+            label: { text: "Grade range", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "astar",   text: "A*",    selected: true },
+              { value: "astar-a", text: "A*-A" },
+              { value: "astar-b", text: "A*-B" },
+              { value: "astar-c", text: "A*-C" },
+              { value: "astar-d", text: "A*-D" },
+              { value: "astar-e", text: "A*-E" },
+              { value: "astar-f", text: "A*-F" },
+              { value: "astar-g", text: "A*-G" }
+            ]
+          }) }}
+          <span class="govuk-body-s aup-filter-bar__label" style="margin-left: 16px;">Breakdown:</span>
+          {{ govukSelect({
+            id: "outcomes-breakdown",
+            name: "outcomes-breakdown",
+            label: { text: "Breakdown", classes: "govuk-visually-hidden" },
+            classes: "govuk-select--small",
+            items: [
+              { value: "all", text: "All pupils", selected: true },
+              { value: "female", text: "Female" },
+              { value: "male", text: "Male" },
+              { value: "sex-comparison", text: "Female vs Male" },
+              { value: "fsm", text: "FSM eligible" },
+              { value: "nonfsm", text: "Non-FSM eligible" },
+              { value: "fsm-comparison", text: "FSM eligible vs Non-FSM eligible" }
+            ]
+          }) }}
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 outcomes-time-btn outcomes-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 outcomes-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
+        </div>
+
+        <div style="display: flex; gap: 24px; align-items: flex-start;">
+          <div style="flex: 1;">
+            <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+              <canvas id="outcomes-chart"></canvas>
+            </div>
+            <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
+          </div>
+          <div style="min-width: 200px; padding-top: 20px;">
+            <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="outcomes-show-la" checked style="margin: 0;"> LA
+              </label>
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="outcomes-show-wales" checked style="margin: 0;"> Wales
+              </label>
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  var COLOURS = {
+    school: '#003078',
+    la:     '#5694ca',
+    wales:  '#d4351c',
+    ctx:    '#f47738'
+  };
+
+  var LABELS = {
+    school: 'This school',
+    la:     'LA',
+    wales:  'Wales',
+    ctx:    'Contextualised comparator'
+  };
+
+  function hexToRgba(hex, alpha) {
+    var r = parseInt(hex.slice(1,3),16);
+    var g = parseInt(hex.slice(3,5),16);
+    var b = parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+alpha+')';
+  }
+
+  function dynamicYAxis(datasets) {
+    var allValues = [];
+    datasets.forEach(function(ds) {
+      ds.forEach(function(v) { if (typeof v === 'number') allValues.push(v); });
+    });
+    var min = Math.floor((Math.min.apply(null, allValues) - 8) / 5) * 5;
+    var max = Math.ceil((Math.max.apply(null, allValues) + 8) / 5) * 5;
+    return { min: Math.max(0, min), max: Math.min(100, max) };
+  }
+
+  function canvasHeight(barCount) {
+    return Math.min(200, Math.max(50, barCount * 24));
+  }
+
+  // ─── ENTRIES DATA ─────────────────────────────────────────────────────────
+
+  var entriesData = {
+    all:             { '1': { school: 78, la: 55, wales: 62, ctx: 68 }, '3': { labels: ['2023','2024','2025'], school: [72,75,78], la: [48,52,55], wales: [57,60,62], ctx: [62,65,68] } },
+    female:          { '1': { school: 82, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [76,79,82], la: [53,57,60], wales: [61,64,66], ctx: [66,69,72] } },
+    male:            { '1': { school: 74, la: 50, wales: 58, ctx: 64 }, '3': { labels: ['2023','2024','2025'], school: [68,71,74], la: [43,47,50], wales: [53,56,58], ctx: [58,61,64] } },
+    'sex-comparison':{ '1': { labels: ['Female','Male'], school: [82,74], la: [60,50], wales: [66,58], ctx: [72,64] }, '3': { labels: ['2023','2024','2025'], school: [79,82,85], la: [54,57,60], wales: [62,64,66], ctx: [67,70,72] } },
+    fsm:             { '1': { school: 61, la: 40, wales: 46, ctx: 52 }, '3': { labels: ['2023','2024','2025'], school: [54,57,61], la: [34,37,40], wales: [40,43,46], ctx: [45,49,52] } },
+    nonfsm:          { '1': { school: 85, la: 63, wales: 70, ctx: 76 }, '3': { labels: ['2023','2024','2025'], school: [79,82,85], la: [56,60,63], wales: [64,67,70], ctx: [70,73,76] } },
+    'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [61,85], la: [40,63], wales: [46,70], ctx: [52,76] }, '3': { labels: ['2023','2024','2025'], school: [55,58,61], la: [34,37,40], wales: [40,43,46], ctx: [46,49,52] } }
+  };
+
+  var entriesRange = '1';
+  var entriesBreakdown = 'all';
+  var entriesChartInstance = null;
+
+  function getActiveComparators(prefix) {
+    var c = ['school'];
+    if (document.getElementById(prefix+'-show-la').checked)    c.push('la');
+    if (document.getElementById(prefix+'-show-wales').checked) c.push('wales');
+    if (document.getElementById(prefix+'-show-ctx').checked)   c.push('ctx');
+    return c;
+  }
+
+  function renderLegend(elId, comparators, isTime, isEntries) {
+    var el = document.getElementById(elId);
+    el.innerHTML = '';
+    comparators.forEach(function(key) {
+      var colour = COLOURS[key];
+      if (isTime || !isEntries) {
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+'</li>';
+      } else {
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+' — entered</li>';
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+hexToRgba(colour,0.5)+';border-radius:2px;"></span> '+LABELS[key]+' — not entered</li>';
+      }
+    });
+  }
+
+  function isComparisonBreakdown(breakdown) {
+    return breakdown === 'sex-comparison' || breakdown === 'fsm-comparison';
+  }
+
+  function buildEntriesChart() {
+    var d = entriesData[entriesBreakdown][entriesRange];
+    var isTime = entriesRange === '3';
+    var comparators = getActiveComparators('entries');
+    var isComparison = isComparisonBreakdown(entriesBreakdown);
+
+    if (entriesChartInstance) { entriesChartInstance.destroy(); }
+    var canvas = document.getElementById('entries-chart');
+    var ctx = canvas.getContext('2d');
+
+    if (isTime) {
+      canvas.height = 80;
+      var yAxis = dynamicYAxis(comparators.map(function(k){ return d[k]; }));
+      entriesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: d.labels,
+          datasets: comparators.map(function(key) {
+            return { label: LABELS[key], data: d[key], borderColor: COLOURS[key], backgroundColor: COLOURS[key], borderWidth: 2, pointRadius: 5, tension: 0.1 };
+          })
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+          }
+        }
+      });
+    } else {
+      if (!isComparison) {
+        canvas.height = canvasHeight(comparators.length);
+        var labels = comparators.map(function(k){ return LABELS[k]; });
+        var entered = comparators.map(function(k){ return d[k]; });
+        var notEntered = entered.map(function(v){ return 100-v; });
+        entriesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              { label: 'Entered',     data: entered,    backgroundColor: comparators.map(function(k){ return COLOURS[k]; }),              barThickness: 24, stack: 'stack' },
+              { label: 'Not entered', data: notEntered, backgroundColor: comparators.map(function(k){ return hexToRgba(COLOURS[k],0.5); }), barThickness: 24, stack: 'stack' }
+            ]
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+            scales: {
+              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+              y: { stacked: true, grid: { display: false } }
+            }
+          }
+        });
+      } else {
+        var numBars = d.labels.length * comparators.length;
+        canvas.height = canvasHeight(numBars);
+        var datasets = [];
+        comparators.forEach(function(key) {
+          var colour = COLOURS[key];
+          var ent = d[key];
+          var notEnt = ent.map(function(v){ return 100-v; });
+          datasets.push({ label: LABELS[key]+' — Entered',     data: ent,    backgroundColor: colour,                 barThickness: 24, stack: key });
+          datasets.push({ label: LABELS[key]+' — Not entered', data: notEnt, backgroundColor: hexToRgba(colour,0.5), barThickness: 24, stack: key });
+        });
+        entriesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: { labels: d.labels, datasets: datasets },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+            scales: {
+              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+              y: { stacked: true, grid: { display: false } }
+            }
+          }
+        });
+      }
+    }
+
+    renderLegend('entries-legend', comparators, isTime, true);
+  }
+
+  document.getElementById('entries-breakdown').addEventListener('change', function() { entriesBreakdown = this.value; buildEntriesChart(); });
+  document.querySelectorAll('.entries-time-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.entries-time-btn').forEach(function(b){ b.classList.remove('entries-time-btn--active'); b.style.background=''; b.style.color=''; });
+      this.classList.add('entries-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
+      entriesRange = this.getAttribute('data-range'); buildEntriesChart();
+    });
+  });
+  ['entries-show-la','entries-show-wales','entries-show-ctx'].forEach(function(id){ document.getElementById(id).addEventListener('change', buildEntriesChart); });
+  document.querySelector('.entries-time-btn--active').style.background='#1B1E56';
+  document.querySelector('.entries-time-btn--active').style.color='white';
+  buildEntriesChart();
+
+  // ─── OUTCOMES DATA ────────────────────────────────────────────────────────
+
+  var outcomesData = {
+    'astar': {
+      all:             { '1': { school: 12, la: 5,  wales: 7,  ctx: 9  }, '3': { labels: ['2023','2024','2025'], school: [8,10,12],  la: [3,4,5],   wales: [5,6,7],   ctx: [6,8,9]   } },
+      female:          { '1': { school: 15, la: 7,  wales: 9,  ctx: 11 }, '3': { labels: ['2023','2024','2025'], school: [10,13,15], la: [4,6,7],   wales: [6,8,9],   ctx: [8,10,11] } },
+      male:            { '1': { school: 9,  la: 4,  wales: 5,  ctx: 7  }, '3': { labels: ['2023','2024','2025'], school: [6,7,9],   la: [2,3,4],   wales: [3,4,5],   ctx: [4,6,7]   } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [15,9],  la: [7,4],  wales: [9,5],  ctx: [11,7]  }, '3': { labels: ['2023','2024','2025'], school: [12,14,15], la: [5,6,7],   wales: [7,8,9],   ctx: [9,10,11] } },
+      fsm:             { '1': { school: 5,  la: 2,  wales: 3,  ctx: 4  }, '3': { labels: ['2023','2024','2025'], school: [3,4,5],   la: [1,2,2],   wales: [2,3,3],   ctx: [3,4,4]   } },
+      nonfsm:          { '1': { school: 16, la: 8,  wales: 10, ctx: 12 }, '3': { labels: ['2023','2024','2025'], school: [11,14,16], la: [5,7,8],  wales: [7,9,10],  ctx: [9,11,12] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [5,16],  la: [2,8],  wales: [3,10], ctx: [4,12] }, '3': { labels: ['2023','2024','2025'], school: [3,4,5],   la: [1,2,2],   wales: [2,3,3],   ctx: [3,4,4]   } }
+    },
+    'astar-a': {
+      all:             { '1': { school: 28, la: 14, wales: 18, ctx: 22 }, '3': { labels: ['2023','2024','2025'], school: [22,25,28], la: [10,12,14], wales: [14,16,18], ctx: [17,20,22] } },
+      female:          { '1': { school: 33, la: 18, wales: 22, ctx: 26 }, '3': { labels: ['2023','2024','2025'], school: [27,30,33], la: [13,16,18], wales: [18,20,22], ctx: [21,24,26] } },
+      male:            { '1': { school: 23, la: 11, wales: 14, ctx: 18 }, '3': { labels: ['2023','2024','2025'], school: [17,20,23], la: [7,9,11],  wales: [10,12,14], ctx: [13,16,18] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [33,23], la: [18,11], wales: [22,14], ctx: [26,18] }, '3': { labels: ['2023','2024','2025'], school: [27,30,33], la: [13,16,18], wales: [17,20,22], ctx: [21,24,26] } },
+      fsm:             { '1': { school: 13, la: 6,  wales: 8,  ctx: 10 }, '3': { labels: ['2023','2024','2025'], school: [9,11,13],  la: [4,5,6],   wales: [5,7,8],   ctx: [7,9,10]  } },
+      nonfsm:          { '1': { school: 36, la: 19, wales: 24, ctx: 29 }, '3': { labels: ['2023','2024','2025'], school: [28,32,36], la: [13,16,19], wales: [18,21,24], ctx: [22,26,29] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [13,36], la: [6,19], wales: [8,24], ctx: [10,29] }, '3': { labels: ['2023','2024','2025'], school: [9,11,13], la: [4,5,6],   wales: [5,7,8],   ctx: [7,9,10]  } }
+    },
+    'astar-b': {
+      all:             { '1': { school: 46, la: 28, wales: 34, ctx: 39 }, '3': { labels: ['2023','2024','2025'], school: [38,42,46], la: [22,25,28], wales: [28,31,34], ctx: [32,36,39] } },
+      female:          { '1': { school: 52, la: 33, wales: 39, ctx: 44 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,33], wales: [33,36,39], ctx: [37,41,44] } },
+      male:            { '1': { school: 40, la: 23, wales: 29, ctx: 34 }, '3': { labels: ['2023','2024','2025'], school: [32,36,40], la: [17,20,23], wales: [23,26,29], ctx: [27,31,34] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [52,40], la: [33,23], wales: [39,29], ctx: [44,34] }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,33], wales: [31,35,39], ctx: [36,40,44] } },
+      fsm:             { '1': { school: 26, la: 14, wales: 18, ctx: 21 }, '3': { labels: ['2023','2024','2025'], school: [20,23,26], la: [10,12,14], wales: [13,16,18], ctx: [16,19,21] } },
+      nonfsm:          { '1': { school: 57, la: 37, wales: 44, ctx: 50 }, '3': { labels: ['2023','2024','2025'], school: [49,53,57], la: [29,33,37], wales: [36,40,44], ctx: [42,46,50] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [26,57], la: [14,37], wales: [18,44], ctx: [21,50] }, '3': { labels: ['2023','2024','2025'], school: [20,23,26], la: [10,12,14], wales: [13,16,18], ctx: [16,19,21] } }
+    },
+    'astar-c': {
+      all:             { '1': { school: 62, la: 40, wales: 47, ctx: 54 }, '3': { labels: ['2023','2024','2025'], school: [54,58,62], la: [33,37,40], wales: [40,44,47], ctx: [46,50,54] } },
+      female:          { '1': { school: 68, la: 46, wales: 53, ctx: 60 }, '3': { labels: ['2023','2024','2025'], school: [60,64,68], la: [38,42,46], wales: [46,50,53], ctx: [53,57,60] } },
+      male:            { '1': { school: 56, la: 34, wales: 41, ctx: 48 }, '3': { labels: ['2023','2024','2025'], school: [48,52,56], la: [27,31,34], wales: [34,38,41], ctx: [40,44,48] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [68,56], la: [46,34], wales: [53,41], ctx: [60,48] }, '3': { labels: ['2023','2024','2025'], school: [60,64,68], la: [38,42,46], wales: [44,49,53], ctx: [52,56,60] } },
+      fsm:             { '1': { school: 38, la: 22, wales: 27, ctx: 31 }, '3': { labels: ['2023','2024','2025'], school: [30,34,38], la: [16,19,22], wales: [20,24,27], ctx: [24,28,31] } },
+      nonfsm:          { '1': { school: 74, la: 52, wales: 60, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [44,48,52], wales: [52,56,60], ctx: [58,62,66] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [38,74], la: [22,52], wales: [27,60], ctx: [31,66] }, '3': { labels: ['2023','2024','2025'], school: [30,34,38], la: [16,19,22], wales: [20,24,27], ctx: [24,28,31] } }
+    },
+    'astar-d': {
+      all:             { '1': { school: 74, la: 54, wales: 61, ctx: 67 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [46,50,54], wales: [53,57,61], ctx: [59,63,67] } },
+      female:          { '1': { school: 79, la: 59, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [51,55,59], wales: [58,62,66], ctx: [64,68,72] } },
+      male:            { '1': { school: 69, la: 49, wales: 56, ctx: 62 }, '3': { labels: ['2023','2024','2025'], school: [61,65,69], la: [41,45,49], wales: [48,52,56], ctx: [54,58,62] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [79,69], la: [59,49], wales: [66,56], ctx: [72,62] }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [51,55,59], wales: [56,62,66], ctx: [63,68,72] } },
+      fsm:             { '1': { school: 52, la: 34, wales: 40, ctx: 45 }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,34], wales: [32,36,40], ctx: [37,41,45] } },
+      nonfsm:          { '1': { school: 84, la: 66, wales: 73, ctx: 78 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [65,69,73], ctx: [70,74,78] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [52,84], la: [34,66], wales: [40,73], ctx: [45,78] }, '3': { labels: ['2023','2024','2025'], school: [44,48,52], la: [26,30,34], wales: [32,36,40], ctx: [37,41,45] } }
+    },
+    'astar-e': {
+      all:             { '1': { school: 83, la: 65, wales: 71, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [75,79,83], la: [57,61,65], wales: [63,67,71], ctx: [69,73,77] } },
+      female:          { '1': { school: 87, la: 70, wales: 76, ctx: 82 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [74,78,82] } },
+      male:            { '1': { school: 79, la: 60, wales: 66, ctx: 72 }, '3': { labels: ['2023','2024','2025'], school: [71,75,79], la: [52,56,60], wales: [58,62,66], ctx: [64,68,72] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [87,79], la: [70,60], wales: [76,66], ctx: [82,72] }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [66,72,76], ctx: [73,78,82] } },
+      fsm:             { '1': { school: 63, la: 44, wales: 50, ctx: 56 }, '3': { labels: ['2023','2024','2025'], school: [55,59,63], la: [36,40,44], wales: [42,46,50], ctx: [48,52,56] } },
+      nonfsm:          { '1': { school: 91, la: 74, wales: 80, ctx: 86 }, '3': { labels: ['2023','2024','2025'], school: [83,87,91], la: [66,70,74], wales: [72,76,80], ctx: [78,82,86] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [63,91], la: [44,74], wales: [50,80], ctx: [56,86] }, '3': { labels: ['2023','2024','2025'], school: [55,59,63], la: [36,40,44], wales: [42,46,50], ctx: [48,52,56] } }
+    },
+    'astar-f': {
+      all:             { '1': { school: 90, la: 74, wales: 80, ctx: 85 }, '3': { labels: ['2023','2024','2025'], school: [82,86,90], la: [66,70,74], wales: [72,76,80], ctx: [77,81,85] } },
+      female:          { '1': { school: 93, la: 78, wales: 84, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [85,89,93], la: [70,74,78], wales: [76,80,84], ctx: [81,85,89] } },
+      male:            { '1': { school: 87, la: 70, wales: 76, ctx: 81 }, '3': { labels: ['2023','2024','2025'], school: [79,83,87], la: [62,66,70], wales: [68,72,76], ctx: [73,77,81] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [93,87], la: [78,70], wales: [84,76], ctx: [89,81] }, '3': { labels: ['2023','2024','2025'], school: [85,89,93], la: [70,74,78], wales: [76,80,84], ctx: [81,85,89] } },
+      fsm:             { '1': { school: 74, la: 55, wales: 61, ctx: 66 }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [47,51,55], wales: [53,57,61], ctx: [58,62,66] } },
+      nonfsm:          { '1': { school: 96, la: 82, wales: 88, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [88,92,96], la: [74,78,82], wales: [80,84,88], ctx: [84,88,92] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [74,96], la: [55,82], wales: [61,88], ctx: [66,92] }, '3': { labels: ['2023','2024','2025'], school: [66,70,74], la: [47,51,55], wales: [53,57,61], ctx: [58,62,66] } }
+    },
+    'astar-g': {
+      all:             { '1': { school: 96, la: 82, wales: 87, ctx: 92 }, '3': { labels: ['2023','2024','2025'], school: [90,93,96], la: [74,78,82], wales: [80,84,87], ctx: [85,89,92] } },
+      female:          { '1': { school: 98, la: 86, wales: 91, ctx: 95 }, '3': { labels: ['2023','2024','2025'], school: [92,95,98], la: [78,82,86], wales: [84,88,91], ctx: [89,92,95] } },
+      male:            { '1': { school: 94, la: 78, wales: 83, ctx: 89 }, '3': { labels: ['2023','2024','2025'], school: [88,91,94], la: [70,74,78], wales: [76,80,83], ctx: [81,85,89] } },
+      'sex-comparison':{ '1': { labels: ['Female','Male'], school: [98,94], la: [86,78], wales: [91,83], ctx: [95,89] }, '3': { labels: ['2023','2024','2025'], school: [92,95,98], la: [78,82,86], wales: [83,88,91], ctx: [89,92,95] } },
+      fsm:             { '1': { school: 84, la: 66, wales: 72, ctx: 77 }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [64,68,72], ctx: [69,73,77] } },
+      nonfsm:          { '1': { school: 99, la: 90, wales: 94, ctx: 97 }, '3': { labels: ['2023','2024','2025'], school: [95,97,99], la: [84,87,90], wales: [89,92,94], ctx: [93,95,97] } },
+      'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [84,99], la: [66,90], wales: [72,94], ctx: [77,97] }, '3': { labels: ['2023','2024','2025'], school: [76,80,84], la: [58,62,66], wales: [64,68,72], ctx: [69,73,77] } }
+    }
+  };
+
+  var outcomesRange = '1';
+  var outcomesBreakdown = 'all';
+  var outcomesGrade = 'astar';
+  var outcomesChartInstance = null;
+
+  function buildOutcomesChart() {
+    var d = outcomesData[outcomesGrade][outcomesBreakdown][outcomesRange];
+    var isTime = outcomesRange === '3';
+    var comparators = getActiveComparators('outcomes');
+    var isComparison = isComparisonBreakdown(outcomesBreakdown);
+
+    if (outcomesChartInstance) { outcomesChartInstance.destroy(); }
+    var canvas = document.getElementById('outcomes-chart');
+    var ctx = canvas.getContext('2d');
+
+    if (isTime) {
+      canvas.height = 80;
+      var yAxis = dynamicYAxis(comparators.map(function(k){ return d[k]; }));
+      outcomesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: d.labels,
+          datasets: comparators.map(function(key) {
+            return { label: LABELS[key], data: d[key], borderColor: COLOURS[key], backgroundColor: COLOURS[key], borderWidth: 2, pointRadius: 5, tension: 0.1 };
+          })
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+          }
+        }
+      });
+    } else {
+      var barCount = isComparison ? d.labels.length * comparators.length : comparators.length;
+      canvas.height = canvasHeight(barCount);
+
+      if (!isComparison) {
+        outcomesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: comparators.map(function(k){ return LABELS[k]; }),
+            datasets: [{ label: '% of entries', data: comparators.map(function(k){ return d[k]; }), backgroundColor: comparators.map(function(k){ return COLOURS[k]; }), barThickness: 24 }]
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
+            scales: {
+              x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+              y: { grid: { display: false } }
+            }
+          }
+        });
+      } else {
+        outcomesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: d.labels,
+            datasets: comparators.map(function(key) {
+              return { label: LABELS[key], data: d[key], backgroundColor: COLOURS[key], barThickness: 24 };
+            })
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+            scales: {
+              x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+              y: { grid: { display: false } }
+            }
+          }
+        });
+      }
+    }
+
+    renderLegend('outcomes-legend', comparators, isTime, false);
+  }
+
+  document.getElementById('outcomes-grade').addEventListener('change', function() { outcomesGrade = this.value; buildOutcomesChart(); });
+  document.getElementById('outcomes-breakdown').addEventListener('change', function() { outcomesBreakdown = this.value; buildOutcomesChart(); });
+  document.querySelectorAll('.outcomes-time-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.outcomes-time-btn').forEach(function(b){ b.classList.remove('outcomes-time-btn--active'); b.style.background=''; b.style.color=''; });
+      this.classList.add('outcomes-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
+      outcomesRange = this.getAttribute('data-range'); buildOutcomesChart();
+    });
+  });
+  ['outcomes-show-la','outcomes-show-wales','outcomes-show-ctx'].forEach(function(id){ document.getElementById(id).addEventListener('change', buildOutcomesChart); });
+  document.querySelector('.outcomes-time-btn--active').style.background='#1B1E56';
+  document.querySelector('.outcomes-time-btn--active').style.color='white';
+  buildOutcomesChart();
+
+</script>
+
 {% endblock %}

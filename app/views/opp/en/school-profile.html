@@ -63,12 +63,8 @@
         </div>
 
         <div class="opp-aside" style="flex: 1; min-width: 180px;">
-          <h2 class="govuk-heading-s">Download data</h2>
-          <p class="govuk-body-s govuk-!-margin-bottom-1">Do not use this data to rank schools without reading the guidance.</p>
-          <div style="display: flex; align-items: center; gap: 16px; margin-top: 8px;">
-            <a href="#" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0">Download as CSV</a>
-            <a href="#" class="govuk-link" target="_blank" rel="noopener noreferrer">Estyn report ↗</a>
-          </div>
+          <h2 class="govuk-heading-s">Other reports</h2>
+          <p class="govuk-body-s govuk-!-margin-bottom-1"><a href="#" class="govuk-link" target="_blank" rel="noopener noreferrer">Estyn report ↗</a></p>
         </div>
 
       </div>
@@ -90,7 +86,7 @@
             <a href="#" class="profile-tab-link" data-tab="resources" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Resources</a>
           </li>
           <li>
-            <a href="#" class="profile-tab-link" data-tab="attainment" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Attainment</a>
+            <a href="#" class="profile-tab-link" data-tab="attainment" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Entries and Attainment</a>
           </li>
           <li>
             <a href="#" class="profile-tab-link" data-tab="attendance" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Attendance</a>
@@ -319,10 +315,78 @@
       </div>
 
       <div id="tab-attainment" class="profile-tab-content" style="display:none;">
-        <h2 class="govuk-heading-l">Attainment</h2>
-        {{ govukInsetText({
-          text: "Attainment data for this school is not yet available. This section is in development and will be updated in a future release."
-        }) }}
+        <h2 class="govuk-heading-l">Entries and Attainment</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-6">Data shown is for illustrative purposes only. Narrative context for this section will be added here.</p>
+
+        <h3 class="govuk-heading-m">Subject X</h3>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Context about Subject X and its significance for this school will appear here.</p>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6">
+
+        <h4 class="govuk-heading-s">Entries</h4>
+        <p class="govuk-body-s">Proportion of year 11 pupils entered for Subject X.</p>
+
+        <div style="margin-bottom: 12px;">
+          <label class="govuk-body-s" for="opp-entries-breakdown">Breakdown:</label>
+          <select id="opp-entries-breakdown" class="govuk-select govuk-select--small" style="margin-left: 8px; width: auto; max-width: 240px;">
+            <option value="all" selected>All pupils</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="sex-comparison">Female vs Male</option>
+            <option value="fsm">FSM eligible</option>
+            <option value="nonfsm">Non-FSM eligible</option>
+            <option value="fsm-comparison">FSM eligible vs Non-FSM eligible</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-entries-time-btn opp-entries-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-entries-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
+        </div>
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="opp-entries-chart"></canvas>
+        </div>
+        <ul id="opp-entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0 0 32px; font-size: 14px; flex-wrap: wrap;"></ul>
+
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6">
+
+        <h4 class="govuk-heading-s">Outcomes</h4>
+        <p class="govuk-body-s">Percentage of entries achieving the selected grade range.</p>
+
+        <div style="margin-bottom: 8px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+          <label class="govuk-body-s" for="opp-outcomes-grade">Grade range:</label>
+          <select id="opp-outcomes-grade" class="govuk-select govuk-select--small" style="width: auto; max-width: 120px;">
+            <option value="astar" selected>A*</option>
+            <option value="astar-a">A*-A</option>
+            <option value="astar-b">A*-B</option>
+            <option value="astar-c">A*-C</option>
+            <option value="astar-d">A*-D</option>
+            <option value="astar-e">A*-E</option>
+            <option value="astar-f">A*-F</option>
+            <option value="astar-g">A*-G</option>
+          </select>
+          <label class="govuk-body-s" for="opp-outcomes-breakdown" style="margin-left: 8px;">Breakdown:</label>
+          <select id="opp-outcomes-breakdown" class="govuk-select govuk-select--small" style="width: auto; max-width: 240px;">
+            <option value="all" selected>All pupils</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="sex-comparison">Female vs Male</option>
+            <option value="fsm">FSM eligible</option>
+            <option value="nonfsm">Non-FSM eligible</option>
+            <option value="fsm-comparison">FSM eligible vs Non-FSM eligible</option>
+          </select>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 12px;">
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn opp-outcomes-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
+        </div>
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="opp-outcomes-chart"></canvas>
+        </div>
+        <ul id="opp-outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
       </div>
 
       <div id="tab-attendance" class="profile-tab-content" style="display:none;">
@@ -381,6 +445,11 @@
           <p class="opp-summary-card__label govuk-body-s">Free school meal eligibility</p>
           <p class="opp-summary-card__value govuk-heading-l">22.4%</p>
         </div>
+        <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
+          <h2 class="govuk-heading-s">Download data</h2>
+          <p class="govuk-body-s govuk-!-margin-bottom-1">Do not use this data to rank schools without reading the guidance.</p>
+          <a href="#" class="govuk-button govuk-button--secondary govuk-!-margin-top-2 govuk-!-margin-bottom-0">Download as CSV</a>
+        </div>
       </div>
     </div>
 
@@ -408,6 +477,222 @@
       this.style.borderBottom = '4px solid #1B1E56';
     });
   });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+  var OPP_COLOUR = '#003078';
+
+  function oppHexToRgba(hex, alpha) {
+    var r = parseInt(hex.slice(1,3),16);
+    var g = parseInt(hex.slice(3,5),16);
+    var b = parseInt(hex.slice(5,7),16);
+    return 'rgba('+r+','+g+','+b+','+alpha+')';
+  }
+
+  function oppCanvasHeight(barCount) {
+    return Math.min(200, Math.max(50, barCount * 24));
+  }
+
+  function oppDynamicYAxis(data) {
+    var min = Math.floor((Math.min.apply(null, data) - 8) / 5) * 5;
+    var max = Math.ceil((Math.max.apply(null, data) + 8) / 5) * 5;
+    return { min: Math.max(0, min), max: Math.min(100, max) };
+  }
+
+  var oppEntriesData = {
+    all:             { '1': 78, '3': { labels: ['2023','2024','2025'], school: [72,75,78] } },
+    female:          { '1': 82, '3': { labels: ['2023','2024','2025'], school: [76,79,82] } },
+    male:            { '1': 74, '3': { labels: ['2023','2024','2025'], school: [68,71,74] } },
+    'sex-comparison':{ '1': { labels: ['Female','Male'], school: [82,74] }, '3': { labels: ['2023','2024','2025'], school: [79,82,85] } },
+    fsm:             { '1': 61, '3': { labels: ['2023','2024','2025'], school: [54,57,61] } },
+    nonfsm:          { '1': 85, '3': { labels: ['2023','2024','2025'], school: [79,82,85] } },
+    'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [61,85] }, '3': { labels: ['2023','2024','2025'], school: [55,58,61] } }
+  };
+
+  var oppOutcomesData = {
+    'astar':   { all: { '1': 12, '3': [8,10,12]  }, female: { '1': 15, '3': [10,13,15] }, male: { '1': 9,  '3': [6,7,9]   }, 'sex-comparison': { '1': [15,9],  '3': [12,14,15] }, fsm: { '1': 5,  '3': [3,4,5]   }, nonfsm: { '1': 16, '3': [11,14,16] }, 'fsm-comparison': { '1': [5,16],  '3': [3,4,5]   } },
+    'astar-a': { all: { '1': 28, '3': [22,25,28] }, female: { '1': 33, '3': [27,30,33] }, male: { '1': 23, '3': [17,20,23] }, 'sex-comparison': { '1': [33,23], '3': [27,30,33] }, fsm: { '1': 13, '3': [9,11,13]  }, nonfsm: { '1': 36, '3': [28,32,36] }, 'fsm-comparison': { '1': [13,36], '3': [9,11,13]  } },
+    'astar-b': { all: { '1': 46, '3': [38,42,46] }, female: { '1': 52, '3': [44,48,52] }, male: { '1': 40, '3': [32,36,40] }, 'sex-comparison': { '1': [52,40], '3': [44,48,52] }, fsm: { '1': 26, '3': [20,23,26]  }, nonfsm: { '1': 57, '3': [49,53,57] }, 'fsm-comparison': { '1': [26,57], '3': [20,23,26]  } },
+    'astar-c': { all: { '1': 62, '3': [54,58,62] }, female: { '1': 68, '3': [60,64,68] }, male: { '1': 56, '3': [48,52,56] }, 'sex-comparison': { '1': [68,56], '3': [60,64,68] }, fsm: { '1': 38, '3': [30,34,38]  }, nonfsm: { '1': 74, '3': [66,70,74] }, 'fsm-comparison': { '1': [38,74], '3': [30,34,38]  } },
+    'astar-d': { all: { '1': 74, '3': [66,70,74] }, female: { '1': 79, '3': [71,75,79] }, male: { '1': 69, '3': [61,65,69] }, 'sex-comparison': { '1': [79,69], '3': [71,75,79] }, fsm: { '1': 52, '3': [44,48,52]  }, nonfsm: { '1': 84, '3': [76,80,84] }, 'fsm-comparison': { '1': [52,84], '3': [44,48,52]  } },
+    'astar-e': { all: { '1': 83, '3': [75,79,83] }, female: { '1': 87, '3': [79,83,87] }, male: { '1': 79, '3': [71,75,79] }, 'sex-comparison': { '1': [87,79], '3': [79,83,87] }, fsm: { '1': 63, '3': [55,59,63]  }, nonfsm: { '1': 91, '3': [83,87,91] }, 'fsm-comparison': { '1': [63,91], '3': [55,59,63]  } },
+    'astar-f': { all: { '1': 90, '3': [82,86,90] }, female: { '1': 93, '3': [85,89,93] }, male: { '1': 87, '3': [79,83,87] }, 'sex-comparison': { '1': [93,87], '3': [85,89,93] }, fsm: { '1': 74, '3': [66,70,74]  }, nonfsm: { '1': 96, '3': [88,92,96] }, 'fsm-comparison': { '1': [74,96], '3': [66,70,74]  } },
+    'astar-g': { all: { '1': 96, '3': [90,93,96] }, female: { '1': 98, '3': [92,95,98] }, male: { '1': 94, '3': [88,91,94] }, 'sex-comparison': { '1': [98,94], '3': [92,95,98] }, fsm: { '1': 84, '3': [76,80,84]  }, nonfsm: { '1': 99, '3': [95,97,99] }, 'fsm-comparison': { '1': [84,99], '3': [76,80,84]  } }
+  };
+
+  var oppEntriesRange = '1';
+  var oppEntriesBreakdown = 'all';
+  var oppEntriesChartInstance = null;
+  var oppOutcomesRange = '1';
+  var oppOutcomesBreakdown = 'all';
+  var oppOutcomesGrade = 'astar';
+  var oppOutcomesChartInstance = null;
+
+  function oppIsComparison(breakdown) {
+    return breakdown === 'sex-comparison' || breakdown === 'fsm-comparison';
+  }
+
+  function oppRenderLegend(elId, isEntries, isTime, breakdown) {
+    var el = document.getElementById(elId);
+    el.innerHTML = '';
+    if (isTime || !isEntries) {
+      el.innerHTML = '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+OPP_COLOUR+';border-radius:2px;"></span> This school</li>';
+    } else {
+      el.innerHTML = '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+OPP_COLOUR+';border-radius:2px;"></span> Entered</li>';
+      el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+oppHexToRgba(OPP_COLOUR,0.5)+';border-radius:2px;"></span> Not entered</li>';
+    }
+  }
+
+  function buildOppEntriesChart() {
+    var d = oppEntriesData[oppEntriesBreakdown][oppEntriesRange];
+    var isTime = oppEntriesRange === '3';
+    var isComparison = oppIsComparison(oppEntriesBreakdown);
+
+    if (oppEntriesChartInstance) { oppEntriesChartInstance.destroy(); }
+    var canvas = document.getElementById('opp-entries-chart');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    if (isTime) {
+      canvas.height = 80;
+      var yAxis = oppDynamicYAxis(d.school);
+      oppEntriesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: d.labels,
+          datasets: [{ label: 'This school', data: d.school, borderColor: OPP_COLOUR, backgroundColor: OPP_COLOUR, borderWidth: 2, pointRadius: 5, tension: 0.1 }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+          }
+        }
+      });
+    } else {
+      var labels, entered, notEntered;
+      if (!isComparison) {
+        canvas.height = oppCanvasHeight(1);
+        labels = ['This school'];
+        entered = [d];
+        notEntered = [100 - d];
+      } else {
+        canvas.height = oppCanvasHeight(d.labels.length);
+        labels = d.labels;
+        entered = d.school;
+        notEntered = d.school.map(function(v){ return 100-v; });
+      }
+      oppEntriesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Entered',     data: entered,    backgroundColor: OPP_COLOUR,                      barThickness: 24, stack: 'stack' },
+            { label: 'Not entered', data: notEntered, backgroundColor: oppHexToRgba(OPP_COLOUR, 0.5),   barThickness: 24, stack: 'stack' }
+          ]
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          scales: {
+            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+            y: { stacked: true, grid: { display: false } }
+          }
+        }
+      });
+    }
+    oppRenderLegend('opp-entries-legend', true, isTime, oppEntriesBreakdown);
+  }
+
+  function buildOppOutcomesChart() {
+    var d = oppOutcomesData[oppOutcomesGrade][oppOutcomesBreakdown];
+    var val = d[oppOutcomesRange];
+    var isTime = oppOutcomesRange === '3';
+    var isComparison = oppIsComparison(oppOutcomesBreakdown);
+
+    if (oppOutcomesChartInstance) { oppOutcomesChartInstance.destroy(); }
+    var canvas = document.getElementById('opp-outcomes-chart');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    if (isTime) {
+      canvas.height = 80;
+      var yAxis = oppDynamicYAxis(Array.isArray(val) ? val : [val]);
+      oppOutcomesChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['2023','2024','2025'],
+          datasets: [{ label: 'This school', data: val, borderColor: OPP_COLOUR, backgroundColor: OPP_COLOUR, borderWidth: 2, pointRadius: 5, tension: 0.1 }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+          }
+        }
+      });
+    } else {
+      var labels, data;
+      if (!isComparison) {
+        canvas.height = oppCanvasHeight(1);
+        labels = ['This school'];
+        data = [val];
+      } else {
+        var compLabels = oppOutcomesBreakdown === 'sex-comparison' ? ['Female','Male'] : ['FSM eligible','Non-FSM eligible'];
+        canvas.height = oppCanvasHeight(compLabels.length);
+        labels = compLabels;
+        data = val;
+      }
+      oppOutcomesChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{ label: '% of entries', data: data, backgroundColor: OPP_COLOUR, barThickness: 24 }]
+        },
+        options: {
+          indexAxis: 'y', responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
+          scales: {
+            x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    }
+    oppRenderLegend('opp-outcomes-legend', false, isTime, oppOutcomesBreakdown);
+  }
+
+  document.getElementById('opp-entries-breakdown').addEventListener('change', function() { oppEntriesBreakdown = this.value; buildOppEntriesChart(); });
+  document.querySelectorAll('.opp-entries-time-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.opp-entries-time-btn').forEach(function(b){ b.classList.remove('opp-entries-time-btn--active'); b.style.background=''; b.style.color=''; });
+      this.classList.add('opp-entries-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
+      oppEntriesRange = this.getAttribute('data-range'); buildOppEntriesChart();
+    });
+  });
+  document.getElementById('opp-outcomes-grade').addEventListener('change', function() { oppOutcomesGrade = this.value; buildOppOutcomesChart(); });
+  document.getElementById('opp-outcomes-breakdown').addEventListener('change', function() { oppOutcomesBreakdown = this.value; buildOppOutcomesChart(); });
+  document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(b){ b.classList.remove('opp-outcomes-time-btn--active'); b.style.background=''; b.style.color=''; });
+      this.classList.add('opp-outcomes-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
+      oppOutcomesRange = this.getAttribute('data-range'); buildOppOutcomesChart();
+    });
+  });
+
+  document.querySelector('.opp-entries-time-btn--active').style.background='#1B1E56';
+  document.querySelector('.opp-entries-time-btn--active').style.color='white';
+  document.querySelector('.opp-outcomes-time-btn--active').style.background='#1B1E56';
+  document.querySelector('.opp-outcomes-time-btn--active').style.color='white';
+  buildOppEntriesChart();
+  buildOppOutcomesChart();
+
 </script>
 
 {% endblock %}
