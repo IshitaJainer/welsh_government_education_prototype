@@ -1,13 +1,24 @@
 {% extends "aup/layout_aup.html" %}
 {% set lang = "en" %}
 {% set currentNav = "compare" %}
+
+{# Read filter values from session — written there by routes.js GET middleware
+   when the build page navigated with ?size=...&fsm=...&type=... etc.
+   These are comma-separated strings e.g. "500-1000,1000+" or a single value "Secondary" #}
+{% set filterSize = data['size'] %}
+{% set filterFsm  = data['fsm'] %}
+{% set filterAln  = data['aln'] %}
+{% set filterLang = data['lang'] %}
+{% set filterType = data['type'] %}
+{% set filterLa   = data['la'] %}
+
 {% block pageTitle %}Matching schools — School Data Service{% endblock %}
 {% block content %}
 <div class="govuk-width-container">
 
   <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">5 schools match your criteria</h1>
+      <h1 id="results-heading" class="govuk-heading-l govuk-!-margin-bottom-1">Finding matching schools...</h1>
     </div>
     <div class="govuk-grid-column-one-third">
       <a href="/aup/en/compare-build.html" class="govuk-link govuk-body-s">← Adjust criteria</a>
@@ -16,91 +27,272 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-full">
-      <div class="aup-filter-bar">
+      <div id="criteria-bar" class="aup-filter-bar">
         <span class="govuk-body-s aup-filter-bar__label">Criteria applied:</span>
-          <strong class="govuk-tag govuk-tag--blue">500–1,000 pupils</strong>
-          <strong class="govuk-tag govuk-tag--blue">FSM (25–40%)</strong>
-          <strong class="govuk-tag govuk-tag--blue">ALN (15-25%; 25%+)</strong>
-          <strong class="govuk-tag govuk-tag--blue">English medium</strong>
       </div>
     </div>
   </div>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-        <table class="govuk-table">
-          <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-              <th class="govuk-table__header" scope="col">School</th>
-              <th class="govuk-table__header" scope="col">Pupils</th>
-              <th class="govuk-table__header" scope="col">FSM %</th>
-              <th class="govuk-table__header" scope="col">ALN %</th>
-              <th class="govuk-table__header" scope="col">Language</th>
-              <th class="govuk-table__header" scope="col">Similarity</th>
-            </tr>
-          </thead>
-          <tbody class="govuk-table__body">
-            <tr class="govuk-table__row" style="background: #f3f2f1;">
-              <td class="govuk-table__cell"><strong>Ysgol Gyfun Abercastell</strong><br><span class="govuk-body-s">Your school</span></td>
-              <td class="govuk-table__cell">1,107</td>
-              <td class="govuk-table__cell">35.6%</td>
-              <td class="govuk-table__cell">18.2%</td>
-              <td class="govuk-table__cell">English</td>
-              <td class="govuk-table__cell">—</td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Ysgol Gyfun Bro Morgannwg</a></td>
-              <td class="govuk-table__cell">980</td>
-              <td class="govuk-table__cell">33.1%</td>
-              <td class="govuk-table__cell">17.4%</td>
-              <td class="govuk-table__cell">Welsh</td>
-              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">97%</strong></td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Heolddu Comprehensive School</a></td>
-              <td class="govuk-table__cell">1,050</td>
-              <td class="govuk-table__cell">37.2%</td>
-              <td class="govuk-table__cell">19.1%</td>
-              <td class="govuk-table__cell">English</td>
-              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">95%</strong></td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Bedwas High School</a></td>
-              <td class="govuk-table__cell">890</td>
-              <td class="govuk-table__cell">31.4%</td>
-              <td class="govuk-table__cell">16.8%</td>
-              <td class="govuk-table__cell">English</td>
-              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">91%</strong></td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Lewis School Pengam</a></td>
-              <td class="govuk-table__cell">1,200</td>
-              <td class="govuk-table__cell">38.0%</td>
-              <td class="govuk-table__cell">20.3%</td>
-              <td class="govuk-table__cell">English</td>
-              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--yellow">89%</strong></td>
-            </tr>
-            <tr class="govuk-table__row">
-              <td class="govuk-table__cell"><a href="/opp/en/school-profile.html" class="govuk-link">Risca Comprehensive School</a></td>
-              <td class="govuk-table__cell">760</td>
-              <td class="govuk-table__cell">29.8%</td>
-              <td class="govuk-table__cell">15.9%</td>
-              <td class="govuk-table__cell">English</td>
-              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--yellow">84%</strong></td>
-            </tr>
-          </tbody>
-        </table>
+      <table class="govuk-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">School</th>
+            <th class="govuk-table__header" scope="col">Type</th>
+            <th class="govuk-table__header" scope="col">Pupils</th>
+            <th class="govuk-table__header" scope="col">FSM %</th>
+            <th class="govuk-table__header" scope="col">ALN %</th>
+            <th class="govuk-table__header" scope="col">Language</th>
+            <th class="govuk-table__header" scope="col">Attendance</th>
+          </tr>
+        </thead>
+        <tbody id="results-tbody" class="govuk-table__body">
+        </tbody>
+      </table>
 
-        {{ govukDetails({
-        summaryText: "How is the similarity score calculated?",
-        text: "The similarity score shows how closely each school matches the criteria you selected. Each criterion you chose to apply is weighted equally. A school that matches all your criteria perfectly would score 100%. Schools that partially match, for example falling near the boundary of a band, will score lower. Criteria you chose not to apply are not counted."
+      {{ govukDetails({
+        summaryText: "How are schools matched?",
+        text: "Schools are matched against each filter criterion you applied. A school must meet all active criteria to appear in the results. Your own school is always shown at the top for reference. Schools are ordered by how closely their attendance matches yours."
       }) }}
 
     </div>
   </div>
 
 </div>
+{% endblock %}
 
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script>
+    (function() {
 
+      var MY_SCHOOL_SLUG = 'abercastell';
 
+      // Filter values written into session by routes.js GET middleware
+      // Rendered server-side by Nunjucks — safe and reliable
+      var rawSize = "{{ filterSize or '' }}";
+      var rawFsm  = "{{ filterFsm  or '' }}";
+      var rawAln  = "{{ filterAln  or '' }}";
+      var rawLang = "{{ filterLang or '' }}";
+      var rawType = "{{ filterType or '' }}";
+      var rawLa   = "{{ filterLa   or '' }}";
+
+      // Parse comma-separated values; null means no filter applied
+      function parseFilter(raw, exclusiveValue) {
+        if (!raw) return null;
+        var vals = raw.split(',').map(function(v) { return v.trim(); })
+          .filter(function(v) { return v && v !== exclusiveValue; });
+        return vals.length ? vals : null;
+      }
+
+      var filterSize = parseFilter(rawSize, 'size-any');
+      var filterFsm  = parseFilter(rawFsm,  'fsm-any');
+      var filterAln  = parseFilter(rawAln,  'aln-any');
+      var filterLang = parseFilter(rawLang, 'lang-any');
+      var filterType = parseFilter(rawType, 'type-any');
+      var filterLa   = rawLa && rawLa !== 'la-any' ? rawLa : null;
+
+      // LA codes in data.js that belong to each region
+      var regionMap = {
+        'se':  ['rct', 'caerphilly', 'merthyr'],
+        'sw':  [],
+        'nw':  [],
+        'mid': []
+      };
+
+      function calcAln(school) {
+        if (!school.pupils || !school.pupils.aln) return null;
+        var aln = school.pupils.aln;
+        var yr = '2024-25';
+        var sa  = aln.schoolAction     ? (aln.schoolAction[yr]     || 0) : 0;
+        var sap = aln.schoolActionPlus ? (aln.schoolActionPlus[yr] || 0) : 0;
+        var st  = aln.statement        ? (aln.statement[yr]        || 0) : 0;
+        return Math.round((sa + sap + st) * 10) / 10;
+      }
+
+      function meetsSize(school, sizes) {
+        if (!sizes) return true;
+        var p = school.totalPupils;
+        return sizes.some(function(s) {
+          if (s === 'under-500') return p < 500;
+          if (s === '500-1000')  return p >= 500 && p <= 1000;
+          if (s === '1000+')     return p > 1000;
+          return false;
+        });
+      }
+
+      function meetsFsm(school, bands) {
+        if (!bands) return true;
+        var f = school.fsm3yr;
+        if (f === null || f === undefined) return false;
+        return bands.some(function(b) {
+          if (b === '0-10')  return f <= 10;
+          if (b === '10-25') return f > 10 && f <= 25;
+          if (b === '25-40') return f > 25 && f <= 40;
+          if (b === '40+')   return f > 40;
+          return false;
+        });
+      }
+
+      function meetsAln(school, bands) {
+        if (!bands) return true;
+        var a = calcAln(school);
+        if (a === null) return false;
+        return bands.some(function(b) {
+          if (b === 'low')     return a < 15;
+          if (b === 'average') return a >= 15 && a <= 25;
+          if (b === 'high')    return a > 25;
+          return false;
+        });
+      }
+
+      function meetsLang(school, langs) {
+        if (!langs) return true;
+        var l = (school.language || '').toLowerCase();
+        return langs.some(function(v) {
+          if (v === 'english')   return l.indexOf('english') > -1;
+          if (v === 'welsh')     return l.indexOf('welsh') > -1 && l.indexOf('english') === -1;
+          if (v === 'bilingual') return l.indexOf('bilingual') > -1 || l.indexOf('dual') > -1;
+          return false;
+        });
+      }
+
+      function meetsType(school, types) {
+        if (!types) return true;
+        return types.indexOf(school.phase) > -1;
+      }
+
+      function meetsLa(school, la) {
+        if (!la) return true;
+        if (regionMap[la] && regionMap[la].length) return regionMap[la].indexOf(school.la) > -1;
+        return school.la === la;
+      }
+
+      function buildCriteriaTags() {
+        var bar = document.getElementById('criteria-bar');
+        var tags = [];
+
+        if (filterSize) {
+          var sizeLabels = { 'under-500': 'Under 500 pupils', '500-1000': '500–1,000 pupils', '1000+': 'Over 1,000 pupils' };
+          filterSize.forEach(function(s) { if (sizeLabels[s]) tags.push(sizeLabels[s]); });
+        }
+        if (filterFsm) {
+          var fsmLabels = { '0-10': 'FSM up to 10%', '10-25': 'FSM 10–25%', '25-40': 'FSM 25–40%', '40+': 'FSM over 40%' };
+          filterFsm.forEach(function(f) { if (fsmLabels[f]) tags.push(fsmLabels[f]); });
+        }
+        if (filterAln) {
+          var alnLabels = { 'low': 'ALN below 15%', 'average': 'ALN 15–25%', 'high': 'ALN over 25%' };
+          filterAln.forEach(function(a) { if (alnLabels[a]) tags.push(alnLabels[a]); });
+        }
+        if (filterLang) {
+          var langLabels = { 'english': 'English medium', 'welsh': 'Welsh medium', 'bilingual': 'Bilingual' };
+          filterLang.forEach(function(l) { if (langLabels[l]) tags.push(langLabels[l]); });
+        }
+        if (filterType) {
+          filterType.forEach(function(t) { tags.push(t); });
+        }
+        if (filterLa) {
+          tags.push('Region / local authority filter applied');
+        }
+        if (tags.length === 0) {
+          tags.push('No filters applied — showing all schools');
+        }
+
+        tags.forEach(function(t) {
+          var tag = document.createElement('strong');
+          tag.className = 'govuk-tag govuk-tag--blue';
+          tag.style.marginRight = '4px';
+          tag.textContent = t;
+          bar.appendChild(tag);
+        });
+      }
+
+      function renderResults() {
+        var mySchool = WGData.schools[MY_SCHOOL_SLUG];
+        var myAtt = mySchool && mySchool.attendance && mySchool.attendance.overall['1']
+          ? mySchool.attendance.overall['1'].school : null;
+
+        var candidates = Object.keys(WGData.schools)
+          .filter(function(slug) { return slug !== MY_SCHOOL_SLUG; })
+          .map(function(slug) { return { slug: slug, school: WGData.schools[slug] }; })
+          .filter(function(item) {
+            var s = item.school;
+            return meetsSize(s, filterSize)
+              && meetsFsm(s, filterFsm)
+              && meetsAln(s, filterAln)
+              && meetsLang(s, filterLang)
+              && meetsType(s, filterType)
+              && meetsLa(s, filterLa);
+          });
+
+        // Sort by attendance similarity to this school
+        if (myAtt !== null) {
+          candidates.sort(function(a, b) {
+            var attA = a.school.attendance && a.school.attendance.overall['1'] ? a.school.attendance.overall['1'].school : 0;
+            var attB = b.school.attendance && b.school.attendance.overall['1'] ? b.school.attendance.overall['1'].school : 0;
+            return Math.abs(attA - myAtt) - Math.abs(attB - myAtt);
+          });
+        }
+
+        document.getElementById('results-heading').textContent =
+          candidates.length + ' school' + (candidates.length === 1 ? '' : 's') + ' match your criteria';
+
+        var tbody = document.getElementById('results-tbody');
+        tbody.innerHTML = '';
+
+        // Always show this school first as reference row
+        if (mySchool) {
+          var myAlnVal = calcAln(mySchool);
+          var myRow = document.createElement('tr');
+          myRow.className = 'govuk-table__row';
+          myRow.style.background = '#f3f2f1';
+          myRow.innerHTML =
+            '<td class="govuk-table__cell"><strong>' + mySchool.name + '</strong><br>' +
+            '<span class="govuk-body-s govuk-!-color-secondary">Your school</span></td>' +
+            '<td class="govuk-table__cell">' + mySchool.phase + '</td>' +
+            '<td class="govuk-table__cell">' + (mySchool.totalPupils ? mySchool.totalPupils.toLocaleString() : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (mySchool.fsm3yr !== undefined ? mySchool.fsm3yr + '%' : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (myAlnVal !== null ? myAlnVal + '%' : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (mySchool.language || '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (myAtt !== null ? myAtt + '%' : '\u2014') + '</td>';
+          tbody.appendChild(myRow);
+        }
+
+        if (candidates.length === 0) {
+          var noRow = document.createElement('tr');
+          noRow.className = 'govuk-table__row';
+          noRow.innerHTML = '<td class="govuk-table__cell" colspan="7">No matching schools found. Try adjusting your criteria.</td>';
+          tbody.appendChild(noRow);
+          return;
+        }
+
+        candidates.forEach(function(item) {
+          var school = item.school;
+          var slug   = item.slug;
+          var att    = school.attendance && school.attendance.overall['1']
+            ? school.attendance.overall['1'].school + '%' : '\u2014';
+          var alnVal = calcAln(school);
+
+          var row = document.createElement('tr');
+          row.className = 'govuk-table__row';
+          row.innerHTML =
+            '<td class="govuk-table__cell">' +
+            '<a href="/opp/en/school-profile.html?school=' + slug + '" class="govuk-link">' + school.name + '</a></td>' +
+            '<td class="govuk-table__cell">' + school.phase + '</td>' +
+            '<td class="govuk-table__cell">' + (school.totalPupils ? school.totalPupils.toLocaleString() : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (school.fsm3yr !== undefined ? school.fsm3yr + '%' : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (alnVal !== null ? alnVal + '%' : '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + (school.language || '\u2014') + '</td>' +
+            '<td class="govuk-table__cell">' + att + '</td>';
+          tbody.appendChild(row);
+        });
+      }
+
+      buildCriteriaTags();
+      renderResults();
+
+    })();
+  </script>
 {% endblock %}

@@ -4,7 +4,57 @@
 {% set alternativeHref = "/opp/cy/school-profile.html" %}
 {% set currentNav = "find" %}
 
-{% block pageTitle %}Ysgol Gyfun Abercastell — My Local School{% endblock %}
+{% set slug = data['school'] or 'abercastell' %}
+
+{% set schoolNames = {
+  'abercastell': 'Ysgol Gyfun Abercastell',
+  'blaengwawr': 'Blaengwawr High School',
+  'treorchy': 'Treorchy Comprehensive',
+  'mountain-ash': 'Mountain Ash Comprehensive',
+  'aberdare': 'Aberdare Community School',
+  'ferndale': 'Ferndale Community School',
+  'llanhari': 'Ysgol Llanhari',
+  'st-cenydd': 'St Cenydd Comprehensive',
+  'lewis': 'Lewis School Pengam',
+  'blackwood': 'Blackwood Comprehensive',
+  'risca': 'Risca Community Comprehensive',
+  'ystrad-mynach': 'Ysgol Gyfun Cwm Rhymni',
+  'cyfarthfa': 'Cyfarthfa High School',
+  'pen-y-dre': 'Pen-y-Dre High School',
+  'afon-taf': 'Afon Taf High School',
+  'bishop-hannington': 'Bishop Hannington Church in Wales School'
+} %}
+
+{% set laNames = {
+  'rct': 'Rhondda Cynon Taf',
+  'caerphilly': 'Caerphilly',
+  'merthyr': 'Merthyr Tydfil'
+} %}
+
+{% set schoolLAs = {
+  'abercastell': 'rct',
+  'blaengwawr': 'rct',
+  'treorchy': 'rct',
+  'mountain-ash': 'rct',
+  'aberdare': 'rct',
+  'ferndale': 'rct',
+  'llanhari': 'rct',
+  'st-cenydd': 'caerphilly',
+  'lewis': 'caerphilly',
+  'blackwood': 'caerphilly',
+  'risca': 'caerphilly',
+  'ystrad-mynach': 'caerphilly',
+  'cyfarthfa': 'merthyr',
+  'pen-y-dre': 'merthyr',
+  'afon-taf': 'merthyr',
+  'bishop-hannington': 'merthyr'
+} %}
+
+{% set schoolName = schoolNames[slug] or 'Ysgol Gyfun Abercastell' %}
+{% set schoolLA = schoolLAs[slug] or 'rct' %}
+{% set schoolLAName = laNames[schoolLA] or 'Rhondda Cynon Taf' %}
+
+{% block pageTitle %}{{ schoolName }} — My Local School{% endblock %}
 
 {% block beforeContent %}
   {{ super() }}
@@ -12,8 +62,8 @@
     items: [
       { text: "Home", href: "/opp/en/index.html" },
       { text: "Find a school", href: "/opp/en/search.html" },
-      { text: "Caerphilly", href: "#" },
-      { text: "Ysgol Gyfun Abercastell" }
+      { text: schoolLAName, href: "#" },
+      { text: schoolName }
     ]
   }) }}
 {% endblock %}
@@ -21,52 +71,78 @@
 {% block content %}
 <div class="govuk-width-container">
 
+  <div class="govuk-grid-row govuk-!-margin-bottom-2">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2" id="school-name-heading">{{ schoolName }}</h1>
+      <ul class="opp-tags govuk-list govuk-!-margin-bottom-2" id="school-tags">
+        <li><strong class="govuk-tag govuk-tag--blue" id="tag-phase">Secondary (11-18)</strong></li>
+        <li><strong class="govuk-tag govuk-tag--green" id="tag-language">Welsh medium</strong></li>
+        <li><strong class="govuk-tag govuk-tag--blue" id="tag-type">Community school</strong></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">Ysgol Gyfun Abercastell</h1>
-      <ul class="opp-tags govuk-list govuk-!-margin-bottom-2">
-        <li><strong class="govuk-tag govuk-tag--blue">Secondary (11-18)</strong></li>
-        <li><strong class="govuk-tag govuk-tag--green">Welsh medium</strong></li>
-        <li><strong class="govuk-tag govuk-tag--blue">Community school</strong></li>
-      </ul>
+      <label class="govuk-label govuk-!-margin-bottom-1" for="school-selector">Change school:</label>
+      <select class="govuk-select" id="school-selector" style="max-width: 400px;">
+        <option value="abercastell" {% if slug == 'abercastell' %}selected{% endif %}>Ysgol Gyfun Abercastell (RCT)</option>
+        <option value="blaengwawr" {% if slug == 'blaengwawr' %}selected{% endif %}>Blaengwawr High School (RCT)</option>
+        <option value="treorchy" {% if slug == 'treorchy' %}selected{% endif %}>Treorchy Comprehensive (RCT)</option>
+        <option value="mountain-ash" {% if slug == 'mountain-ash' %}selected{% endif %}>Mountain Ash Comprehensive (RCT)</option>
+        <option value="aberdare" {% if slug == 'aberdare' %}selected{% endif %}>Aberdare Community School (RCT)</option>
+        <option value="ferndale" {% if slug == 'ferndale' %}selected{% endif %}>Ferndale Community School (RCT)</option>
+        <option value="llanhari" {% if slug == 'llanhari' %}selected{% endif %}>Ysgol Llanhari (RCT)</option>
+        <option value="st-cenydd" {% if slug == 'st-cenydd' %}selected{% endif %}>St Cenydd Comprehensive (Caerphilly)</option>
+        <option value="lewis" {% if slug == 'lewis' %}selected{% endif %}>Lewis School Pengam (Caerphilly)</option>
+        <option value="blackwood" {% if slug == 'blackwood' %}selected{% endif %}>Blackwood Comprehensive (Caerphilly)</option>
+        <option value="risca" {% if slug == 'risca' %}selected{% endif %}>Risca Community Comprehensive (Caerphilly)</option>
+        <option value="ystrad-mynach" {% if slug == 'ystrad-mynach' %}selected{% endif %}>Ysgol Gyfun Cwm Rhymni (Caerphilly)</option>
+        <option value="cyfarthfa" {% if slug == 'cyfarthfa' %}selected{% endif %}>Cyfarthfa High School (Merthyr)</option>
+        <option value="pen-y-dre" {% if slug == 'pen-y-dre' %}selected{% endif %}>Pen-y-Dre High School (Merthyr)</option>
+        <option value="afon-taf" {% if slug == 'afon-taf' %}selected{% endif %}>Afon Taf High School (Merthyr)</option>
+        <option value="bishop-hannington" {% if slug == 'bishop-hannington' %}selected{% endif %}>Bishop Hannington Church in Wales School (Merthyr)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4" style="display: flex; align-items: stretch;">
+    <div class="govuk-grid-column-one-half" style="display: flex; flex-direction: column;">
+      <div class="opp-aside govuk-!-margin-bottom-4">
+        <h2 class="govuk-heading-s">Contact this school</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1" id="school-address"></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1" id="school-phone"></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1" id="school-email"></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0" id="school-website"></p>
+      </div>
+      <div class="opp-aside">
+        <h2 class="govuk-heading-s">Other reports</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1"><a href="#" id="estyn-link" class="govuk-link" target="_blank" rel="noopener noreferrer">Estyn report ↗</a></p>
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-half" style="display: flex; flex-direction: column;">
+      <div id="school-map" style="height: 100%; min-height: 200px; width: 100%;"></div>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
-      <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start;">
-
-        <div class="opp-aside" style="flex: 1; min-width: 180px;">
-          <h2 class="govuk-heading-s">Contact this school</h2>
-          <p class="govuk-body-s govuk-!-margin-bottom-1">Fleur-de-lis Road, Pengam, Caerphilly, NP12 3QP</p>
-          <p class="govuk-body-s govuk-!-margin-bottom-1"><a href="tel:01443875548" class="govuk-link">01443 875548</a></p>
-          <p class="govuk-body-s govuk-!-margin-bottom-1"><a href="mailto:cwmrhymni@caerphilly.gov.uk" class="govuk-link">cwmrhymni@caerphilly.gov.uk</a></p>
-          <p class="govuk-body-s govuk-!-margin-bottom-0"><a href="#" class="govuk-link">ysgolcwmrhymni.cymru</a></p>
+      <div class="opp-aside" style="display: flex; gap: 32px; flex-wrap: wrap; padding: 12px 0;">
+        <div class="govuk-body-s" style="flex: 1; min-width: 160px;">
+          <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Other schools nearby</h2>
         </div>
-
-        <div class="opp-aside" style="flex: 2; min-width: 240px;">
-          <h2 class="govuk-heading-s">Other schools nearby</h2>
-          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <div class="govuk-body-s" style="min-width: 160px;">
-              <a href="#" class="govuk-link">Ysgol Gyfun Rhymni</a><br>
-              <span style="color:#505a5f">Secondary · 2.4 miles</span>
-            </div>
-            <div class="govuk-body-s" style="min-width: 160px;">
-              <a href="#" class="govuk-link">Heolddu Comprehensive</a><br>
-              <span style="color:#505a5f">Secondary · 3.1 miles</span>
-            </div>
-            <div class="govuk-body-s" style="min-width: 160px;">
-              <a href="#" class="govuk-link">Ysgol Gyfun Bryn Mawr</a><br>
-              <span style="color:#505a5f">Secondary · 4.7 miles</span>
-            </div>
-          </div>
+        <div class="govuk-body-s" style="flex: 1; min-width: 160px;">
+          <a href="#" class="govuk-link">Ysgol Gyfun Rhymni</a><br>
+          <span style="color:#505a5f">Secondary · 2.4 miles</span>
         </div>
-
-        <div class="opp-aside" style="flex: 1; min-width: 180px;">
-          <h2 class="govuk-heading-s">Other reports</h2>
-          <p class="govuk-body-s govuk-!-margin-bottom-1"><a href="#" class="govuk-link" target="_blank" rel="noopener noreferrer">Estyn report ↗</a></p>
+        <div class="govuk-body-s" style="flex: 1; min-width: 160px;">
+          <a href="#" class="govuk-link">Heolddu Comprehensive</a><br>
+          <span style="color:#505a5f">Secondary · 3.1 miles</span>
         </div>
-
+        <div class="govuk-body-s" style="flex: 1; min-width: 160px;">
+          <a href="#" class="govuk-link">Ysgol Gyfun Bryn Mawr</a><br>
+          <span style="color:#505a5f">Secondary · 4.7 miles</span>
+        </div>
       </div>
     </div>
   </div>
@@ -91,15 +167,12 @@
           <li>
             <a href="#" class="profile-tab-link" data-tab="attendance" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">Attendance</a>
           </li>
-          <li>
-            <a href="#" class="profile-tab-link" data-tab="pe-sport" style="display:block; padding: 10px 16px; text-decoration: none; font-size: 16px; color: #1d70b8; border-bottom: 4px solid transparent; margin-bottom: -2px;">PE &amp; Sport</a>
-          </li>
         </ul>
       </div>
 
+      <!-- SUMMARY TAB -->
       <div id="tab-summary" class="profile-tab-content">
         <h2 class="govuk-heading-l">Summary</h2>
-
         <div class="govuk-form-group govuk-!-margin-bottom-4">
           <label class="govuk-label" for="academic-year">Academic year</label>
           <select class="govuk-select" id="academic-year" name="academic-year">
@@ -108,60 +181,38 @@
             <option value="2023">2022-23</option>
           </select>
         </div>
-
-        {{ govukTable({
-          head: [
-            { text: "Attainment information" },
-            { text: "" }
-          ],
-          rows: [
-            [ { text: "Capped 9 points score (interim measures version)" }, { text: "356.2" } ],
-            [ { text: "Literacy points score" }, { text: "35.9" } ],
-            [ { text: "Numeracy points score" }, { text: "33.2" } ],
-            [ { text: "Science points score" }, { text: "33.9" } ],
-            [ { text: "Welsh Baccalaureate Skills Challenge Certificate points score" }, { text: "41.1" } ]
-          ]
-        }) }}
-
-        {{ govukTable({
-          head: [
-            { text: "Contextual information" },
-            { text: "" }
-          ],
-          rows: [
-            [ { text: "Free school meals (FSM) — 3 year average" }, { text: "29.9%" } ],
-            [ { text: "Pupil Teacher Ratio (PTR)" }, { text: "17.6" } ],
-            [ { text: "% Attendance during the year" }, { text: "86.2%" } ],
-            [ { text: "School budget per pupil" }, { text: "£6,175" } ]
-          ]
-        }) }}
-
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Contextual information</th>
+              <th class="govuk-table__header"></th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Free school meals (FSM) — 3 year average</td>
+              <td class="govuk-table__cell" id="summary-fsm">—</td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">Pupil Teacher Ratio (PTR)</td>
+              <td class="govuk-table__cell" id="summary-ptr">—</td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">% Attendance during the year</td>
+              <td class="govuk-table__cell" id="summary-attendance">—</td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">School budget per pupil</td>
+              <td class="govuk-table__cell" id="summary-budget">—</td>
+            </tr>
+          </tbody>
+        </table>
         <details class="govuk-details">
           <summary class="govuk-details__summary">
             <span class="govuk-details__summary-text">What do these terms mean?</span>
           </summary>
           <div class="govuk-details__text">
             <dl class="govuk-summary-list govuk-summary-list--no-border">
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-body-s">Capped 9 points score</dt>
-                <dd class="govuk-summary-list__value govuk-body-s">A combined score across a learner's best 9 qualifications, capped to prevent any single subject dominating. The interim measures version applies while the new curriculum is being phased in.</dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-body-s">Literacy points score</dt>
-                <dd class="govuk-summary-list__value govuk-body-s">The average points score achieved in literacy-related qualifications, including English or Welsh language and literature.</dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-body-s">Numeracy points score</dt>
-                <dd class="govuk-summary-list__value govuk-body-s">The average points score achieved in mathematics and numeracy qualifications.</dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-body-s">Science points score</dt>
-                <dd class="govuk-summary-list__value govuk-body-s">The average points score achieved in science qualifications, including GCSE sciences and VCSE alternatives.</dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-body-s">Welsh Baccalaureate Skills Challenge Certificate points score</dt>
-                <dd class="govuk-summary-list__value govuk-body-s">The average points score for the Skills Challenge Certificate, a core part of the Welsh Baccalaureate assessing skills such as critical thinking, enterprise and communication.</dd>
-              </div>
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key govuk-body-s">Free school meals (FSM) — 3 year average</dt>
                 <dd class="govuk-summary-list__value govuk-body-s">The percentage of learners eligible for free school meals, averaged over three years to reduce year-on-year variation. Used as an indicator of socioeconomic disadvantage.</dd>
@@ -177,143 +228,122 @@
             </dl>
           </div>
         </details>
-
         {{ govukInsetText({
-          text: "These figures should not be used to rank schools without understanding the context. Many factors influence results, including learner backgrounds and local circumstances."
+          text: "This context should always be considered when comparing schools. Many factors influence results, including learner backgrounds and local circumstances."
         }) }}
       </div>
 
+      <!-- PUPILS TAB -->
       <div id="tab-pupils" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Pupils</h2>
-
         <h3 class="govuk-heading-m">Number of pupils, 2025</h3>
         <p class="govuk-body">Total number of pupils at this school by year group and Sex.</p>
-
-        {{ govukTable({
-          head: [
-            { text: "Year group" },
-            { text: "Male" },
-            { text: "Female" },
-            { text: "Total" }
-          ],
-          rows: [
-            [ { text: "Year 7" }, { text: "98" }, { text: "110" }, { text: "208" } ],
-            [ { text: "Year 8" }, { text: "115" }, { text: "110" }, { text: "225" } ],
-            [ { text: "Year 9" }, { text: "109" }, { text: "104" }, { text: "213" } ],
-            [ { text: "Year 10" }, { text: "117" }, { text: "122" }, { text: "239" } ],
-            [ { text: "Year 11" }, { text: "122" }, { text: "102" }, { text: "224" } ],
-            [ { text: "Year 12" }, { text: "35" }, { text: "28" }, { text: "63" } ],
-            [ { text: "Year 13" }, { text: "32" }, { text: "23" }, { text: "55" } ],
-            [ { text: "Total", classes: "govuk-!-font-weight-bold" }, { text: "628", classes: "govuk-!-font-weight-bold" }, { text: "599", classes: "govuk-!-font-weight-bold" }, { text: "1,227", classes: "govuk-!-font-weight-bold" } ]
-          ]
-        }) }}
-
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Year group</th>
+              <th class="govuk-table__header">Male</th>
+              <th class="govuk-table__header">Female</th>
+              <th class="govuk-table__header">Total</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="pupils-by-year-body"></tbody>
+        </table>
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
         <h3 class="govuk-heading-m">Free school meals (FSM) — 3 year average</h3>
         <p class="govuk-body">Pupils of statutory school age known to be eligible for free school meals.</p>
-
-
-        {{ govukTable({
-            head: [
-              { text: "Year" },
-              { text: "FSM eligibility" }
-            ],
-            rows: [
-              [ { text: "2019" }, { text: "27.6%" } ],
-              [ { text: "2020" }, { text: "27.7%" } ],
-              [ { text: "2021" }, { text: "29.9%" } ],
-              [ { text: "2022" }, { text: "30.9%" } ],
-              [ { text: "2023" }, { text: "31.8%" } ],
-              [ { text: "2024" }, { text: "30.3%" } ],
-              [ { text: "2025" }, { text: "29.9%" } ]
-            ]
-        }) }}
-
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Year</th>
+              <th class="govuk-table__header">FSM eligibility</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="fsm-trend-body"></tbody>
+        </table>
         {{ govukInsetText({ text: "The coronavirus (COVID-19) pandemic may have impacted on the quality of this data and may have resulted in over recording in 2020 to 2022." }) }}
-
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
         <h3 class="govuk-heading-m">Additional learning needs (ALN) and special educational needs (SEN)</h3>
         <p class="govuk-body">Percentage of pupils subject to SEN or ALN provision by provision type.</p>
-
-        {{ govukTable({
-          head: [
-            { text: "Provision type" }, { text: "2023" }, { text: "2024" }, { text: "2025" }
-          ],
-          rows: [
-            [ { text: "School Action" }, { text: "1.0%" }, { text: "1.0%" }, { text: "*" } ],
-            [ { text: "School Action Plus" }, { text: "1.3%" }, { text: "1.0%" }, { text: "*" } ],
-            [ { text: "Statement" }, { text: "2.8%" }, { text: "1.9%" }, { text: "*" } ],
-            [ { text: "School maintained IDP" }, { text: "*" }, { text: "1.2%" }, { text: "1.5%" } ],
-            [ { text: "LA maintained IDP" }, { text: "*" }, { text: "1.1%" }, { text: "2.3%" } ]
-          ]
-        }) }}
-
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Provision type</th>
+              <th class="govuk-table__header">2023</th>
+              <th class="govuk-table__header">2024</th>
+              <th class="govuk-table__header">2025</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="aln-body"></tbody>
+        </table>
         {{ govukDetails({
           summaryText: "What do these categories mean?",
           html: "<p class='govuk-body-s'><strong>School Action</strong> — teacher provides additional or different interventions to those in the usual curriculum.</p><p class='govuk-body-s'><strong>School Action Plus</strong> — outside specialists provide additional support alongside school.</p><p class='govuk-body-s'><strong>Statement / IDP</strong> — a statutory plan identifying a learner's additional learning needs.</p><p class='govuk-body-s'>* Data suppressed to protect individual privacy.</p>"
         }) }}
-
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
         <h3 class="govuk-heading-m">English as an Additional Language (EAL)</h3>
         <p class="govuk-body">Percentage of pupils at stages A, B or C of English language acquisition.</p>
-
-        {{ govukTable({
-          head: [
-            { text: "Year" },
-            { text: "EAL pupils" }
-          ],
-          rows: [
-            [ { text: "2019" }, { text: "1.4%" } ],
-            [ { text: "2020" }, { text: "1.2%" } ],
-            [ { text: "2021" }, { text: "1.3%" } ],
-            [ { text: "2022" }, { text: "0.9%" } ],
-            [ { text: "2023" }, { text: "1.0%" } ],
-            [ { text: "2024" }, { text: "1.7%" } ],
-            [ { text: "2025" }, { text: "1.4%" } ]
-          ]
-        }) }}
-
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Measure</th>
+              <th class="govuk-table__header">Value</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">EAL pupils</td>
+              <td class="govuk-table__cell" id="eal-value">—</td>
+            </tr>
+          </tbody>
+        </table>
         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
-
         <h3 class="govuk-heading-m">Black, Asian and Minority Ethnic pupils (BAME)</h3>
         <p class="govuk-body">Percentage of pupils who recorded their ethnic background as anything other than White British.</p>
-
-        {{ govukTable({
-          head: [
-            { text: "Year" },
-            { text: "BAME pupils" }
-          ],
-          rows: [
-            [ { text: "2019" }, { text: "4.6%" } ],
-            [ { text: "2020" }, { text: "5.0%" } ],
-            [ { text: "2021" }, { text: "5.1%" } ],
-            [ { text: "2022" }, { text: "5.8%" } ],
-            [ { text: "2023" }, { text: "6.3%" } ],
-            [ { text: "2024" }, { text: "6.7%" } ],
-            [ { text: "2025" }, { text: "6.2%" } ]
-          ]
-        }) }}
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Measure</th>
+              <th class="govuk-table__header">Value</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">BAME pupils</td>
+              <td class="govuk-table__cell" id="bame-value">—</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
+      <!-- RESOURCES TAB -->
       <div id="tab-resources" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Resources</h2>
-        {{ govukSummaryList({
-          rows: [
-            { key: { text: "Teacher FTE" }, value: { text: "82.4" } },
-            { key: { text: "Pupil teacher ratio" }, value: { text: "17.6" } },
-            { key: { text: "School budget per pupil" }, value: { text: "£6,175" } },
-            { key: { text: "Financial reserves" }, value: { text: "£284,000" } }
-          ]
-        }) }}
+        <dl class="govuk-summary-list">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Teacher FTE</dt>
+            <dd class="govuk-summary-list__value" id="res-fte">—</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Pupil teacher ratio</dt>
+            <dd class="govuk-summary-list__value" id="res-ptr">—</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">School budget per pupil</dt>
+            <dd class="govuk-summary-list__value" id="res-budget">—</dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Financial reserves</dt>
+            <dd class="govuk-summary-list__value" id="res-reserves">—</dd>
+          </div>
+        </dl>
         {{ govukDetails({
           summaryText: "What do these measures mean?",
           html: "<p class='govuk-body-s'><strong>Teacher FTE</strong> — the total number of teachers expressed as full-time equivalents. Part-time teachers are counted as a fraction of a full-time post.</p><p class='govuk-body-s'><strong>Pupil teacher ratio (PTR)</strong> — the number of pupils per teacher. A lower number means more teachers relative to pupils.</p><p class='govuk-body-s'><strong>School budget per pupil</strong> — the total school budget divided by the number of pupils. Includes all funding received by the school.</p><p class='govuk-body-s'><strong>Financial reserves</strong> — the amount of unspent budget carried forward by the school at the end of the financial year.</p>"
         }) }}
       </div>
 
+      <!-- ENTRIES AND ATTAINMENT TAB -->
       <div id="tab-attainment" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Entries and Attainment</h2>
         <p class="govuk-body-s govuk-!-margin-bottom-6">Data shown is for illustrative purposes only. Narrative context for this section will be added here.</p>
@@ -340,8 +370,20 @@
         </div>
 
         <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-entries-time-btn opp-entries-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-entries-time-btn opp-entries-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px; background:#1B1E56; color:white;">Single year</button>
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-entries-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
+        </div>
+
+        <div id="opp-entries-comparator-controls" style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-entries-show-la" style="margin: 0;"> LA
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-entries-show-wales" style="margin: 0;"> Wales
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-entries-show-ctx" checked style="margin: 0;"> Contextualised comparator
+          </label>
         </div>
 
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
@@ -379,34 +421,69 @@
         </div>
 
         <div style="display: flex; gap: 12px; margin-bottom: 12px;">
-          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn opp-outcomes-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">Single year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn opp-outcomes-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px; background:#1B1E56; color:white;">Single year</button>
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
         </div>
 
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
-          <canvas id="opp-outcomes-chart"></canvas>
+        <div style="display: flex; gap: 24px; align-items: flex-start;">
+          <div style="flex: 1;">
+            <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+              <canvas id="opp-outcomes-chart"></canvas>
+            </div>
+            <ul id="opp-outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
+          </div>
+          <div style="min-width: 200px; padding-top: 20px;">
+            <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
+            <div id="opp-outcomes-comparator-controls" style="display: flex; flex-direction: column; gap: 10px;">
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="opp-outcomes-show-la" style="margin: 0;"> LA
+              </label>
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="opp-outcomes-show-wales" style="margin: 0;"> Wales
+              </label>
+              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+                <input type="checkbox" id="opp-outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
+              </label>
+            </div>
+          </div>
         </div>
-        <ul id="opp-outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
       </div>
 
+      <!-- ATTENDANCE TAB -->
       <div id="tab-attendance" class="profile-tab-content" style="display:none;">
         <h2 class="govuk-heading-l">Attendance</h2>
-        <p class="govuk-body"><strong>93.4% of learners attended regularly</strong> in 2024-25, above the Wales average of 91.8%.</p>
-        <p class="govuk-body"><strong>18.2% of learners were persistently absent</strong>, meaning they missed at least 10% of sessions.</p>
+        <p class="govuk-body" id="attendance-summary-overall"></p>
+        <p class="govuk-body" id="attendance-summary-pa"></p>
         <div class="opp-chart" aria-label="Bar chart showing attendance rates">
           <div class="opp-chart__row">
             <span class="opp-chart__label govuk-body-s">This school</span>
             <div class="opp-chart__track">
-              <div class="opp-chart__bar opp-chart__bar--school" style="width: 93.4%">
-                <span class="opp-chart__bar-value">93.4%</span>
+              <div class="opp-chart__bar opp-chart__bar--school" id="attendance-bar-school" style="width: 0%">
+                <span class="opp-chart__bar-value" id="attendance-val-school"></span>
+              </div>
+            </div>
+          </div>
+          <div class="opp-chart__row">
+            <span class="opp-chart__label govuk-body-s">LA average</span>
+            <div class="opp-chart__track">
+              <div class="opp-chart__bar opp-chart__bar--la" id="attendance-bar-la" style="width: 0%">
+                <span class="opp-chart__bar-value" id="attendance-val-la"></span>
               </div>
             </div>
           </div>
           <div class="opp-chart__row">
             <span class="opp-chart__label govuk-body-s">Wales average</span>
             <div class="opp-chart__track">
-              <div class="opp-chart__bar opp-chart__bar--national" style="width: 91.8%">
-                <span class="opp-chart__bar-value">91.8%</span>
+              <div class="opp-chart__bar opp-chart__bar--national" id="attendance-bar-wales" style="width: 0%">
+                <span class="opp-chart__bar-value" id="attendance-val-wales"></span>
+              </div>
+            </div>
+          </div>
+          <div class="opp-chart__row">
+            <span class="opp-chart__label govuk-body-s">Contextual comparator</span>
+            <div class="opp-chart__track">
+              <div class="opp-chart__bar opp-chart__bar--comparator" id="attendance-bar-ctx" style="width: 0%">
+                <span class="opp-chart__bar-value" id="attendance-val-ctx"></span>
               </div>
             </div>
           </div>
@@ -417,33 +494,28 @@
         }) }}
       </div>
 
-      <div id="tab-pe-sport" class="profile-tab-content" style="display:none;">
-        <h2 class="govuk-heading-l">PE &amp; Sport</h2>
-        <p class="govuk-body">Information about PE and sport at this school is collected through the School Sport Survey which is run by Sport Wales.</p>
-        <p class="govuk-body"><a href="https://www.sport.wales/research-and-insight/school-sport-survey/" class="govuk-link">View the School Sport Survey (Sport Wales)</a></p>
-      </div>
-
     </div>
 
-<div class="govuk-grid-column-one-third">
+    <!-- SIDEBAR -->
+    <div class="govuk-grid-column-one-third">
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Attendance rate</p>
-          <p class="opp-summary-card__value govuk-heading-l">93.4%</p>
+          <p class="opp-summary-card__value govuk-heading-l" id="card-attendance">—</p>
         </div>
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Budget per pupil</p>
-          <p class="opp-summary-card__value govuk-heading-l">£6,175</p>
+          <p class="opp-summary-card__value govuk-heading-l" id="card-budget">—</p>
           <p class="opp-summary-card__context govuk-body-s">Academic year 2024–25</p>
         </div>
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Number of learners</p>
-          <p class="opp-summary-card__value govuk-heading-l">1,247</p>
+          <p class="opp-summary-card__value govuk-heading-l" id="card-pupils">—</p>
           <p class="opp-summary-card__context govuk-body-s">Academic year 2024–25</p>
         </div>
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <p class="opp-summary-card__label govuk-body-s">Free school meal eligibility</p>
-          <p class="opp-summary-card__value govuk-heading-l">22.4%</p>
+          <p class="opp-summary-card__value govuk-heading-l" id="card-fsm">—</p>
         </div>
         <div class="opp-summary-card" style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100px;">
           <h2 class="govuk-heading-s">Download data</h2>
@@ -455,244 +527,613 @@
 
   </div>
 </div>
+{% endblock %}
 
+{% block bodyEnd %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/public/javascripts/data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  (function() {
 
-
-<script>
-  document.querySelectorAll('.profile-tab-link').forEach(function(link) {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      var tab = this.getAttribute('data-tab');
-      document.querySelectorAll('.profile-tab-content').forEach(function(content) {
-        content.style.display = 'none';
+    // -------------------------------------------------------------------------
+    // Tab switching
+    // -------------------------------------------------------------------------
+    document.querySelectorAll('.profile-tab-link').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var tab = this.getAttribute('data-tab');
+        document.querySelectorAll('.profile-tab-content').forEach(function(content) {
+          content.style.display = 'none';
+        });
+        document.querySelectorAll('.profile-tab-link').forEach(function(l) {
+          l.style.fontWeight = 'normal';
+          l.style.color = '#1d70b8';
+          l.style.borderBottom = '4px solid transparent';
+        });
+        document.getElementById('tab-' + tab).style.display = 'block';
+        this.style.fontWeight = 'bold';
+        this.style.color = '#0b0c0c';
+        this.style.borderBottom = '4px solid #1B1E56';
       });
-      document.querySelectorAll('.profile-tab-link').forEach(function(l) {
-        l.style.fontWeight = 'normal';
-        l.style.color = '#1d70b8';
-        l.style.borderBottom = '4px solid transparent';
-      });
-      document.getElementById('tab-' + tab).style.display = 'block';
-      this.style.fontWeight = 'bold';
-      this.style.color = '#0b0c0c';
-      this.style.borderBottom = '4px solid #1B1E56';
     });
-  });
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+    // School selector
+    document.getElementById('school-selector').addEventListener('change', function() {
+      window.location.href = '?school=' + this.value;
+    });
 
-  var OPP_COLOUR = '#003078';
+    // -------------------------------------------------------------------------
+    // Data setup
+    // -------------------------------------------------------------------------
+    var selectedSlug = "{{ slug }}";
+    var school = (WGData && WGData.schools && WGData.schools[selectedSlug])
+      ? WGData.schools[selectedSlug]
+      : WGData.schools['abercastell'];
 
-  function oppHexToRgba(hex, alpha) {
-    var r = parseInt(hex.slice(1,3),16);
-    var g = parseInt(hex.slice(3,5),16);
-    var b = parseInt(hex.slice(5,7),16);
-    return 'rgba('+r+','+g+','+b+','+alpha+')';
-  }
+    // -------------------------------------------------------------------------
+    // Populate static elements
+    // -------------------------------------------------------------------------
+    function populatePage() {
+      document.getElementById('school-address').textContent = school.postcode;
+      document.getElementById('school-phone').innerHTML = '<a href="tel:' + school.phone + '" class="govuk-link">' + school.phone + '</a>';
+      document.getElementById('school-email').innerHTML = '<a href="mailto:' + school.email + '" class="govuk-link">' + school.email + '</a>';
+      document.getElementById('school-website').innerHTML = '<a href="#" class="govuk-link">' + school.website + '</a>';
+      document.getElementById('estyn-link').href = school.estynUrl || '#';
+      document.getElementById('tag-phase').textContent = school.phase + ' (11-18)';
+      document.getElementById('tag-language').textContent = school.language;
+      document.getElementById('tag-type').textContent = school.type;
+      document.getElementById('summary-fsm').textContent = school.fsm3yr + '%';
+      document.getElementById('summary-ptr').textContent = school.ptr;
+      document.getElementById('summary-attendance').textContent = school.attendance.overall['1'].school + '%';
+      document.getElementById('summary-budget').textContent = '£' + school.budgetPerPupil.toLocaleString();
+      document.getElementById('card-attendance').textContent = school.attendance.overall['1'].school + '%';
+      document.getElementById('card-budget').textContent = '£' + school.budgetPerPupil.toLocaleString();
+      document.getElementById('card-pupils').textContent = school.totalPupils.toLocaleString();
+      document.getElementById('card-fsm').textContent = school.fsm3yr + '%';
 
-  function oppCanvasHeight(barCount) {
-    return Math.min(200, Math.max(50, barCount * 24));
-  }
+      var overallAtt = school.attendance.overall['1'].school;
+      var laAtt      = school.attendance.overall['1'].la;
+      var walesAtt   = school.attendance.overall['1'].wales;
+      var ctxAtt     = school.attendance.overall['1'].ctx;
+      var paRate     = school.attendance.pa['1'].school;
 
-  function oppDynamicYAxis(data) {
-    var min = Math.floor((Math.min.apply(null, data) - 8) / 5) * 5;
-    var max = Math.ceil((Math.max.apply(null, data) + 8) / 5) * 5;
-    return { min: Math.max(0, min), max: Math.min(100, max) };
-  }
+      document.getElementById('attendance-summary-overall').innerHTML =
+        '<strong>' + overallAtt + '% of sessions were attended</strong> in 2024-25.';
+      document.getElementById('attendance-summary-pa').innerHTML =
+        '<strong>' + paRate + '% of learners were persistently absent</strong>, meaning they missed at least 10% of sessions.';
+      document.getElementById('attendance-bar-school').style.width = overallAtt + '%';
+      document.getElementById('attendance-val-school').textContent  = overallAtt + '%';
+      document.getElementById('attendance-bar-la').style.width      = laAtt + '%';
+      document.getElementById('attendance-val-la').textContent      = laAtt + '%';
+      document.getElementById('attendance-bar-wales').style.width   = walesAtt + '%';
+      document.getElementById('attendance-val-wales').textContent   = walesAtt + '%';
+      document.getElementById('attendance-bar-ctx').style.width     = ctxAtt + '%';
+      document.getElementById('attendance-val-ctx').textContent     = ctxAtt + '%';
 
-  var oppEntriesData = {
-    all:             { '1': 78, '3': { labels: ['2023','2024','2025'], school: [72,75,78] } },
-    female:          { '1': 82, '3': { labels: ['2023','2024','2025'], school: [76,79,82] } },
-    male:            { '1': 74, '3': { labels: ['2023','2024','2025'], school: [68,71,74] } },
-    'sex-comparison':{ '1': { labels: ['Female','Male'], school: [82,74] }, '3': { labels: ['2023','2024','2025'], school: [79,82,85] } },
-    fsm:             { '1': 61, '3': { labels: ['2023','2024','2025'], school: [54,57,61] } },
-    nonfsm:          { '1': 85, '3': { labels: ['2023','2024','2025'], school: [79,82,85] } },
-    'fsm-comparison':{ '1': { labels: ['FSM eligible','Non-FSM eligible'], school: [61,85] }, '3': { labels: ['2023','2024','2025'], school: [55,58,61] } }
-  };
+      document.getElementById('res-fte').textContent      = school.teacherFTE;
+      document.getElementById('res-ptr').textContent      = school.ptr;
+      document.getElementById('res-budget').textContent   = '£' + school.budgetPerPupil.toLocaleString();
+      document.getElementById('res-reserves').textContent = '£' + school.financialReserves.toLocaleString();
 
-  var oppOutcomesData = {
-    'astar':   { all: { '1': 12, '3': [8,10,12]  }, female: { '1': 15, '3': [10,13,15] }, male: { '1': 9,  '3': [6,7,9]   }, 'sex-comparison': { '1': [15,9],  '3': [12,14,15] }, fsm: { '1': 5,  '3': [3,4,5]   }, nonfsm: { '1': 16, '3': [11,14,16] }, 'fsm-comparison': { '1': [5,16],  '3': [3,4,5]   } },
-    'astar-a': { all: { '1': 28, '3': [22,25,28] }, female: { '1': 33, '3': [27,30,33] }, male: { '1': 23, '3': [17,20,23] }, 'sex-comparison': { '1': [33,23], '3': [27,30,33] }, fsm: { '1': 13, '3': [9,11,13]  }, nonfsm: { '1': 36, '3': [28,32,36] }, 'fsm-comparison': { '1': [13,36], '3': [9,11,13]  } },
-    'astar-b': { all: { '1': 46, '3': [38,42,46] }, female: { '1': 52, '3': [44,48,52] }, male: { '1': 40, '3': [32,36,40] }, 'sex-comparison': { '1': [52,40], '3': [44,48,52] }, fsm: { '1': 26, '3': [20,23,26]  }, nonfsm: { '1': 57, '3': [49,53,57] }, 'fsm-comparison': { '1': [26,57], '3': [20,23,26]  } },
-    'astar-c': { all: { '1': 62, '3': [54,58,62] }, female: { '1': 68, '3': [60,64,68] }, male: { '1': 56, '3': [48,52,56] }, 'sex-comparison': { '1': [68,56], '3': [60,64,68] }, fsm: { '1': 38, '3': [30,34,38]  }, nonfsm: { '1': 74, '3': [66,70,74] }, 'fsm-comparison': { '1': [38,74], '3': [30,34,38]  } },
-    'astar-d': { all: { '1': 74, '3': [66,70,74] }, female: { '1': 79, '3': [71,75,79] }, male: { '1': 69, '3': [61,65,69] }, 'sex-comparison': { '1': [79,69], '3': [71,75,79] }, fsm: { '1': 52, '3': [44,48,52]  }, nonfsm: { '1': 84, '3': [76,80,84] }, 'fsm-comparison': { '1': [52,84], '3': [44,48,52]  } },
-    'astar-e': { all: { '1': 83, '3': [75,79,83] }, female: { '1': 87, '3': [79,83,87] }, male: { '1': 79, '3': [71,75,79] }, 'sex-comparison': { '1': [87,79], '3': [79,83,87] }, fsm: { '1': 63, '3': [55,59,63]  }, nonfsm: { '1': 91, '3': [83,87,91] }, 'fsm-comparison': { '1': [63,91], '3': [55,59,63]  } },
-    'astar-f': { all: { '1': 90, '3': [82,86,90] }, female: { '1': 93, '3': [85,89,93] }, male: { '1': 87, '3': [79,83,87] }, 'sex-comparison': { '1': [93,87], '3': [85,89,93] }, fsm: { '1': 74, '3': [66,70,74]  }, nonfsm: { '1': 96, '3': [88,92,96] }, 'fsm-comparison': { '1': [74,96], '3': [66,70,74]  } },
-    'astar-g': { all: { '1': 96, '3': [90,93,96] }, female: { '1': 98, '3': [92,95,98] }, male: { '1': 94, '3': [88,91,94] }, 'sex-comparison': { '1': [98,94], '3': [92,95,98] }, fsm: { '1': 84, '3': [76,80,84]  }, nonfsm: { '1': 99, '3': [95,97,99] }, 'fsm-comparison': { '1': [84,99], '3': [76,80,84]  } }
-  };
+      var byYear   = school.pupils && school.pupils.byYear;
+      var yearBody = document.getElementById('pupils-by-year-body');
+      yearBody.innerHTML = '';
+      if (byYear) {
+        var years  = ['year7','year8','year9','year10','year11'];
+        var ylbls  = ['Year 7','Year 8','Year 9','Year 10','Year 11'];
+        var tm = 0, tf = 0;
+        years.forEach(function(y, i) {
+          var m = byYear[y] ? byYear[y].male : 0;
+          var f = byYear[y] ? byYear[y].female : 0;
+          tm += m; tf += f;
+          yearBody.innerHTML += '<tr class="govuk-table__row"><td class="govuk-table__cell">' + ylbls[i] + '</td><td class="govuk-table__cell">' + m + '</td><td class="govuk-table__cell">' + f + '</td><td class="govuk-table__cell">' + (m+f) + '</td></tr>';
+        });
+        yearBody.innerHTML += '<tr class="govuk-table__row"><td class="govuk-table__cell govuk-!-font-weight-bold">Total</td><td class="govuk-table__cell govuk-!-font-weight-bold">' + tm + '</td><td class="govuk-table__cell govuk-!-font-weight-bold">' + tf + '</td><td class="govuk-table__cell govuk-!-font-weight-bold">' + (tm+tf) + '</td></tr>';
+      } else {
+        yearBody.innerHTML = '<tr class="govuk-table__row"><td class="govuk-table__cell" colspan="4">Year group data not available for this school.</td></tr>';
+      }
 
-  var oppEntriesRange = '1';
-  var oppEntriesBreakdown = 'all';
-  var oppEntriesChartInstance = null;
-  var oppOutcomesRange = '1';
-  var oppOutcomesBreakdown = 'all';
-  var oppOutcomesGrade = 'astar';
-  var oppOutcomesChartInstance = null;
+      var fsmTrend = school.pupils && school.pupils.fsm;
+      var fsmBody  = document.getElementById('fsm-trend-body');
+      fsmBody.innerHTML = '';
+      if (fsmTrend) {
+        Object.keys(fsmTrend).forEach(function(yr) {
+          fsmBody.innerHTML += '<tr class="govuk-table__row"><td class="govuk-table__cell">' + yr + '</td><td class="govuk-table__cell">' + fsmTrend[yr] + '%</td></tr>';
+        });
+      }
 
-  function oppIsComparison(breakdown) {
-    return breakdown === 'sex-comparison' || breakdown === 'fsm-comparison';
-  }
+      var aln     = school.pupils && school.pupils.aln;
+      var alnBody = document.getElementById('aln-body');
+      alnBody.innerHTML = '';
+      if (aln) {
+        [{ label: 'School Action', key: 'schoolAction' }, { label: 'School Action Plus', key: 'schoolActionPlus' }, { label: 'Statement', key: 'statement' }].forEach(function(r) {
+          var d = aln[r.key] || {};
+          alnBody.innerHTML += '<tr class="govuk-table__row"><td class="govuk-table__cell">' + r.label + '</td><td class="govuk-table__cell">' + (d['2022-23'] !== undefined ? d['2022-23'] + '%' : '*') + '</td><td class="govuk-table__cell">' + (d['2023-24'] !== undefined ? d['2023-24'] + '%' : '*') + '</td><td class="govuk-table__cell">' + (d['2024-25'] !== undefined ? d['2024-25'] + '%' : '*') + '</td></tr>';
+        });
+      }
 
-  function oppRenderLegend(elId, isEntries, isTime, breakdown) {
-    var el = document.getElementById(elId);
-    el.innerHTML = '';
-    if (isTime || !isEntries) {
-      el.innerHTML = '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+OPP_COLOUR+';border-radius:2px;"></span> This school</li>';
-    } else {
-      el.innerHTML = '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+OPP_COLOUR+';border-radius:2px;"></span> Entered</li>';
-      el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+oppHexToRgba(OPP_COLOUR,0.5)+';border-radius:2px;"></span> Not entered</li>';
+      document.getElementById('eal-value').textContent  = school.pupils.eal + '%';
+      document.getElementById('bame-value').textContent = school.pupils.bame + '%';
     }
-  }
 
-  function buildOppEntriesChart() {
-    var d = oppEntriesData[oppEntriesBreakdown][oppEntriesRange];
-    var isTime = oppEntriesRange === '3';
-    var isComparison = oppIsComparison(oppEntriesBreakdown);
+    populatePage();
 
-    if (oppEntriesChartInstance) { oppEntriesChartInstance.destroy(); }
-    var canvas = document.getElementById('opp-entries-chart');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
+    // Map
+    var map = L.map('school-map').setView([school.lat, school.lng], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    L.marker([school.lat, school.lng]).addTo(map);
 
-    if (isTime) {
-      canvas.height = 80;
-      var yAxis = oppDynamicYAxis(d.school);
-      oppEntriesChartInstance = new Chart(ctx, {
+    // -------------------------------------------------------------------------
+    // Chart constants
+    // -------------------------------------------------------------------------
+    var OPP_COLOURS = {
+      school: '#003078',
+      la:     '#5694ca',
+      wales:  '#d4351c',
+      ctx:    '#f47738'
+    };
+
+    var OPP_LABELS = {
+      school: 'This school',
+      la:     'LA',
+      wales:  'Wales',
+      ctx:    'Contextualised comparator'
+    };
+
+    var OPP_COMP_GROUPS = {
+      'sex-comparison': { a: 'Female', b: 'Male' },
+      'fsm-comparison': { a: 'FSM eligible', b: 'Non-FSM eligible' }
+    };
+
+    var OPP_COMPARATOR_IDS = ['la', 'wales', 'ctx'];
+
+    var FONT = { family: 'Arial, sans-serif', size: 13 };
+
+    function oppHexToRgba(hex, alpha) {
+      var r = parseInt(hex.slice(1,3),16);
+      var g = parseInt(hex.slice(3,5),16);
+      var b = parseInt(hex.slice(5,7),16);
+      return 'rgba('+r+','+g+','+b+','+alpha+')';
+    }
+
+    function oppCanvasHeight(n) {
+      return Math.min(200, Math.max(50, n * 24));
+    }
+
+    function oppDynamicYAxis(datasets) {
+      var all = [];
+      datasets.forEach(function(ds) {
+        ds.forEach(function(v) { if (typeof v === 'number') all.push(v); });
+      });
+      var mn = Math.floor((Math.min.apply(null, all) - 8) / 5) * 5;
+      var mx = Math.ceil((Math.max.apply(null, all) + 8) / 5) * 5;
+      return { min: Math.max(0, mn), max: Math.min(100, mx) };
+    }
+
+    function oppIsComparison(bd) {
+      return bd === 'sex-comparison' || bd === 'fsm-comparison';
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator helpers
+    // -------------------------------------------------------------------------
+    function oppGetActiveComparators(prefix) {
+      var c = ['school'];
+      OPP_COMPARATOR_IDS.forEach(function(key) {
+        if (document.getElementById(prefix + '-show-' + key).checked) c.push(key);
+      });
+      return c;
+    }
+
+    function oppEnforceSingleComparator(prefix, changedId) {
+      OPP_COMPARATOR_IDS.forEach(function(key) {
+        var id = prefix + '-show-' + key;
+        if (id !== changedId) document.getElementById(id).checked = false;
+      });
+    }
+
+    function oppEnsureSingleComparator(prefix) {
+      var checked = OPP_COMPARATOR_IDS.filter(function(k) {
+        return document.getElementById(prefix + '-show-' + k).checked;
+      });
+      for (var i = 1; i < checked.length; i++) {
+        document.getElementById(prefix + '-show-' + checked[i]).checked = false;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Legend renderer
+    // -------------------------------------------------------------------------
+    function oppRenderLegend(elId, comparators, isTime, isEntries, breakdown) {
+      var el = document.getElementById(elId);
+      el.innerHTML = '';
+      var isComp = oppIsComparison(breakdown);
+
+      if (isTime && isComp) {
+        var groups = OPP_COMP_GROUPS[breakdown];
+        comparators.forEach(function(key) {
+          var colour = OPP_COLOURS[key];
+          el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:20px;height:3px;background:' + colour + ';"></span> ' + OPP_LABELS[key] + ' — ' + groups.a + '</li>';
+          el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:20px;height:3px;background:repeating-linear-gradient(90deg,' + colour + ' 0,' + colour + ' 5px,transparent 5px,transparent 9px);"></span> ' + OPP_LABELS[key] + ' — ' + groups.b + '</li>';
+        });
+      } else if (!isTime && isEntries && !isComp) {
+        comparators.forEach(function(key) {
+          var colour = OPP_COLOURS[key];
+          el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:' + colour + ';border-radius:2px;"></span> ' + OPP_LABELS[key] + ' — entered</li>';
+          el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:' + oppHexToRgba(colour, 0.5) + ';border-radius:2px;"></span> ' + OPP_LABELS[key] + ' — not entered</li>';
+        });
+      } else {
+        comparators.forEach(function(key) {
+          el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:' + OPP_COLOURS[key] + ';border-radius:2px;"></span> ' + OPP_LABELS[key] + '</li>';
+        });
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparison+time line chart (with gap shading)
+    // -------------------------------------------------------------------------
+    function oppBuildCompTimeLineChart(canvas, d, comparators, breakdown) {
+      var groups = OPP_COMP_GROUPS[breakdown];
+      canvas.height = 120;
+      var datasets = [];
+      comparators.forEach(function(key) {
+        var colour = OPP_COLOURS[key];
+        datasets.push({
+          label: OPP_LABELS[key] + ' — ' + groups.a,
+          data: d[key].a,
+          borderColor: colour,
+          backgroundColor: oppHexToRgba(colour, 0.15),
+          borderWidth: 2, pointRadius: 4, tension: 0.1, fill: false
+        });
+        datasets.push({
+          label: OPP_LABELS[key] + ' — ' + groups.b,
+          data: d[key].b,
+          borderColor: colour,
+          backgroundColor: oppHexToRgba(colour, 0.15),
+          borderWidth: 2, borderDash: [5,4], pointRadius: 4, tension: 0.1, fill: false
+        });
+      });
+      for (var i = 0; i < datasets.length; i += 2) {
+        datasets[i].fill = {
+          target: i + 1,
+          above: oppHexToRgba(OPP_COLOURS[comparators[Math.floor(i/2)]], 0.12),
+          below: oppHexToRgba(OPP_COLOURS[comparators[Math.floor(i/2)]], 0.12)
+        };
+      }
+      var yAxis = oppDynamicYAxis(datasets.map(function(ds) { return ds.data; }));
+      return new Chart(canvas.getContext('2d'), {
         type: 'line',
-        data: {
-          labels: d.labels,
-          datasets: [{ label: 'This school', data: d.school, borderColor: OPP_COLOUR, backgroundColor: OPP_COLOUR, borderWidth: 2, pointRadius: 5, tension: 0.1 }]
-        },
+        data: { labels: d.labels, datasets: datasets },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } }
+          },
           scales: {
-            x: { grid: { display: false } },
-            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
-          }
-        }
-      });
-    } else {
-      var labels, entered, notEntered;
-      if (!isComparison) {
-        canvas.height = oppCanvasHeight(1);
-        labels = ['This school'];
-        entered = [d];
-        notEntered = [100 - d];
-      } else {
-        canvas.height = oppCanvasHeight(d.labels.length);
-        labels = d.labels;
-        entered = d.school;
-        notEntered = d.school.map(function(v){ return 100-v; });
-      }
-      oppEntriesChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            { label: 'Entered',     data: entered,    backgroundColor: OPP_COLOUR,                      barThickness: 24, stack: 'stack' },
-            { label: 'Not entered', data: notEntered, backgroundColor: oppHexToRgba(OPP_COLOUR, 0.5),   barThickness: 24, stack: 'stack' }
-          ]
-        },
-        options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
-          scales: {
-            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-            y: { stacked: true, grid: { display: false } }
+            x: { grid: { display: false }, ticks: { font: FONT } },
+            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
           }
         }
       });
     }
-    oppRenderLegend('opp-entries-legend', true, isTime, oppEntriesBreakdown);
-  }
 
-  function buildOppOutcomesChart() {
-    var d = oppOutcomesData[oppOutcomesGrade][oppOutcomesBreakdown];
-    var val = d[oppOutcomesRange];
-    var isTime = oppOutcomesRange === '3';
-    var isComparison = oppIsComparison(oppOutcomesBreakdown);
+    // -------------------------------------------------------------------------
+    // Entries chart
+    // -------------------------------------------------------------------------
+    var oppEntriesRange     = '1';
+    var oppEntriesBreakdown = 'all';
+    var oppEntriesChartInstance = null;
 
-    if (oppOutcomesChartInstance) { oppOutcomesChartInstance.destroy(); }
-    var canvas = document.getElementById('opp-outcomes-chart');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
+    function buildOppEntriesChart() {
+      var entries = school.entries;
+      if (!entries) return;
+      var bd = entries[oppEntriesBreakdown];
+      if (!bd) return;
+      var d = bd[oppEntriesRange];
+      if (!d) return;
 
-    if (isTime) {
-      canvas.height = 80;
-      var yAxis = oppDynamicYAxis(Array.isArray(val) ? val : [val]);
-      oppOutcomesChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['2023','2024','2025'],
-          datasets: [{ label: 'This school', data: val, borderColor: OPP_COLOUR, backgroundColor: OPP_COLOUR, borderWidth: 2, pointRadius: 5, tension: 0.1 }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: {
-            x: { grid: { display: false } },
-            y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { callback: function(v){ return v+'%'; } } }
+      var isTime       = oppEntriesRange === '3';
+      var isComp       = oppIsComparison(oppEntriesBreakdown);
+      var comparators  = oppGetActiveComparators('opp-entries');
+
+      if (oppEntriesChartInstance) { oppEntriesChartInstance.destroy(); }
+      var canvas = document.getElementById('opp-entries-chart');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+
+      if (isTime && isComp) {
+        oppEntriesChartInstance = oppBuildCompTimeLineChart(canvas, d, comparators, oppEntriesBreakdown);
+
+      } else if (isTime && !isComp) {
+        canvas.height = 80;
+        var yAxis = oppDynamicYAxis(comparators.map(function(k) { return d[k]; }));
+        oppEntriesChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: d.labels,
+            datasets: comparators.map(function(key) {
+              return { label: OPP_LABELS[key], data: d[key], borderColor: OPP_COLOURS[key], backgroundColor: OPP_COLOURS[key], borderWidth: 2, pointRadius: 5, tension: 0.1 };
+            })
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { display: false }, ticks: { font: FONT } },
+              y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
+            }
           }
-        }
-      });
-    } else {
-      var labels, data;
-      if (!isComparison) {
-        canvas.height = oppCanvasHeight(1);
-        labels = ['This school'];
-        data = [val];
+        });
+
+      } else if (!isTime && !isComp) {
+        canvas.height = oppCanvasHeight(comparators.length);
+        var enteredVals   = comparators.map(function(k) { return d[k]; });
+        var notEnteredVals = enteredVals.map(function(v) { return 100 - v; });
+        oppEntriesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: comparators.map(function(k) { return OPP_LABELS[k]; }),
+            datasets: [
+              { label: 'Entered',     data: enteredVals,    backgroundColor: comparators.map(function(k) { return OPP_COLOURS[k]; }),                barThickness: 24, stack: 'stack' },
+              { label: 'Not entered', data: notEnteredVals, backgroundColor: comparators.map(function(k) { return oppHexToRgba(OPP_COLOURS[k], 0.5); }), barThickness: 24, stack: 'stack' }
+            ]
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.x + '%'; } } } },
+            scales: {
+              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } },
+              y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
+            }
+          }
+        });
+
       } else {
-        var compLabels = oppOutcomesBreakdown === 'sex-comparison' ? ['Female','Male'] : ['FSM eligible','Non-FSM eligible'];
-        canvas.height = oppCanvasHeight(compLabels.length);
-        labels = compLabels;
-        data = val;
-      }
-      oppOutcomesChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{ label: '% of entries', data: data, backgroundColor: OPP_COLOUR, barThickness: 24 }]
-        },
-        options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
-          scales: {
-            x: { grid: { display: false }, min: 0, max: 100, ticks: { callback: function(v){ return v+'%'; } } },
-            y: { grid: { display: false } }
+        // comparison breakdown, single year — grouped stacked bars
+        canvas.height = oppCanvasHeight(d.labels.length * comparators.length);
+        var datasets = [];
+        comparators.forEach(function(key) {
+          var colour = OPP_COLOURS[key];
+          var ent    = d[key];
+          var notEnt = ent.map(function(v) { return 100 - v; });
+          datasets.push({ label: OPP_LABELS[key] + ' — Entered',     data: ent,    backgroundColor: colour,                    barThickness: 24, stack: key });
+          datasets.push({ label: OPP_LABELS[key] + ' — Not entered', data: notEnt, backgroundColor: oppHexToRgba(colour, 0.5), barThickness: 24, stack: key });
+        });
+        oppEntriesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: { labels: d.labels, datasets: datasets },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.x + '%'; } } } },
+            scales: {
+              x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } },
+              y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
+            }
           }
-        }
+        });
+      }
+
+      oppRenderLegend('opp-entries-legend', comparators, isTime, true, oppEntriesBreakdown);
+    }
+
+    // -------------------------------------------------------------------------
+    // Outcomes chart
+    // -------------------------------------------------------------------------
+    var oppOutcomesRange     = '1';
+    var oppOutcomesBreakdown = 'all';
+    var oppOutcomesGrade     = 'astar';
+    var oppOutcomesChartInstance = null;
+
+    function buildOppOutcomesChart() {
+      var outcomes = school.outcomes;
+      if (!outcomes) return;
+      var gradeData = outcomes[oppOutcomesGrade];
+      if (!gradeData) return;
+      var bd = gradeData[oppOutcomesBreakdown];
+      if (!bd) return;
+      var d = bd[oppOutcomesRange];
+      if (!d) return;
+
+      var isTime      = oppOutcomesRange === '3';
+      var isComp      = oppIsComparison(oppOutcomesBreakdown);
+      var comparators = oppGetActiveComparators('opp-outcomes');
+
+      if (oppOutcomesChartInstance) {
+        oppOutcomesChartInstance.destroy();
+        oppOutcomesChartInstance = null;
+      }
+
+      // Replace canvas to avoid Chart.js residual sizing state
+      var oldCanvas = document.getElementById('opp-outcomes-chart');
+      var newCanvas = document.createElement('canvas');
+      newCanvas.id = 'opp-outcomes-chart';
+      oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
+      var ctx = newCanvas.getContext('2d');
+
+      if (isTime && isComp) {
+        oppOutcomesChartInstance = oppBuildCompTimeLineChart(newCanvas, d, comparators, oppOutcomesBreakdown);
+
+      } else if (isTime && !isComp) {
+        newCanvas.height = 80;
+        var yAxis = oppDynamicYAxis(comparators.map(function(k) { return d[k]; }));
+        oppOutcomesChartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: d.labels,
+            datasets: comparators.map(function(key) {
+              return {
+                label: OPP_LABELS[key],
+                data: d[key],
+                borderColor: OPP_COLOURS[key],
+                backgroundColor: OPP_COLOURS[key],
+                borderWidth: 2, pointRadius: 5, tension: 0.1
+              };
+            })
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { display: false }, ticks: { font: FONT } },
+              y: { grid: { display: false }, min: yAxis.min, max: yAxis.max, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
+            }
+          }
+        });
+
+      } else if (!isTime && !isComp) {
+        // Single year, non-comparison — one bar per comparator
+        newCanvas.height = oppCanvasHeight(comparators.length * 1.5);
+        oppOutcomesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: comparators.map(function(k) { return OPP_LABELS[k]; }),
+            datasets: [{
+              label: '% of entries',
+              data: comparators.map(function(k) { return d[k]; }),
+              backgroundColor: comparators.map(function(k) { return OPP_COLOURS[k]; }),
+              barThickness: 24
+            }]
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.parsed.x + '%'; } } } },
+            scales: {
+              x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } },
+              y: { grid: { display: false }, ticks: { font: FONT } }
+            }
+          }
+        });
+
+      } else {
+        // Single year, comparison breakdown — grouped bars, one group per label, one bar per comparator
+        var compLabels = d.labels;
+        newCanvas.height = oppCanvasHeight(comparators.length * 1.5);
+        oppOutcomesChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: compLabels,
+            datasets: comparators.map(function(key) {
+              return {
+                label: OPP_LABELS[key],
+                data: d[key],
+                backgroundColor: OPP_COLOURS[key],
+                barThickness: 18
+              };
+            })
+          },
+          options: {
+            indexAxis: 'y', responsive: true,
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.x + '%'; } } }
+            },
+            scales: {
+              x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } },
+              y: { grid: { display: false }, ticks: { font: FONT } }
+            }
+          }
+        });
+      }
+
+      oppRenderLegend('opp-outcomes-legend', comparators, isTime, false, oppOutcomesBreakdown);
+    }
+
+    // -------------------------------------------------------------------------
+    // Comparator checkbox setup
+    // -------------------------------------------------------------------------
+    function oppSetupComparatorControls(prefix, buildFn, getBreakdown, getRange) {
+      OPP_COMPARATOR_IDS.forEach(function(key) {
+        var el = document.getElementById(prefix + '-show-' + key);
+        el.addEventListener('change', function() {
+          if (oppIsComparison(getBreakdown()) && getRange() === '3' && this.checked) {
+            oppEnforceSingleComparator(prefix, prefix + '-show-' + key);
+          }
+          buildFn();
+        });
       });
     }
-    oppRenderLegend('opp-outcomes-legend', false, isTime, oppOutcomesBreakdown);
-  }
 
-  document.getElementById('opp-entries-breakdown').addEventListener('change', function() { oppEntriesBreakdown = this.value; buildOppEntriesChart(); });
-  document.querySelectorAll('.opp-entries-time-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.opp-entries-time-btn').forEach(function(b){ b.classList.remove('opp-entries-time-btn--active'); b.style.background=''; b.style.color=''; });
-      this.classList.add('opp-entries-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
-      oppEntriesRange = this.getAttribute('data-range'); buildOppEntriesChart();
+    // -------------------------------------------------------------------------
+    // Entries event listeners
+    // -------------------------------------------------------------------------
+    document.getElementById('opp-entries-breakdown').addEventListener('change', function() {
+      oppEntriesBreakdown = this.value;
+      if (oppIsComparison(oppEntriesBreakdown) && oppEntriesRange === '3') {
+        oppEnsureSingleComparator('opp-entries');
+      }
+      buildOppEntriesChart();
     });
-  });
-  document.getElementById('opp-outcomes-grade').addEventListener('change', function() { oppOutcomesGrade = this.value; buildOppOutcomesChart(); });
-  document.getElementById('opp-outcomes-breakdown').addEventListener('change', function() { oppOutcomesBreakdown = this.value; buildOppOutcomesChart(); });
-  document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(b){ b.classList.remove('opp-outcomes-time-btn--active'); b.style.background=''; b.style.color=''; });
-      this.classList.add('opp-outcomes-time-btn--active'); this.style.background='#1B1E56'; this.style.color='white';
-      oppOutcomesRange = this.getAttribute('data-range'); buildOppOutcomesChart();
+
+    document.querySelectorAll('.opp-entries-time-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.opp-entries-time-btn').forEach(function(b) {
+          b.classList.remove('opp-entries-time-btn--active');
+          b.style.background = ''; b.style.color = '';
+        });
+        this.classList.add('opp-entries-time-btn--active');
+        this.style.background = '#1B1E56'; this.style.color = 'white';
+        oppEntriesRange = this.getAttribute('data-range');
+        if (oppIsComparison(oppEntriesBreakdown) && oppEntriesRange === '3') {
+          oppEnsureSingleComparator('opp-entries');
+        }
+        buildOppEntriesChart();
+      });
     });
-  });
 
-  document.querySelector('.opp-entries-time-btn--active').style.background='#1B1E56';
-  document.querySelector('.opp-entries-time-btn--active').style.color='white';
-  document.querySelector('.opp-outcomes-time-btn--active').style.background='#1B1E56';
-  document.querySelector('.opp-outcomes-time-btn--active').style.color='white';
-  buildOppEntriesChart();
-  buildOppOutcomesChart();
+    oppSetupComparatorControls('opp-entries', buildOppEntriesChart,
+      function() { return oppEntriesBreakdown; },
+      function() { return oppEntriesRange; }
+    );
 
-</script>
+    // -------------------------------------------------------------------------
+    // Outcomes event listeners
+    // -------------------------------------------------------------------------
+    document.getElementById('opp-outcomes-grade').addEventListener('change', function() {
+      oppOutcomesGrade = this.value;
+      buildOppOutcomesChart();
+    });
 
+    document.getElementById('opp-outcomes-breakdown').addEventListener('change', function() {
+      oppOutcomesBreakdown = this.value;
+      if (oppIsComparison(oppOutcomesBreakdown) && oppOutcomesRange === '3') {
+        oppEnsureSingleComparator('opp-outcomes');
+      }
+      buildOppOutcomesChart();
+    });
+
+    document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.opp-outcomes-time-btn').forEach(function(b) {
+          b.classList.remove('opp-outcomes-time-btn--active');
+          b.style.background = ''; b.style.color = '';
+        });
+        this.classList.add('opp-outcomes-time-btn--active');
+        this.style.background = '#1B1E56'; this.style.color = 'white';
+        oppOutcomesRange = this.getAttribute('data-range');
+        if (oppIsComparison(oppOutcomesBreakdown) && oppOutcomesRange === '3') {
+          oppEnsureSingleComparator('opp-outcomes');
+        }
+        buildOppOutcomesChart();
+      });
+    });
+
+    oppSetupComparatorControls('opp-outcomes', buildOppOutcomesChart,
+      function() { return oppOutcomesBreakdown; },
+      function() { return oppOutcomesRange; }
+    );
+
+    // -------------------------------------------------------------------------
+    // Initial render
+    // -------------------------------------------------------------------------
+    buildOppEntriesChart();
+    buildOppOutcomesChart();
+
+  })();
+  </script>
 {% endblock %}

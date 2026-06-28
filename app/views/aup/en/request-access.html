@@ -8,9 +8,9 @@
     <div class="govuk-grid-column-two-thirds">
 
       <h1 class="govuk-heading-l">Request access to the School Data Service</h1>
-      <p class="govuk-body">Complete this form and Welsh Government will review your request.</p>
+      <p class="govuk-body">Complete this form to request access.</p>
 
-      {{ govukInsetText({ text: "You will need a Hwb account to sign in once your access is approved. If you do not have one, your local authority can create one for you." }) }}
+      {{ govukInsetText({ text: "Once your request is approved, you will receive a confirmation email with next steps." }) }}
 
       <div class="govuk-form-group">
         <label class="govuk-label govuk-label--s" for="school-search">Your school or organisation</label>
@@ -29,7 +29,6 @@
             { value: "data-lead", text: "School data lead" },
             { value: "middle-leader", text: "Middle leader / subject lead" },
             { value: "la", text: "Local authority officer" },
-            { value: "consortia", text: "Regional consortia officer" },
             { value: "wg", text: "Welsh Government official" }
           ]
         }) }}

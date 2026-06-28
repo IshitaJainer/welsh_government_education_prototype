@@ -12,7 +12,7 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Ysgol Gyfun Abercastell</h1>
-      <p class="govuk-body govuk-!-color-secondary">Overview: Academic year 2024-25</p>
+      <p id="dash-year-label" class="govuk-body govuk-!-color-secondary">Overview: Academic year 2024-25</p>
     </div>
     <div class="govuk-grid-column-one-third">
       <div class="aup-notify-banner">
@@ -27,7 +27,7 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-full">
       <div class="aup-filter-bar">
-        <span class="govuk-body-s aup-filter-bar__label">Sort by:</span>
+        <span class="govuk-body-s aup-filter-bar__label">Academic year:</span>
         {{ govukSelect({
           id: "filter-year",
           name: "filter-year",
@@ -52,18 +52,30 @@
   {# Summary metric cards #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
-      <div class="aup-metric-grid" style="grid-template-columns: repeat(2, 1fr); max-width: 60%;">
+      <div class="aup-metric-grid" style="grid-template-columns: repeat(4, 1fr);">
 
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s" title="The percentage of possible sessions attended by all registered pupils.">Overall attendance</p>
-          <p class="aup-metric-card__value govuk-heading-l">93.4%</p>
-          <p class="govuk-body-s govuk-!-margin-bottom-0">0.8% above last year</p>
+          <p id="dash-att-value" class="aup-metric-card__value govuk-heading-l"></p>
+          <p id="dash-att-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
 
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s" title="The percentage of pupils who missed 20% or more of possible sessions.">Persistent absence</p>
-          <p class="aup-metric-card__value govuk-heading-l">18.2%</p>
-          <p class="govuk-body-s govuk-!-margin-bottom-0">1.2% below last year</p>
+          <p id="dash-pa-value" class="aup-metric-card__value govuk-heading-l"></p>
+          <p id="dash-pa-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
+        </div>
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of learners entered for qualifications.">Entries</p>
+          <p id="dash-entries-value" class="aup-metric-card__value govuk-heading-l"></p>
+          <p id="dash-entries-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
+        </div>
+
+        <div class="aup-metric-card">
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of entries achieving A*–C.">Attainment A*–C</p>
+          <p id="dash-attc-value" class="aup-metric-card__value govuk-heading-l"></p>
+          <p id="dash-attc-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
 
       </div>
@@ -79,37 +91,31 @@
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group</h2>
           <a href="/aup/en/attendance.html" class="govuk-link govuk-body-s">View full breakdown</a>
         </div>
-        <p class="govuk-body-s aup-chart-card__desc">Attendance rate compared to Wales average and virtual comparator. FSM-eligible learners attend significantly less.</p>
+        <p class="govuk-body-s aup-chart-card__desc">Attendance rate compared to Wales average and contextual comparator, broken down by learner group.</p>
 
         <div class="aup-hbar">
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">All learners</span>
             <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:93.4%"><span class="aup-hbar__val">93.4%</span></div>
+              <div id="bar-school" class="aup-hbar__fill aup-hbar__fill--school" style="width:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">Wales avg</span>
             <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:91.8%"><span class="aup-hbar__val">91.8%</span></div>
+              <div id="bar-wales" class="aup-hbar__fill aup-hbar__fill--national" style="width:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">Comparator</span>
             <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:92.1%"><span class="aup-hbar__val">92.1%</span></div>
+              <div id="bar-ctx" class="aup-hbar__fill aup-hbar__fill--comparator" style="width:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">FSM eligible</span>
             <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:84.2%"><span class="aup-hbar__val">84.2%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s">ALN</span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--school" style="width:88.6%"><span class="aup-hbar__val">88.6%</span></div>
+              <div id="bar-fsm" class="aup-hbar__fill aup-hbar__fill--school" style="width:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
         </div>
@@ -117,17 +123,14 @@
         <ul class="aup-legend govuk-list govuk-!-font-size-14">
           <li class="aup-legend__item aup-legend__item--school">This school</li>
           <li class="aup-legend__item aup-legend__item--national">Wales average</li>
-          <li class="aup-legend__item aup-legend__item--comparator">Virtual comparator</li>
+          <li class="aup-legend__item aup-legend__item--comparator">Contextual comparator</li>
         </ul>
       </div>
     </div>
 
-
-
   </div>
 
-  
-<div class="govuk-!-margin-top-6">
+  <div class="govuk-!-margin-top-6">
     {{ govukButton({
       text: "Download this report",
       classes: "govuk-button--secondary",
@@ -136,4 +139,144 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script>
+    (function() {
+      var school = WGData.schools['abercastell'];
+      var att = school.attendance;
+
+      // Build a lookup of year key -> array index from the labels in data.js
+      // Label format is "2024-25" — we convert to "2425" to match the select values
+      // This means adding a new year to data.js works automatically
+      function buildIndexMap(labels) {
+        var map = {};
+        labels.forEach(function(label, i) {
+          var key = label.replace(/-/g, '').slice(2, 6); // "2024-25" -> "202425" -> "2425"
+          map[key] = i;
+        });
+        return map;
+      }
+
+      var attIndexMap     = buildIndexMap(att.overall['5'].labels);
+      var entriesIndexMap = (school.entries && school.entries.all['3']) ? buildIndexMap(school.entries.all['3'].labels) : null;
+      var attCIndexMap    = (school.outcomes && school.outcomes['astar-c'] && school.outcomes['astar-c'].all['3']) ? buildIndexMap(school.outcomes['astar-c'].all['3'].labels) : null;
+
+      var yearDisplayMap = {
+        '2425': '2024-25',
+        '2324': '2023-24',
+        '2223': '2022-23'
+      };
+
+      function setCard(valueId, deltaId, value, prev, decimals) {
+        document.getElementById(valueId).textContent = value.toFixed(decimals) + '%';
+        if (prev !== null && prev !== undefined) {
+          var delta = value - prev;
+          var abs   = Math.abs(delta).toFixed(decimals);
+          var dir   = delta >= 0 ? 'above' : 'below';
+          document.getElementById(deltaId).textContent = abs + '% ' + dir + ' last year';
+        } else {
+          document.getElementById(deltaId).textContent = 'No prior year data';
+        }
+      }
+
+      function setCardMissing(valueId, deltaId, reason) {
+        document.getElementById(valueId).textContent = '\u2014';
+        document.getElementById(deltaId).textContent = reason;
+      }
+
+      function setBar(id, value) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (value !== null && value !== undefined) {
+          el.style.width = value + '%';
+          el.querySelector('.aup-hbar__val').textContent = value + '%';
+        } else {
+          el.style.width = '0%';
+          el.querySelector('.aup-hbar__val').textContent = '\u2014';
+        }
+      }
+
+      function update(yearKey) {
+
+        // --- Metric cards ---
+
+        // Overall attendance — 5-year array, always present
+        var attIdx = attIndexMap[yearKey];
+        if (attIdx !== undefined) {
+          var attVal  = att.overall['5'].school[attIdx];
+          var attPrev = attIdx > 0 ? att.overall['5'].school[attIdx - 1] : null;
+          setCard('dash-att-value', 'dash-att-delta', attVal, attPrev, 1);
+        } else {
+          setCardMissing('dash-att-value', 'dash-att-delta', 'Data not available');
+        }
+
+        // Persistent absence — 5-year array, always present
+        if (attIdx !== undefined) {
+          var paVal  = att.pa['5'].school[attIdx];
+          var paPrev = attIdx > 0 ? att.pa['5'].school[attIdx - 1] : null;
+          setCard('dash-pa-value', 'dash-pa-delta', paVal, paPrev, 1);
+        } else {
+          setCardMissing('dash-pa-value', 'dash-pa-delta', 'Data not available');
+        }
+
+        // Entries — 3-year array, secondary only
+        if (entriesIndexMap) {
+          var eIdx = entriesIndexMap[yearKey];
+          if (eIdx !== undefined) {
+            var eVal  = school.entries.all['3'].school[eIdx];
+            var ePrev = eIdx > 0 ? school.entries.all['3'].school[eIdx - 1] : null;
+            setCard('dash-entries-value', 'dash-entries-delta', eVal, ePrev, 0);
+          } else {
+            setCardMissing('dash-entries-value', 'dash-entries-delta', 'Data not available for this year');
+          }
+        } else {
+          setCardMissing('dash-entries-value', 'dash-entries-delta', 'Entries data not available');
+        }
+
+        // Attainment A*–C — 3-year array, secondary only
+        if (attCIndexMap) {
+          var cIdx = attCIndexMap[yearKey];
+          if (cIdx !== undefined) {
+            var cVal  = school.outcomes['astar-c'].all['3'].school[cIdx];
+            var cPrev = cIdx > 0 ? school.outcomes['astar-c'].all['3'].school[cIdx - 1] : null;
+            setCard('dash-attc-value', 'dash-attc-delta', cVal, cPrev, 0);
+          } else {
+            setCardMissing('dash-attc-value', 'dash-attc-delta', 'Data not available for this year');
+          }
+        } else {
+          setCardMissing('dash-attc-value', 'dash-attc-delta', 'Attainment data not available');
+        }
+
+        // --- Attendance chart bars ---
+
+        if (attIdx !== undefined) {
+          setBar('bar-school', att.overall['5'].school[attIdx]);
+          setBar('bar-wales',  att.overall['5'].wales[attIdx]);
+          setBar('bar-ctx',    att.overall['5'].ctx[attIdx]);
+        }
+
+        // FSM group data is single-year only in the current data file
+        // When data.js is updated to include attendanceByYear on groups,
+        // replace this line with: att.groups.fsm.attendanceByYear[attIdx]
+        setBar('bar-fsm', att.groups ? att.groups.fsm.attendance : null);
+
+        // --- Year label ---
+        var displayYear = yearDisplayMap[yearKey] || yearKey;
+        document.getElementById('dash-year-label').textContent = 'Overview: Academic year ' + displayYear;
+      }
+
+      // Initialise
+      update('2425');
+
+      // Toggle listener
+      document.getElementById('filter-year').addEventListener('change', function() {
+        update(this.value);
+      });
+
+    })();
+  </script>
 {% endblock %}

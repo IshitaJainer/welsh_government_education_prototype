@@ -3,22 +3,56 @@
 {% set currentNav = "la" %}
 {% set userName = "S. Thomas" %}
 {% set schoolName = "Rhondda Cynon Taf CBC" %}
-{% block pageTitle %}Aberdare Community — LA view — School Data Service{% endblock %}
+
+{% set slugToName = {
+  "abercastell": "Ysgol Gyfun Abercastell",
+  "blaengwawr": "Blaengwawr High School",
+  "treorchy": "Treorchy Comprehensive",
+  "mountain-ash": "Mountain Ash Comprehensive",
+  "aberdare": "Aberdare Community School",
+  "ferndale": "Ferndale Community School",
+  "llanhari": "Ysgol Llanhari",
+  "cwmtaff": "Ysgol Gynradd Cwmtaff",
+  "hirwaun": "Hirwaun Primary School",
+  "penrhys": "Penrhys Special School",
+  "st-cenydd": "St Cenydd Comprehensive",
+  "lewis": "Lewis School Pengam",
+  "blackwood": "Blackwood Comprehensive",
+  "risca": "Risca Community Comprehensive",
+  "ystrad-mynach": "Ysgol Gyfun Cwm Rhymni",
+  "bedwas": "Bedwas Primary School",
+  "cyfarthfa": "Cyfarthfa High School",
+  "pen-y-dre": "Pen-y-Dre High School",
+  "afon-taf": "Afon Taf High School",
+  "bishop-hannington": "Bishop Hannington Church in Wales School",
+  "vaynor": "Vaynor and Penderyn Primary"
+} %}
+
+{% set selectedSchool = data['school'] | default('aberdare') %}
+{% set selectedSchoolName = slugToName[selectedSchool] | default('Unknown school') %}
+
+{% block pageTitle %}{{ selectedSchoolName }} — LA view — School Data Service{% endblock %}
+
 {% block content %}
 <div class="govuk-width-container">
 
   <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-full">
-      <p class="govuk-body-s"><a href="/aup/en/la-schools.html" class="govuk-link">← All schools</a></p>
+      <p class="govuk-body-s"><a href="/aup/en/la-overview.html" class="govuk-link">← Back to LA overview</a></p>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Aberdare Community School</h1>
-      <p class="govuk-body">Secondary · English medium · URN 6744106 · Rhondda Cynon Taf</p>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ selectedSchoolName }}</h1>
+      <p id="school-subtitle" class="govuk-body"></p>
     </div>
-
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-filter-bar" style="justify-content: flex-end; padding-top: 8px;">
+        <label class="govuk-body-s aup-filter-bar__label" for="school-select">Switch school:</label>
+        <select id="school-select" class="govuk-select govuk-select--small"></select>
+      </div>
+    </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
@@ -26,17 +60,16 @@
       <div class="aup-metric-grid">
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Attendance</p>
-          <p class="aup-metric-card__value govuk-heading-l">88.4%</p>
+          <p id="card-attendance" class="aup-metric-card__value govuk-heading-l"></p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
-          <p class="aup-metric-card__value govuk-heading-l">35.8%</p>
+          <p id="card-pa" class="aup-metric-card__value govuk-heading-l"></p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">FSM eligible</p>
-          <p class="aup-metric-card__value govuk-heading-l">35.6%</p>
+          <p id="card-fsm" class="aup-metric-card__value govuk-heading-l"></p>
         </div>
-
       </div>
     </div>
   </div>
@@ -47,32 +80,7 @@
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance vs LA average and comparator</h2>
         </div>
-        <div class="aup-hbar">
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s"><strong>This school</strong></span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill" style="width:88.4%; background:#d4351c;"><span class="aup-hbar__val">88.4%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s">Comparator avg</span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:90.3%;"><span class="aup-hbar__val">90.3%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s">LA average</span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill aup-hbar__fill--national" style="width:88.2%;"><span class="aup-hbar__val">88.2%</span></div>
-            </div>
-          </div>
-          <div class="aup-hbar__row">
-            <span class="aup-hbar__label govuk-body-s">Wales average</span>
-            <div class="aup-hbar__track">
-              <div class="aup-hbar__fill" style="width:89.1%; background:#505a5f;"><span class="aup-hbar__val">89.1%</span></div>
-            </div>
-          </div>
-        </div>
+        <div class="aup-hbar" id="hbar-container"></div>
       </div>
     </div>
     <div class="govuk-grid-column-one-half">
@@ -80,25 +88,133 @@
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group</h2>
         </div>
-        {{ govukTable({
-          head: [ { text: "Group" }, { text: "Attendance" }, { text: "PA %" } ],
-          rows: [
-            [ { text: "All pupils" }, { text: "88.4%" }, { text: "35.8%" }],
-            [ { text: "FSM eligible" }, { text: "80.5%" }, { text: "48.2%" } ],
-            [ { text: "Non-FSM" }, { text: "90.4%" }, { text: "28.1%" } ],
-            [ { text: "ALN" }, { text: "81.2%" }, { text: "51.0%" } ]
-          ]
-        }) }}
+        <table class="govuk-table" id="group-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Group</th>
+              <th class="govuk-table__header">Attendance</th>
+              <th class="govuk-table__header">PA %</th>
+            </tr>
+          </thead>
+          <tbody id="group-tbody" class="govuk-table__body"></tbody>
+        </table>
       </div>
     </div>
   </div>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <a href="/aup/en/dashboard.html" role="button" class="govuk-button govuk-button--secondary">View full school dashboard</a>
-      <a href="/aup/en/la-schools.html" class="govuk-link govuk-!-margin-left-4">← Back to all schools</a>
+      <a href="/aup/en/dashboard.html?school={{ selectedSchool }}" role="button" class="govuk-button govuk-button--secondary">View full school dashboard</a>
     </div>
   </div>
 
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script>
+    (function() {
+
+      var slug = '{{ selectedSchool }}';
+      var school = WGData.schools[slug];
+
+      if (!school) {
+        document.getElementById('school-subtitle').textContent = 'School data not found.';
+        return;
+      }
+
+      // ── SUBTITLE ─────────────────────────────────────────────────────
+      var laCode = school.la || 'rct';
+      var la = WGData.las[laCode] || {};
+      document.getElementById('school-subtitle').textContent =
+        school.phase + ' \u00b7 ' + school.language + ' \u00b7 URN ' + (school.urn || '\u2014') + ' \u00b7 ' + (la.name || laCode);
+
+      // ── METRIC CARDS ─────────────────────────────────────────────────
+      var att1 = school.attendance && school.attendance.overall && school.attendance.overall['1']
+        ? school.attendance.overall['1'].school : null;
+      var pa1 = school.attendance && school.attendance.pa && school.attendance.pa['1']
+        ? school.attendance.pa['1'].school : null;
+
+      document.getElementById('card-attendance').textContent = att1 !== null ? att1 + '%' : '\u2014';
+      document.getElementById('card-pa').textContent = pa1 !== null ? pa1 + '%' : '\u2014';
+      document.getElementById('card-fsm').textContent = school.fsm3yr ? school.fsm3yr + '%' : '\u2014';
+
+      // ── HBAR CHART ───────────────────────────────────────────────────
+      var laData = WGData.las[laCode];
+      var laAtt = laData && laData.attendance && laData.attendance.overall && laData.attendance.overall['1']
+        ? laData.attendance.overall['1'].value : null;
+      var walesAtt = school.attendance && school.attendance.overall && school.attendance.overall['1']
+        ? school.attendance.overall['1'].wales : null;
+      var ctxAtt = school.attendance && school.attendance.overall && school.attendance.overall['1']
+        ? school.attendance.overall['1'].ctx : null;
+
+      function hbar(label, value, style, bold) {
+        var labelHtml = bold ? '<strong>' + label + '</strong>' : label;
+        return '<div class="aup-hbar__row">' +
+          '<span class="aup-hbar__label govuk-body-s">' + labelHtml + '</span>' +
+          '<div class="aup-hbar__track">' +
+          '<div class="aup-hbar__fill" style="width:' + value + '%;' + style + '">' +
+          '<span class="aup-hbar__val">' + value + '%</span>' +
+          '</div></div></div>';
+      }
+
+      var hbarHtml = '';
+      if (att1 !== null)
+        hbarHtml += '<div class="aup-hbar__row"><span class="aup-hbar__label govuk-body-s"><strong>This school</strong></span><div class="aup-hbar__track"><div class="aup-hbar__fill" style="width:' + att1 + '%; background:#00703c;"><span class="aup-hbar__val">' + att1 + '%</span></div></div></div>';
+      if (ctxAtt !== null)
+        hbarHtml += '<div class="aup-hbar__row"><span class="aup-hbar__label govuk-body-s">Comparator avg</span><div class="aup-hbar__track"><div class="aup-hbar__fill aup-hbar__fill--comparator" style="width:' + ctxAtt + '%;"><span class="aup-hbar__val">' + ctxAtt + '%</span></div></div></div>';
+      if (laAtt !== null)
+        hbarHtml += '<div class="aup-hbar__row"><span class="aup-hbar__label govuk-body-s">LA average</span><div class="aup-hbar__track"><div class="aup-hbar__fill aup-hbar__fill--national" style="width:' + laAtt + '%;"><span class="aup-hbar__val">' + laAtt + '%</span></div></div></div>';
+      if (walesAtt !== null)
+        hbarHtml += '<div class="aup-hbar__row"><span class="aup-hbar__label govuk-body-s">Wales average</span><div class="aup-hbar__track"><div class="aup-hbar__fill" style="width:' + walesAtt + '%; background:#505a5f;"><span class="aup-hbar__val">' + walesAtt + '%</span></div></div></div>';
+      document.getElementById('hbar-container').innerHTML = hbarHtml;
+
+      // ── GROUP TABLE ──────────────────────────────────────────────────
+      var groups = school.attendance && school.attendance.groups ? school.attendance.groups : {};
+      var tbody = document.getElementById('group-tbody');
+      tbody.innerHTML = '';
+
+      var groupLabels = { fsm: 'FSM eligible', nonfsm: 'Non-FSM', female: 'Female', male: 'Male' };
+
+      Object.keys(groups).forEach(function(groupKey) {
+        var g = groups[groupKey];
+        if (!g) return;
+        var label = groupLabels[groupKey] || groupKey;
+        var row = document.createElement('tr');
+        row.className = 'govuk-table__row';
+        row.innerHTML =
+          '<td class="govuk-table__cell">' + label + '</td>' +
+          '<td class="govuk-table__cell">' + (g.attendance !== undefined ? g.attendance + '%' : '\u2014') + '</td>' +
+          '<td class="govuk-table__cell">' + (g.pa !== undefined ? g.pa + '%' : '\u2014') + '</td>';
+        tbody.appendChild(row);
+      });
+
+      if (Object.keys(groups).length === 0) {
+        var row = document.createElement('tr');
+        row.className = 'govuk-table__row';
+        row.innerHTML = '<td class="govuk-table__cell" colspan="3">No group breakdown available.</td>';
+        tbody.appendChild(row);
+      }
+
+      // ── SCHOOL SWITCHER ──────────────────────────────────────────────
+      var select = document.getElementById('school-select');
+      var slugs = WGData.las[laCode] ? WGData.las[laCode].schools : [];
+      slugs.forEach(function(s) {
+        var sc = WGData.schools[s];
+        if (!sc) return;
+        var opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = sc.name;
+        if (s === slug) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener('change', function() {
+        window.location.href = '/aup/en/la-school.html?school=' + this.value;
+      });
+
+    })();
+  </script>
 {% endblock %}

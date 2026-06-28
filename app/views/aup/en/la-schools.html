@@ -1,0 +1,111 @@
+{% extends "aup/layout_aup_la.html" %}
+{% set lang = "en" %}
+{% set currentNav = "within-la" %}
+{% set userName = "S. Thomas" %}
+{% set schoolName = "Rhondda Cynon Taf CBC" %}
+{% block pageTitle %}Within LA — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Rhondda Cynon Taf — all schools</h1>
+      <p class="govuk-body">Academic year 2024-25</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-filter-bar govuk-!-margin-bottom-4">
+        <span class="govuk-body-s aup-filter-bar__label">Filter by phase:</span>
+        <select id="phase-select" class="govuk-select govuk-select--small">
+          <option value="all" selected>All schools</option>
+          <option value="Secondary">Secondary</option>
+          <option value="Primary">Primary</option>
+          <option value="Middle">Middle</option>
+          <option value="Special">Special</option>
+        </select>
+      </div>
+
+      <table class="govuk-table" id="schools-table">
+        <thead class="govuk-table__head">
+          <tr class="govuk-table__row">
+            <th class="govuk-table__header">School</th>
+            <th class="govuk-table__header">Phase</th>
+            <th class="govuk-table__header">Pupils</th>
+            <th class="govuk-table__header">FSM %</th>
+            <th class="govuk-table__header">Attendance</th>
+          </tr>
+        </thead>
+        <tbody id="schools-tbody" class="govuk-table__body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script>
+    (function() {
+
+      var LA_CODE = 'rct';
+      var slugs = WGData.las[LA_CODE].schools;
+      var currentPhase = 'all';
+
+      function renderTable(phase) {
+        var tbody = document.getElementById('schools-tbody');
+        tbody.innerHTML = '';
+
+        var rows = [];
+        slugs.forEach(function(slug) {
+          var s = WGData.schools[slug];
+          if (!s) return;
+          if (phase !== 'all' && s.phase !== phase) return;
+          rows.push({ slug: slug, school: s });
+        });
+
+        rows.sort(function(a, b) {
+          var attA = a.school.attendance && a.school.attendance.overall && a.school.attendance.overall['1'] ? a.school.attendance.overall['1'].school : 999;
+          var attB = b.school.attendance && b.school.attendance.overall && b.school.attendance.overall['1'] ? b.school.attendance.overall['1'].school : 999;
+          return attA - attB;
+        });
+
+        if (rows.length === 0) {
+          var row = document.createElement('tr');
+          row.className = 'govuk-table__row';
+          row.innerHTML = '<td class="govuk-table__cell" colspan="5">No schools found for the selected filter.</td>';
+          tbody.appendChild(row);
+          return;
+        }
+
+        rows.forEach(function(item) {
+          var s = item.school;
+          var att = s.attendance && s.attendance.overall && s.attendance.overall['1'] ? s.attendance.overall['1'].school + '%' : '\u2014';
+          var fsm = s.fsm3yr ? s.fsm3yr + '%' : '\u2014';
+          var pupils = s.totalPupils ? s.totalPupils.toLocaleString() : '\u2014';
+          var row = document.createElement('tr');
+          row.className = 'govuk-table__row';
+          row.innerHTML =
+            '<td class="govuk-table__cell"><a href="/aup/en/la-school.html?school=' + item.slug + '" class="govuk-link">' + s.name + '</a></td>' +
+            '<td class="govuk-table__cell">' + s.phase + '</td>' +
+            '<td class="govuk-table__cell">' + pupils + '</td>' +
+            '<td class="govuk-table__cell">' + fsm + '</td>' +
+            '<td class="govuk-table__cell">' + att + '</td>';
+          tbody.appendChild(row);
+        });
+      }
+
+      renderTable('all');
+
+      document.getElementById('phase-select').addEventListener('change', function() {
+        currentPhase = this.value;
+        renderTable(currentPhase);
+      });
+
+    })();
+  </script>
+{% endblock %}
