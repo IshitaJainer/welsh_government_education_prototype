@@ -988,7 +988,7 @@
 
       } else if (!isTime && !isComp) {
         // Single year, non-comparison — one bar per comparator
-        newCanvas.height = oppCanvasHeight(comparators.length * 1.5);
+        newCanvas.height = oppCanvasHeight(comparators.length * 2.0);
         oppOutcomesChartInstance = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -1013,7 +1013,7 @@
       } else {
         // Single year, comparison breakdown — grouped bars, one group per label, one bar per comparator
         var compLabels = d.labels;
-        newCanvas.height = oppCanvasHeight(comparators.length * 1.5);
+        newCanvas.height = oppCanvasHeight(comparators.length * 2.0);
         oppOutcomesChartInstance = new Chart(ctx, {
           type: 'bar',
           data: {
