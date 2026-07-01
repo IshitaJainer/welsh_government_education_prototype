@@ -1,4 +1,4 @@
-{% extends "aup/layout_aup.html" %}
+{% extends "aup/layout_aup_la.html" %}
 {% set lang = "en" %}
 {% set alternativeHref = "#" %}
 {% set currentNav = "grants" %}
@@ -63,11 +63,11 @@
     </div>
   </div>
 
-  {# Spend breakdown chart + outcomes summary #}
+  {# Spend breakdown chart #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
       <div class="aup-chart-card">
-       <h2 class="govuk-heading-s">Spend by category</h2>
+        <h2 class="govuk-heading-s">Spend by category</h2>
         <p class="govuk-body-s">How the PDG allocation is distributed across the three strategy areas.</p>
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
           <canvas id="spend-chart" height="80"></canvas>
@@ -81,7 +81,8 @@
     </div>
   </div>
 
-  <div>
+  {# Intended outcomes #}
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
       <div class="aup-chart-card">
         <h2 class="govuk-heading-s">Intended outcomes</h2>
@@ -108,7 +109,6 @@
         }) }}
       </div>
     </div>
-
   </div>
 
   {# Strategy statement #}
@@ -230,39 +230,41 @@
   </div>
 
 </div>
+{% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  var sctx = document.getElementById('spend-chart').getContext('2d');
-  new Chart(sctx, {
-    type: 'bar',
-    data: {
-      labels: ['Learning and teaching', 'Community focused schools', 'Wider strategies'],
-      datasets: [{
-        data: [62000, 30500, 22100],
-        backgroundColor: ['#003078', '#5694ca', '#f47738'],
-        barThickness: 32
-      }]
-    },
-    options: {
-      indexAxis: 'y',
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return '£' + context.parsed.x.toLocaleString();
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var sctx = document.getElementById('spend-chart').getContext('2d');
+    new Chart(sctx, {
+      type: 'bar',
+      data: {
+        labels: ['Learning and teaching', 'Community focused schools', 'Wider strategies'],
+        datasets: [{
+          data: [62000, 30500, 22100],
+          backgroundColor: ['#003078', '#5694ca', '#f47738'],
+          barThickness: 32
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return '£' + context.parsed.x.toLocaleString();
+              }
             }
           }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { callback: function(v){ return '£' + (v >= 1000 ? (v/1000)+'k' : v); } } },
+          y: { grid: { display: false } }
         }
-      },
-      scales: {
-        x: { grid: { display: false }, ticks: { callback: function(v){ return '£' + (v >= 1000 ? (v/1000)+'k' : v); } } },
-        y: { grid: { display: false } }
       }
-    }
-  });
-</script>
-
+    });
+  </script>
 {% endblock %}

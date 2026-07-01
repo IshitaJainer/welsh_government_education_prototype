@@ -1,0 +1,46 @@
+{% extends "aup/layout_aup_la.html" %}
+{% set lang = "en" %}
+{% set currentNav = "eotas" %}
+{% set userName = "S. Thomas" %}
+{% set schoolName = "Rhondda Cynon Taf CBC" %}
+{% block pageTitle %}EOTAS — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Education otherwise than at school</h1>
+      <p class="govuk-body">Rhondda Cynon Taf — academic year 2024-25</p>
+    </div>
+  </div>
+
+  <div class="aup-metric-grid govuk-!-margin-bottom-6">
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">Number of providers</p>
+      <p class="aup-metric-card__value govuk-heading-l">12</p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">Estimated registered learners</p>
+      <p class="aup-metric-card__value govuk-heading-l">148</p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">Re-integration rate</p>
+      <p class="aup-metric-card__value govuk-heading-l">34%</p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">De-register rate</p>
+      <p class="aup-metric-card__value govuk-heading-l">18%</p>
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="govuk-inset-text">
+        <p class="govuk-body">Provider breakdown, learner trend data and re-integration narratives go here.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

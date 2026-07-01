@@ -24,22 +24,22 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
-      <div class="aup-metric-grid">
+      <div class="aup-metric-grid" id="metric-grid">
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
-          <p class="aup-metric-card__value govuk-heading-l">93.4%</p>
+          <p class="aup-metric-card__value govuk-heading-l" id="metric-overall">—</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
-          <p class="aup-metric-card__value govuk-heading-l">18.2%</p>
+          <p class="aup-metric-card__value govuk-heading-l" id="metric-pa">—</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Authorised absence</p>
-          <p class="aup-metric-card__value govuk-heading-l">3.8%</p>
+          <p class="aup-metric-card__value govuk-heading-l" id="metric-auth">—</p>
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Unauthorised absence</p>
-          <p class="aup-metric-card__value govuk-heading-l">2.8%</p>
+          <p class="aup-metric-card__value govuk-heading-l" id="metric-unauth">—</p>
         </div>
       </div>
     </div>
@@ -47,11 +47,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <div class="aup-chart-card govuk-!-margin-bottom-6">
-        <h2 class="govuk-heading-s">Attendance by learner characteristic</h2>
-        
-        <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
+
       <div class="aup-chart-card govuk-!-margin-bottom-6">
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance over time</h2>
@@ -75,30 +71,37 @@
 
         <div style="display: flex; gap: 12px; margin-bottom: 16px;">
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn att-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">1 year</button>
-          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">3 years</button>
-          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="all" style="font-size: 14px; padding: 6px 12px;">All time</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="5" style="font-size: 14px; padding: 6px 12px;">5 years</button>
         </div>
-        <p id="trend-single-year-msg" class="govuk-body-s" style="color:#505a5f; margin-bottom: 12px; display: none;">Showing data for 2024-25 only. Select 3 years or all time to see the trend.</p>
+
+        <p id="trend-single-year-msg" class="govuk-body-s" style="color:#505a5f; margin-bottom: 12px; display: none;">Showing data for 2024-25 only. Select 5 years to see the trend.</p>
+
+        <div style="margin-bottom: 12px; display: flex; gap: 20px; flex-wrap: wrap;">
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="att-show-la" checked style="margin: 0;"> LA average
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="att-show-wales" checked style="margin: 0;"> Wales average
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="att-show-ctx" checked style="margin: 0;"> Contextual comparator
+          </label>
+        </div>
 
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
           <canvas id="att-trend-chart" height="80"></canvas>
         </div>
 
-        <ul style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px;">
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> This school</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px;"></span> LA average</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#d4351c; border-radius:2px;"></span> Wales average</li>
-        </ul>
+        <ul id="att-trend-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
 
       </div>
+
     </div>
   </div>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
 
-    <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
       <div class="aup-chart-card govuk-!-margin-bottom-6">
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Attendance by learner group (2024-25)</h2>
@@ -114,9 +117,7 @@
             classes: "govuk-select--small",
             items: [
               { value: "fsm", text: "FSM eligibility", selected: true },
-              { value: "Sex", text: "Sex" },
-              { value: "aln", text: "ALN" },
-              { value: "eal", text: "EAL" }
+              { value: "sex", text: "Sex" }
             ]
           }) }}
         </div>
@@ -133,260 +134,265 @@
         </ul>
 
       </div>
+
     </div>
   </div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <div class="aup-chart-card govuk-!-margin-bottom-6">
-        <div class="aup-chart-card__header">
-          <h2 class="govuk-heading-s aup-chart-card__title">Attendance vs Contextual Comparator</h2>
-        </div>
-        <p class="govuk-body-s">Details on what this chart shows to be added here</p>
-
-        <div class="aup-filter-bar govuk-!-margin-bottom-4">
-          <span class="govuk-body-s aup-filter-bar__label">Filter by:</span>
-          {{ govukSelect({
-            id: "modelled-filter",
-            name: "modelled-filter",
-            label: { text: "Group", classes: "govuk-visually-hidden" },
-            classes: "govuk-select--small",
-            items: [
-              { value: "all", text: "All learners", selected: true },
-              { value: "fsm", text: "FSM eligible" },
-              { value: "nonfsm", text: "Non-FSM" },
-              { value: "aln", text: "ALN" },
-              { value: "female", text: "Female" },
-              { value: "male", text: "Male" }
-            ]
-          }) }}
-        </div>
-
-        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
-          <canvas id="modelled-chart" height="60"></canvas>
-        </div>
-
-        <ul style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;">
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Attendance</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px; opacity: 0.5;"></span> Contextual comparator</li>
-        </ul>
-
-        {{ govukDetails({
-          summaryText: "Contextual Comparator",
-          text: "Narrative on the calculation of the contextual comparator"
-        }) }}
-
-      </div>
-    </div>
-  </div>
-
-      {{ govukInsetText({
-        text: "Narrative on where data comes from to be added here."
-      }) }}
-    </div>
-  </div>
+  {{ govukInsetText({
+    text: "Narrative on where data comes from to be added here."
+  }) }}
 
 </div>
+{% endblock %}
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  var data = {
-  overall: {
-    '1':   { labels: ['2025'], school: [93.4], la: [88.2], wales: [91.8] },
-    '3':   { labels: ['2023','2024','2025'], school: [91.2,92.1,93.4], la: [87.1,87.8,88.2], wales: [90.1,91.0,91.8] },
-    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [94.1,88.2,90.4,91.2,92.1,93.4], la: [92.0,86.0,86.5,87.1,87.8,88.2], wales: [94.7,86.7,88.2,90.1,91.0,91.8] }
-  },
-  pa: {
-    '1':   { labels: ['2025'], school: [18.2], la: [22.1], wales: [17.1] },
-    '3':   { labels: ['2023','2024','2025'], school: [20.1,19.4,18.2], la: [24.0,23.1,22.1], wales: [18.9,18.0,17.1] },
-    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [14.2,22.1,21.4,20.1,19.4,18.2], la: [18.0,28.0,26.1,24.0,23.1,22.1], wales: [13.4,20.9,19.8,18.9,18.0,17.1] }
-  },
-  auth: {
-    '1':   { labels: ['2025'], school: [3.8], la: [4.2], wales: [4.1] },
-    '3':   { labels: ['2023','2024','2025'], school: [4.1,4.0,3.8], la: [4.4,4.3,4.2], wales: [4.3,4.2,4.1] },
-    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [4.8,3.2,3.9,4.1,4.0,3.8], la: [5.0,3.4,4.1,4.4,4.3,4.2], wales: [4.9,3.3,4.0,4.3,4.2,4.1] }
-  },
-  unauth: {
-    '1':   { labels: ['2025'], school: [2.8], la: [3.1], wales: [2.1] },
-    '3':   { labels: ['2023','2024','2025'], school: [2.4,2.6,2.8], la: [2.8,3.0,3.1], wales: [1.8,2.0,2.1] },
-    'all': { labels: ['2020','2021','2022','2023','2024','2025'], school: [1.9,1.4,2.1,2.4,2.6,2.8], la: [2.2,1.6,2.4,2.8,3.0,3.1], wales: [1.4,1.1,1.6,1.8,2.0,2.1] }
-  }
-};
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  (function() {
 
-  var ctx = document.getElementById('att-trend-chart').getContext('2d');
-  var chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.overall['1'].labels,
-      datasets: [
-        { label: 'This school', data: data.overall['1'].school, borderColor: '#003078', backgroundColor: '#003078', borderWidth: 2, pointRadius: 4, tension: 0.1 },
-        { label: 'LA average', data: data.overall['1'].la, borderColor: '#5694ca', backgroundColor: '#5694ca', borderWidth: 2, pointRadius: 4, tension: 0.1 },
-        { label: 'Wales average', data: data.overall['1'].wales, borderColor: '#d4351c', backgroundColor: '#d4351c', borderWidth: 2, pointRadius: 4, tension: 0.1 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { display: false }, offset: true },
-        y: { grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
-      }
+    var school = WGData.schools['abercastell'];
+
+    // -------------------------------------------------------------------------
+    // Colours
+    // -------------------------------------------------------------------------
+    var COLOURS = {
+      school: '#003078',
+      la:     '#5694ca',
+      wales:  '#aacae6',
+      ctx:    '#f4c342'
+    };
+
+    var LABELS = {
+      school: 'This school',
+      la:     'LA average',
+      wales:  'Wales average',
+      ctx:    'Contextual comparator'
+    };
+
+    // -------------------------------------------------------------------------
+    // Metric cards — populate from WGData
+    // -------------------------------------------------------------------------
+    document.getElementById('metric-overall').textContent = school.attendance.overall['1'].school + '%';
+    document.getElementById('metric-pa').textContent      = school.attendance.pa['1'].school + '%';
+    document.getElementById('metric-auth').textContent    = school.attendance.auth['1'].school + '%';
+    document.getElementById('metric-unauth').textContent  = school.attendance.unauth['1'].school + '%';
+
+    // -------------------------------------------------------------------------
+    // Attendance over time — trend chart
+    // -------------------------------------------------------------------------
+    var currentMeasure = 'overall';
+    var currentRange   = '1';
+    var trendChart     = null;
+
+    function getActiveComparators() {
+      var c = ['school'];
+      if (document.getElementById('att-show-la').checked)    c.push('la');
+      if (document.getElementById('att-show-wales').checked)  c.push('wales');
+      if (document.getElementById('att-show-ctx').checked)    c.push('ctx');
+      return c;
     }
-  });
 
-  var currentMeasure = 'overall';
-  var currentRange = '1';
-
-  function updateChart() {
-    var d = data[currentMeasure][currentRange];
-    chart.data.labels = d.labels;
-    chart.data.datasets[0].data = d.school;
-    chart.data.datasets[1].data = d.la;
-    chart.data.datasets[2].data = d.wales;
-    chart.update();
-    document.getElementById('trend-single-year-msg').style.display = currentRange === '1' ? 'block' : 'none';
-  }
-
-  document.getElementById('att-measure').addEventListener('change', function() {
-    currentMeasure = this.value;
-    updateChart();
-  });
-
-  document.querySelectorAll('.att-time-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.att-time-btn').forEach(function(b) {
-        b.classList.remove('att-time-btn--active');
-        b.style.background = '';
-        b.style.color = '';
+    function buildTrendLegend(comparators) {
+      var el = document.getElementById('att-trend-legend');
+      el.innerHTML = '';
+      comparators.forEach(function(key) {
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="display:inline-block;width:12px;height:12px;background:' + COLOURS[key] + ';border-radius:2px;"></span>'
+          + ' ' + LABELS[key] + '</li>';
       });
-      this.classList.add('att-time-btn--active');
-      this.style.background = '#1B1E56';
-      this.style.color = 'white';
-      currentRange = this.getAttribute('data-range');
-      updateChart();
-    });
-  });
-
-  document.querySelector('.att-time-btn--active').style.background = '#1B1E56';
-  document.querySelector('.att-time-btn--active').style.color = 'white';
-   document.getElementById('trend-single-year-msg').style.display = 'block';
-</script>
-
-<script>
-  var groupData = {
-    fsm: {
-      labels: ['FSM eligible', 'Non-FSM'],
-      attendance: [84.2, 90.4],
-      auth: [4.8, 3.2],
-      unauth: [4.1, 1.9],
-      pa: [28.4, 14.1]
-    },
-    Sex: {
-      labels: ['Female', 'Male'],
-      attendance: [94.1, 91.3],
-      auth: [3.6, 4.1],
-      unauth: [2.3, 3.4],
-      pa: [16.8, 19.8]
-    },
-    aln: {
-      labels: ['ALN', 'No ALN'],
-      attendance: [88.6, 94.2],
-      auth: [5.1, 3.4],
-      unauth: [3.2, 2.4],
-      pa: [23.1, 15.8]
-    },
-    eal: {
-      labels: ['EAL', 'Non-EAL'],
-      attendance: [92.1, 93.5],
-      auth: [3.9, 3.8],
-      unauth: [2.1, 2.9],
-      pa: [17.4, 18.4]
     }
-  };
 
-  var gctx = document.getElementById('group-chart').getContext('2d');
-  var groupChart = new Chart(gctx, {
-    type: 'bar',
-    data: {
-      labels: groupData.fsm.labels,
-      datasets: [
-        { label: 'Overall attendance', data: groupData.fsm.attendance, backgroundColor: '#003078' },
-        { label: 'Authorised absence', data: groupData.fsm.auth, backgroundColor: '#5694ca' },
-        { label: 'Unauthorised absence', data: groupData.fsm.unauth, backgroundColor: '#d4351c' },
-        { label: 'Persistent absence', data: groupData.fsm.pa, backgroundColor: '#f47738' }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { display: false } },
-        y: { grid: { display: false }, ticks: { callback: function(v){ return v + '%'; } } }
+    function calcYAxis(d, isMultiYear) {
+      // Calculate from ALL four series regardless of which comparators are active,
+      // so the axis stays consistent when comparators are toggled.
+      var allValues = [];
+      ['school', 'la', 'wales', 'ctx'].forEach(function(key) {
+        if (isMultiYear) {
+          (d[key] || []).forEach(function(v) { allValues.push(v); });
+        } else {
+          if (d[key] !== undefined) allValues.push(d[key]);
+        }
+      });
+      var mn = Math.floor((Math.min.apply(null, allValues) - 5) / 5) * 5;
+      var mx = Math.ceil((Math.max.apply(null, allValues) + 5) / 5) * 5;
+      return { min: Math.max(0, mn), max: Math.min(100, mx) };
+    }
+
+    function buildTrendChart() {
+      var d = school.attendance[currentMeasure][currentRange];
+      if (!d) return;
+
+      var comparators = getActiveComparators();
+      var isMultiYear = currentRange === '5';
+
+      // Labels: single year shows just the year; multi-year uses d.labels
+      var chartLabels = isMultiYear ? d.labels : ['2024-25'];
+
+      // Y-axis calculated from full dataset — locked regardless of active comparators
+      var yAxis = calcYAxis(d, isMultiYear);
+
+      // Build datasets — only active comparators drawn, but axis doesn't shift
+      var datasets = comparators.map(function(key) {
+        var values = isMultiYear ? d[key] : [d[key]];
+        return {
+          label:           LABELS[key],
+          data:            values,
+          borderColor:     COLOURS[key],
+          backgroundColor: COLOURS[key],
+          borderWidth:     2,
+          pointRadius:     4,
+          tension:         0.1
+        };
+      });
+
+      // Destroy previous chart
+      if (trendChart) {
+        trendChart.destroy();
+        trendChart = null;
       }
-    }
-  });
 
-  document.getElementById('group-filter').addEventListener('change', function() {
-    var d = groupData[this.value];
-    groupChart.data.labels = d.labels;
-    groupChart.data.datasets[0].data = d.attendance;
-    groupChart.data.datasets[1].data = d.auth;
-    groupChart.data.datasets[2].data = d.unauth;
-    groupChart.data.datasets[3].data = d.pa;
-    groupChart.update();
-  });
-</script>
-
-<script>
-var modelledData = {
-    all:    { attendance: 93.4, comparator: 91.2 },
-    fsm:    { attendance: 84.2, comparator: 83.1 },
-    nonfsm: { attendance: 90.4, comparator: 92.8 },
-    aln:    { attendance: 88.6, comparator: 87.4 },
-    female: { attendance: 94.1, comparator: 92.0 },
-    male:   { attendance: 91.3, comparator: 90.4 }
-  };
-
-  var mctx = document.getElementById('modelled-chart').getContext('2d');
-  var modelledChart = new Chart(mctx, {
-    type: 'bar',
-    data: {
-      labels: ['2025'],
-      datasets: [
-        { label: 'Attendance', data: [93.4], backgroundColor: '#003078', barPercentage: 0.3, categoryPercentage: 0.5 },
-        { label: 'Contextual comparator', data: [91.2], backgroundColor: '#5694ca', barPercentage: 0.3, categoryPercentage: 0.5 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return context.dataset.label + ': ' + context.parsed.y + '%';
+      var canvas = document.getElementById('att-trend-chart');
+      trendChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels:   chartLabels,
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, offset: true },
+            y: {
+              grid: { display: false },
+              min: yAxis.min,
+              max: yAxis.max,
+              ticks: { callback: function(v) { return v + '%'; } }
             }
           }
         }
-      },
-      scales: {
-        x: { grid: { display: false } },
-        y: {
-          grid: { display: false },
-          min: 75,
-          max: 100,
-          ticks: { callback: function(v){ return v + '%'; } }
-        }
+      });
+
+      buildTrendLegend(comparators);
+
+      // Single-year message
+      document.getElementById('trend-single-year-msg').style.display =
+        currentRange === '1' ? 'block' : 'none';
+    }
+
+    // Measure dropdown
+    document.getElementById('att-measure').addEventListener('change', function() {
+      currentMeasure = this.value;
+      buildTrendChart();
+    });
+
+    // Time range buttons
+    document.querySelectorAll('.att-time-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.att-time-btn').forEach(function(b) {
+          b.classList.remove('att-time-btn--active');
+          b.style.background = '';
+          b.style.color = '';
+        });
+        this.classList.add('att-time-btn--active');
+        this.style.background = '#1B1E56';
+        this.style.color = 'white';
+        currentRange = this.getAttribute('data-range');
+        buildTrendChart();
+      });
+    });
+
+    // Comparator checkboxes
+    ['att-show-la', 'att-show-wales', 'att-show-ctx'].forEach(function(id) {
+      document.getElementById(id).addEventListener('change', function() {
+        buildTrendChart();
+      });
+    });
+
+    // Style the active button on load
+    document.querySelector('.att-time-btn--active').style.background = '#1B1E56';
+    document.querySelector('.att-time-btn--active').style.color = 'white';
+
+    // Initial render
+    buildTrendChart();
+
+    // -------------------------------------------------------------------------
+    // Attendance by learner group — group chart
+    // -------------------------------------------------------------------------
+    var groupChart = null;
+
+    // Map WGData groups structure to chart format
+    // groups: { fsm: {attendance, auth, unauth, pa}, nonfsm: {...}, female: {...}, male: {...} }
+    function getGroupData(breakdown) {
+      var g = school.attendance.groups;
+      if (breakdown === 'fsm') {
+        return {
+          labels:     ['FSM eligible', 'Non-FSM eligible'],
+          attendance: [g.fsm.attendance, g.nonfsm.attendance],
+          auth:       [g.fsm.auth, g.nonfsm.auth],
+          unauth:     [g.fsm.unauth, g.nonfsm.unauth],
+          pa:         [g.fsm.pa, g.nonfsm.pa]
+        };
+      } else {
+        return {
+          labels:     ['Female', 'Male'],
+          attendance: [g.female.attendance, g.male.attendance],
+          auth:       [g.female.auth, g.male.auth],
+          unauth:     [g.female.unauth, g.male.unauth],
+          pa:         [g.female.pa, g.male.pa]
+        };
       }
     }
-  });
 
-  document.getElementById('modelled-filter').addEventListener('change', function() {
-    var d = modelledData[this.value];
-    modelledChart.data.datasets[0].data = [d.attendance];
-    modelledChart.data.datasets[1].data = [d.comparator];
-    modelledChart.update();
-  });
-</script>
+    function buildGroupChart(breakdown) {
+      var d = getGroupData(breakdown);
 
+      if (groupChart) {
+        groupChart.destroy();
+        groupChart = null;
+      }
+
+      var canvas = document.getElementById('group-chart');
+      groupChart = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: d.labels,
+          datasets: [
+            { label: 'Overall attendance',    data: d.attendance, backgroundColor: '#003078' },
+            { label: 'Authorised absence',    data: d.auth,       backgroundColor: '#5694ca' },
+            { label: 'Unauthorised absence',  data: d.unauth,     backgroundColor: '#d4351c' },
+            { label: 'Persistent absence',    data: d.pa,         backgroundColor: '#f47738' }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false } },
+            y: {
+              grid: { display: false },
+              ticks: { callback: function(v) { return v + '%'; } }
+            }
+          }
+        }
+      });
+    }
+
+    document.getElementById('group-filter').addEventListener('change', function() {
+      buildGroupChart(this.value);
+    });
+
+    buildGroupChart('fsm');
+
+  })();
+  </script>
 {% endblock %}

@@ -183,6 +183,14 @@
     &--national {
       background-color: #aacae6;
     }
+
+    &--comparator {
+      background-color: #f4c342;
+    }
+
+    &--la {
+      background-color: #5694ca;
+    }
   }
 
   &__bar-value {
@@ -190,7 +198,9 @@
     font-weight: bold;
     color: govuk-colour("white");
 
-    .opp-chart__bar--national & {
+    .opp-chart__bar--national &,
+    .opp-chart__bar--comparator &,
+    .opp-chart__bar--la & {
       color: govuk-colour("black");
     }
   }

@@ -5,7 +5,7 @@
 {% block content %}
 <div class="govuk-width-container">
 
-<div class="govuk-grid-row govuk-!-margin-bottom-4">
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Find and contact similar schools</h1>
       <p class="govuk-body">Criteria have been pre-set based on your school's context. Select different criteria if you would like different comparators.</p>
@@ -20,7 +20,7 @@
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">School size (number of pupils)</legend>
           {{ govukCheckboxes({
-            name: "school-size",
+            name: "size",
             items: [
               { value: "under-500", text: "Under 500" },
               { value: "500-1000", text: "500 to 1,000", checked: true },
@@ -36,7 +36,7 @@
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">FSM eligibility band</legend>
           {{ govukCheckboxes({
-            name: "fsm-band",
+            name: "fsm",
             items: [
               { value: "0-10", text: "Up to 10%" },
               { value: "10-25", text: "Over 10% and up to 25%", checked: true },
@@ -56,10 +56,10 @@
             name: "aln",
             items: [
               { value: "low", text: "Lower than average (below 15%)" },
-              { value: "average", text: "Average (15% to 25%)", checked: true },
+              { value: "average", text: "Average (15% to 25%)" },
               { value: "high", text: "Higher than average (over 25%)" },
               { divider: "or" },
-              { value: "aln-any", text: "Do not apply this filter", behaviour: "exclusive" }
+              { value: "aln-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
             ]
           }) }}
         </fieldset>
@@ -69,7 +69,7 @@
         <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Language medium</legend>
           {{ govukCheckboxes({
-            name: "language",
+            name: "lang",
             items: [
               { value: "english", text: "English medium" },
               { value: "welsh", text: "Welsh medium" },
@@ -83,9 +83,25 @@
 
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">School type</legend>
+          {{ govukCheckboxes({
+            name: "type",
+            items: [
+              { value: "Primary", text: "Primary" },
+              { value: "Middle", text: "Middle" },
+              { value: "Secondary", text: "Secondary", checked: true },
+              { value: "Special", text: "Special" },
+              { divider: "or" },
+              { value: "type-any", text: "Do not apply this filter", behaviour: "exclusive" }
+            ]
+          }) }}
+        </fieldset>
+      </div>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Region or local authority</legend>
           <div class="govuk-hint">Select a region to match all schools in that area, or choose a specific local authority.</div>
-
           <label class="govuk-label" for="la-select">Select region or local authority</label>
           <select class="govuk-select govuk-!-width-full govuk-!-margin-bottom-4" id="la-select" name="la-select">
             <option value="">All of Wales</option>
@@ -126,18 +142,19 @@
               <option value="powys">Powys</option>
             </optgroup>
           </select>
-
           {{ govukCheckboxes({
-            name: "region-any",
+            name: "la-filter",
             items: [
-              { value: "region-any", text: "Do not apply this filter", behaviour: "exclusive" }
+              { value: "la-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
           }) }}
-
         </fieldset>
       </div>
 
-      <a href="/aup/en/compare-results.html" role="button" class="govuk-button">Find matching schools</a>
+      {{ govukButton({
+        text: "Find matching schools",
+        attributes: { id: "find-btn" }
+      }) }}
       <a href="/aup/en/dashboard.html" class="govuk-link govuk-!-margin-left-4">Cancel</a>
 
     </div>
@@ -147,10 +164,11 @@
         <h2 class="govuk-heading-s">Your school profile</h2>
         {{ govukSummaryList({
           rows: [
-            { key: { text: "Pupils" }, value: { text: "1,107" } },
-            { key: { text: "FSM eligible" }, value: { text: "35.6%" } },
-            { key: { text: "ALN" }, value: { text: "18.2%" } },
-            { key: { text: "Language" }, value: { text: "English medium" } },
+            { key: { text: "Pupils" }, value: { text: "1,124" } },
+            { key: { text: "FSM eligible" }, value: { text: "16.3%" } },
+            { key: { text: "ALN" }, value: { text: "8.6%" } },
+            { key: { text: "Language" }, value: { text: "Welsh medium" } },
+            { key: { text: "Type" }, value: { text: "Secondary" } },
             { key: { text: "Region" }, value: { text: "South East Wales" } }
           ]
         }) }}
@@ -159,4 +177,47 @@
   </div>
 
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script>
+    (function() {
+
+      function getChecked(name, exclusiveValue) {
+        return Array.from(document.querySelectorAll('input[name="' + name + '"]:checked'))
+          .map(function(el) { return el.value; })
+          .filter(function(v) { return v !== exclusiveValue; });
+      }
+
+      document.getElementById('find-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var params = new URLSearchParams();
+
+        var size = getChecked('size', 'size-any');
+        if (size.length) params.set('size', size.join(','));
+
+        var fsm = getChecked('fsm', 'fsm-any');
+        if (fsm.length) params.set('fsm', fsm.join(','));
+
+        var aln = getChecked('aln', 'aln-any');
+        if (aln.length) params.set('aln', aln.join(','));
+
+        var lang = getChecked('lang', 'lang-any');
+        if (lang.length) params.set('lang', lang.join(','));
+
+        var type = getChecked('type', 'type-any');
+        if (type.length) params.set('type', type.join(','));
+
+        var laAny = document.querySelector('input[name="la-filter"][value="la-any"]:checked');
+        var la = document.getElementById('la-select').value;
+        if (la && !laAny) params.set('la', la);
+
+        // Use location.replace so back button returns to build page cleanly
+        window.location.replace('/aup/en/compare-results.html?' + params.toString());
+      });
+
+    })();
+  </script>
 {% endblock %}

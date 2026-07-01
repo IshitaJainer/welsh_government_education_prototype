@@ -1,95 +1,125 @@
 {% extends "aup/layout_aup_la.html" %}
 {% set lang = "en" %}
-{% set currentNav = "la" %}
+{% set currentNav = "overview" %}
 {% set userName = "S. Thomas" %}
 {% set schoolName = "Rhondda Cynon Taf CBC" %}
 {% block pageTitle %}LA overview — School Data Service{% endblock %}
+
 {% block content %}
 <div class="govuk-width-container">
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Rhondda Cynon Taf</h1>
-      <p class="govuk-body">Local authority overview of all schools - academic year 2024-25 </p>
+      <p class="govuk-body">Local authority overview — academic year 2024-25</p>
     </div>
-
   </div>
 
-  {# Summary metric cards #}
-  <div class="govuk-grid-row govuk-!-margin-bottom-6">
-    <div class="govuk-grid-column-full">
-      <div class="aup-metric-grid">
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">Schools in LA</p>
-          <p class="aup-metric-card__value govuk-heading-l">86</p>
-          <p class="aup-metric-card__change govuk-body-s">23 secondary, 58 primary, 5 special</p>
-        </div>
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">LA average attendance</p>
-          <p class="aup-metric-card__value govuk-heading-l">88.2%</p>
-        </div>
-        <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
-          <p class="aup-metric-card__value govuk-heading-l">28.0%</p>
-        </div>
-      </div>
+  <div class="aup-metric-grid govuk-!-margin-bottom-6">
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">Schools in local authority</p>
+      <p id="card-total" class="aup-metric-card__value govuk-heading-l"></p>
+      <p id="card-breakdown" class="aup-metric-card__change govuk-body-s"></p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">LA average attendance</p>
+      <p id="card-attendance" class="aup-metric-card__value govuk-heading-l"></p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">Wales average attendance</p>
+      <p id="card-wales-attendance" class="aup-metric-card__value govuk-heading-l"></p>
+    </div>
+    <div class="aup-metric-card">
+      <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
+      <p id="card-fsm" class="aup-metric-card__value govuk-heading-l"></p>
     </div>
   </div>
 
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
-    <div class="govuk-grid-column-full">
-      <div class="aup-filter-bar govuk-!-margin-bottom-4">
-        <span class="govuk-body-s aup-filter-bar__label">Filter:</span>
-        {{ govukSelect({ id: "phase", name: "phase", label: { text: "Phase", classes: "govuk-visually-hidden" }, classes: "govuk-select--small", items: [
-          { value: "all", text: "All schools", selected: true },
-          { value: "secondary", text: "Secondary" },
-          { value: "primary", text: "Primary" },
-          { value: "special", text: "Special" }
-        ]}) }}
+    <div class="govuk-grid-column-one-half">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Overall attendance — LA vs Wales</h2>
+        </div>
+        <canvas id="overview-attendance-chart" height="200"></canvas>
       </div>
-      {{ govukTable({
-        head: [
-          { text: "School" },
-          { text: "Type" },
-          { text: "Pupils" },
-          { text: "FSM %" },
-          { text: "Attendance" }
-        ],
-        rows: [
-          [
-            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Mountain Ash CS</a>" },
-            { text: "Secondary" }, { text: "923" }, { text: "41.0%" }, { text: "86.1%" }
-          ],
-          [
-            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Aberdare Community</a>" },
-            { text: "Secondary" }, { text: "1,107" }, { text: "35.6%" }, { text: "88.4%" }
-          ],
-          [
-            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ysgol y Cymoedd</a>" },
-            { text: "Secondary" }, { text: "1,340" }, { text: "28.4%" }, { text: "89.3%" }
-          ],
-          [
-            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Blaengwawr High</a>" },
-            { text: "Secondary" }, { text: "876" }, { text: "22.1%" }, { text: "91.2%" }
-          ],
-          [
-            { html: "<a href='/aup/en/la-school.html' class='govuk-link'>Ferndale Community</a>" },
-            { text: "Secondary" }, { text: "654" }, { text: "31.2%" }, { text: "90.4%" }
-          ],
-          [
-            { html: "<span class='govuk-body-s' style='color:#505a5f'>+ 81 more schools...</span>" },
-            { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }, { text: "" }
-          ]
-        ]
-      }) }}
     </div>
-  </div>
-
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <a href="/aup/en/la-schools.html" role="button" class="govuk-button govuk-button--secondary">View all schools table</a>
+    <div class="govuk-grid-column-one-half">
+      <div class="aup-chart-card">
+        <div class="aup-chart-card__header">
+          <h2 class="govuk-heading-s aup-chart-card__title">Persistent absence — LA vs Wales</h2>
+        </div>
+        <canvas id="overview-pa-chart" height="200"></canvas>
+      </div>
     </div>
   </div>
 
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script src="/public/javascripts/data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+  <script>
+    (function() {
+
+      var LA_CODE = 'rct';
+      var la = WGData.las[LA_CODE];
+      var laAtt = la.attendance;
+
+      // ── CARDS ────────────────────────────────────────────────────────
+      var slugs = WGData.las[LA_CODE].schools;
+      var counts = { Secondary: 0, Primary: 0, Middle: 0, Special: 0 };
+      slugs.forEach(function(slug) {
+        var s = WGData.schools[slug];
+        if (s && counts[s.phase] !== undefined) counts[s.phase]++;
+      });
+      var parts = [];
+      if (counts.Secondary) parts.push(counts.Secondary + ' secondary');
+      if (counts.Primary)   parts.push(counts.Primary + ' primary');
+      if (counts.Middle)    parts.push(counts.Middle + ' middle');
+      if (counts.Special)   parts.push(counts.Special + ' special');
+      document.getElementById('card-total').textContent = slugs.length;
+      document.getElementById('card-breakdown').textContent = parts.join(', ');
+
+      var overall1 = laAtt.overall && laAtt.overall['1'] ? laAtt.overall['1'] : {};
+      document.getElementById('card-attendance').textContent = overall1.value !== undefined ? overall1.value + '%' : '\u2014';
+      document.getElementById('card-wales-attendance').textContent = overall1.wales !== undefined ? overall1.wales + '%' : '\u2014';
+      document.getElementById('card-fsm').textContent = la.fsm ? la.fsm + '%' : '\u2014';
+
+      // ── CHART SERIES ─────────────────────────────────────────────────
+      var years = laAtt.overall['5'] ? laAtt.overall['5'].labels : ['2020-21','2021-22','2022-23','2023-24','2024-25'];
+      var laAttSeries = laAtt.overall['5'] ? laAtt.overall['5'].la : [];
+      var walesAttSeries = laAtt.overall['5'] ? laAtt.overall['5'].wales : [];
+      var laPaSeries = laAtt.pa && laAtt.pa['5'] ? laAtt.pa['5'].la : [];
+      var walesPaSeries = laAtt.pa && laAtt.pa['5'] ? laAtt.pa['5'].wales : [];
+
+      // ── CHARTS ───────────────────────────────────────────────────────
+      new Chart(document.getElementById('overview-attendance-chart'), {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'LA', data: laAttSeries, borderColor: '#1d70b8', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Wales', data: walesAttSeries, borderColor: '#505a5f', backgroundColor: 'transparent', borderDash: [4,4], tension: 0.3 }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { min: 80, max: 100 } } }
+      });
+
+      new Chart(document.getElementById('overview-pa-chart'), {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'LA', data: laPaSeries, borderColor: '#d4351c', backgroundColor: 'transparent', tension: 0.3 },
+            { label: 'Wales', data: walesPaSeries, borderColor: '#505a5f', backgroundColor: 'transparent', borderDash: [4,4], tension: 0.3 }
+          ]
+        },
+        options: { responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { y: { min: 0, max: 50 } } }
+      });
+
+    })();
+  </script>
 {% endblock %}

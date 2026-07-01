@@ -6027,12 +6027,18 @@ p + .govuk-heading-s,
 .opp-chart__bar--national {
   background-color: #aacae6;
 }
+.opp-chart__bar--comparator {
+  background-color: #f4c342;
+}
+.opp-chart__bar--la {
+  background-color: #5694ca;
+}
 .opp-chart__bar-value {
   font-size: 13px;
   font-weight: bold;
   color: #ffffff;
 }
-.opp-chart__bar--national .opp-chart__bar-value {
+.opp-chart__bar--national .opp-chart__bar-value, .opp-chart__bar--comparator .opp-chart__bar-value, .opp-chart__bar--la .opp-chart__bar-value {
   color: #0b0c0c;
 }
 
