@@ -84,6 +84,11 @@
         </div>
 
         <ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
+{{ govukDetails({
+          classes: "govuk-!-margin-top-4",
+          summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
+          html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar characteristics, such as free school meal eligibility and prior attainment, rather than the Local Authority or Wales average. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+        }) }}
       </div>
     </div>
   </div>
@@ -146,6 +151,12 @@
               <canvas id="outcomes-chart"></canvas>
             </div>
             <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
+
+            {{ govukDetails({
+              classes: "govuk-!-margin-top-4",
+              summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
+              html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar characteristics, such as free school meal eligibility and prior attainment, rather than the Local Authority or Wales average. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+            }) }}
           </div>
           <div style="min-width: 200px; padding-top: 20px;">
             <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
