@@ -79,6 +79,33 @@
         <li><strong class="govuk-tag govuk-tag--green" id="tag-language">Welsh medium</strong></li>
         <li><strong class="govuk-tag govuk-tag--blue" id="tag-type">Community school</strong></li>
       </ul>
+      {{ govukDetails({
+        classes: "govuk-!-margin-top-2",
+        summaryHtml: "<span class='govuk-body-s'>What do these mean?</span>",
+        html: "
+          <p class='govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-1'>School type</p>
+          <ul class='govuk-list govuk-list--bullet govuk-body-s'>
+            <li>Nursery: learners aged 3 to 4</li>
+            <li>Primary: learners aged 3 to 11</li>
+            <li>Middle: learners aged 7 to 14</li>
+            <li>Secondary: learners aged 11 to 16 or 11 to 18</li>
+            <li>Special: learners with additional learning needs, any age</li>
+          </ul>
+          <p class='govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-1'>Language medium of school</p>
+          <ul class='govuk-list govuk-list--bullet govuk-body-s'>
+            <li>Welsh medium: pupils are taught mainly or entirely in Welsh</li>
+            <li>English medium: pupils are taught mainly or entirely in English</li>
+            <li>Bilingual: pupils are taught through both Welsh and English, often in separate streams</li>
+          </ul>
+          <p class='govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-1'>School governance</p>
+          <ul class='govuk-list govuk-list--bullet govuk-body-s'>
+            <li>Community school: Owned, maintained, and staffed entirely by the local authority, with strategic oversight delegated to the governing body</li>
+            <li>Foundation school: The governing body owns the premises, employs the staff, and manages admissions, while receiving revenue and capital funding from the local authority</li>
+            <li>Voluntary Aided: Owned by a religious denomination or charity (often the Church in Wales or Catholic Church), which retains primary control over admissions and staff employment. Foundation governors hold a majority on the board.</li>
+            <li>Voluntary Controlled: Land and buildings are often owned by a charity (typically linked to the church), but the local authority employs the staff and handles admissions.</li>
+          </ul>
+        "
+      }) }}
     </div>
   </div>
 
@@ -590,7 +617,7 @@
     // Populate static elements
     // -------------------------------------------------------------------------
     function populatePage() {
-      document.getElementById('school-address').textContent = school.postcode;
+      document.getElementById('school-address').textContent = school.street + ', ' + school.postcode;
       document.getElementById('school-phone').innerHTML = '<a href="tel:' + school.phone + '" class="govuk-link">' + school.phone + '</a>';
       document.getElementById('school-email').innerHTML = '<a href="mailto:' + school.email + '" class="govuk-link">' + school.email + '</a>';
       document.getElementById('school-website').innerHTML = '<a href="#" class="govuk-link">' + school.website + '</a>';
