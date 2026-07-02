@@ -27,8 +27,16 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <div class="govuk-grid-column-full">
-      <h2 class="govuk-heading-m">Subject X</h2>
-      <p class="govuk-body-s">Context about Subject X and its significance for this school will appear here.</p>
+      <div class="govuk-!-margin-bottom-4">
+        <label class="govuk-body-s govuk-!-font-weight-bold" for="aup-subject-select">Subject:</label>
+        <select id="aup-subject-select" class="govuk-select govuk-select--small" style="margin-left: 8px; width: auto; max-width: 200px;">
+          <option value="english" selected>English</option>
+          <option value="maths">Maths</option>
+        </select>
+      </div>
+
+      <h2 class="govuk-heading-m">English</h2>
+      <p class="govuk-body-s">Context about English and its significance for this school will appear here.</p>
     </div>
   </div>
 
@@ -41,8 +49,7 @@
         <div class="aup-chart-card__header">
           <h3 class="govuk-heading-s aup-chart-card__title">Entries</h3>
         </div>
-        <p class="govuk-body-s">Proportion of year 11 pupils entered for Subject X. Context about entry patterns and what influences them will appear here.</p>
-
+<p class="govuk-body-s">Proportion of year 11 pupils entered for English. Context about entry patterns and what influences them will appear here.</p>
         <div class="aup-filter-bar govuk-!-margin-bottom-4">
           <span class="govuk-body-s aup-filter-bar__label">Breakdown:</span>
           {{ govukSelect({
@@ -87,7 +94,7 @@
 {{ govukDetails({
           classes: "govuk-!-margin-top-4",
           summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
-          html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar characteristics, such as free school meal eligibility and prior attainment, rather than the Local Authority or Wales average. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+          html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
         }) }}
       </div>
     </div>
@@ -155,7 +162,7 @@
             {{ govukDetails({
               classes: "govuk-!-margin-top-4",
               summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
-              html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar characteristics, such as free school meal eligibility and prior attainment, rather than the Local Authority or Wales average. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+              html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
             }) }}
           </div>
           <div style="min-width: 200px; padding-top: 20px;">
