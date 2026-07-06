@@ -23,24 +23,6 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      {# ---- PHASE 1: SCHOOL IDENTIFICATION ---- #}
-      <div style="border-left: 4px solid #5694ca; padding-left: 16px; margin-bottom: 32px;">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">School identification</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-4">Confirm which school this return is for.</p>
-
-        {{ govukSelect({
-          id: "school",
-          name: "school",
-          label: { text: "School", classes: "govuk-label--s" },
-          items: [
-            { value: "", text: "Select a school" },
-            { value: "abercastell", text: "Ysgol Gyfun Abercastell", selected: true },
-            { value: "rhymni", text: "Ysgol Gyfun Rhymni" },
-            { value: "brynmawr", text: "Ysgol Gyfun Bryn Mawr" }
-          ]
-        }) }}
-      </div>
-
       {# ---- PHASE 2: SPEND ENTRIES ---- #}
       <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend entries</h2>

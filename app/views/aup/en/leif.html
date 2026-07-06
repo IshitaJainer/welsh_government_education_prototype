@@ -14,10 +14,16 @@
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">14 to 16 Learner Entitlement Indicators</h1>
     </div>
     <div class="govuk-grid-column-one-third aup-export-row">
-      {{ govukButton({
-        text: "Export to CSV",
-        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
-      }) }}
+      <div class="govuk-button-group govuk-!-margin-bottom-0">
+        {{ govukButton({
+          text: "Download as PDF",
+          classes: "govuk-!-margin-bottom-0"
+        }) }}
+        {{ govukButton({
+          text: "Download as CSV",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
     </div>
   </div>
 

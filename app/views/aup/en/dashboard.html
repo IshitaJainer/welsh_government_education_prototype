@@ -136,11 +136,17 @@
   </div>
 
   <div class="govuk-!-margin-top-6">
-    {{ govukButton({
-      text: "Download this report",
-      classes: "govuk-button--secondary",
-      href: "#"
-    }) }}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Download as PDF",
+        href: "#"
+      }) }}
+      {{ govukButton({
+        text: "Download as CSV",
+        classes: "govuk-button--secondary",
+        href: "#"
+      }) }}
+    </div>
   </div>
 
 </div>
