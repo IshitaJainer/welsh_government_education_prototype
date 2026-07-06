@@ -45,7 +45,7 @@
 
   <div class="govuk-grid-row govuk-!-margin-bottom-4">
     <div class="govuk-grid-column-full">
-      <p class="govuk-body">This page shows a summary of your school's attendance and absence data for the selected academic year.</p>
+      <p class="govuk-body">This page shows a summary of your school's year 11 data for the selected academic year.</p>
     </div>
   </div>
 
@@ -67,13 +67,13 @@
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of learners entered for qualifications.">Entries</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of Year 11 pupils entered for English.">Entries (5 GCSEs or equivalent)</p>
           <p id="dash-entries-value" class="aup-metric-card__value govuk-heading-l"></p>
           <p id="dash-entries-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of entries achieving A*–C.">Attainment A*–C</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of English GCSE entries (Year 11) achieving grade A*–C. This is not the same as the percentage of pupils achieving 5 or more A*–C grades.">Attainment (% achieveing 5 A*–As)</p>
           <p id="dash-attc-value" class="aup-metric-card__value govuk-heading-l"></p>
           <p id="dash-attc-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
@@ -125,6 +125,11 @@
           <li class="aup-legend__item aup-legend__item--national">Wales average</li>
           <li class="aup-legend__item aup-legend__item--comparator">Contextual comparator</li>
         </ul>
+        {{ govukDetails({
+          classes: "govuk-!-margin-top-4",
+          summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
+          html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+        }) }}
       </div>
     </div>
 

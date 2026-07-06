@@ -243,13 +243,16 @@
       var datasets = comparators.map(function(key) {
         var values = isMultiYear ? d[key] : [d[key]];
         return {
-          label:           LABELS[key],
-          data:            values,
-          borderColor:     COLOURS[key],
-          backgroundColor: COLOURS[key],
-          borderWidth:     2,
-          pointRadius:     4,
-          tension:         0.1
+          label:              LABELS[key],
+          data:               values,
+          borderColor:        COLOURS[key],
+          backgroundColor:    COLOURS[key],
+          borderWidth:        isMultiYear ? 2 : 0,
+          borderRadius:       isMultiYear ? 0 : 4,
+          pointRadius:        4,
+          tension:            0.1,
+          barPercentage:      0.6,
+          categoryPercentage: 0.7
         };
       });
 
@@ -261,7 +264,7 @@
 
       var canvas = document.getElementById('att-trend-chart');
       trendChart = new Chart(canvas.getContext('2d'), {
-        type: 'line',
+        type: isMultiYear ? 'line' : 'bar',
         data: {
           labels:   chartLabels,
           datasets: datasets

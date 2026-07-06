@@ -465,28 +465,22 @@
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 opp-outcomes-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
         </div>
 
-        <div style="display: flex; gap: 24px; align-items: flex-start;">
-          <div style="flex: 1;">
-            <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
-              <canvas id="opp-outcomes-chart"></canvas>
-            </div>
-            <ul id="opp-outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
-          </div>
-          <div style="min-width: 200px; padding-top: 20px;">
-            <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
-            <div id="opp-outcomes-comparator-controls" style="display: flex; flex-direction: column; gap: 10px;">
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="opp-outcomes-show-la" style="margin: 0;"> LA
-              </label>
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="opp-outcomes-show-wales" style="margin: 0;"> Wales
-              </label>
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="opp-outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
-              </label>
-            </div>
-          </div>
+        <div id="opp-outcomes-comparator-controls" style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-outcomes-show-la" style="margin: 0;"> LA
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-outcomes-show-wales" style="margin: 0;"> Wales
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="opp-outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
+          </label>
         </div>
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="opp-outcomes-chart"></canvas>
+        </div>
+        <ul id="opp-outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
       </div>
 
       <!-- ATTENDANCE TAB -->

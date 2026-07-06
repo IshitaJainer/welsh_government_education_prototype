@@ -32,6 +32,9 @@
         <select id="aup-subject-select" class="govuk-select govuk-select--small" style="margin-left: 8px; width: auto; max-width: 200px;">
           <option value="english" selected>English</option>
           <option value="maths">Maths</option>
+          <option value="biology">Biology</option>
+          <option value="chemistry">Chemistry</option>
+          <option value="physics">Physics</option>
         </select>
       </div>
 
@@ -152,38 +155,32 @@
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 outcomes-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">Change over time</button>
         </div>
 
-        <div style="display: flex; gap: 24px; align-items: flex-start;">
-          <div style="flex: 1;">
-            <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
-              <canvas id="outcomes-chart"></canvas>
-            </div>
-            <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
-
-            {{ govukDetails({
-              classes: "govuk-!-margin-top-4",
-              summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
-              html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
-            }) }}
-          </div>
-          <div style="min-width: 200px; padding-top: 20px;">
-            <p class="govuk-body-s govuk-!-font-weight-bold govuk-!-margin-bottom-2">Select comparators</p>
-            <div id="outcomes-comparator-controls" style="display: flex; flex-direction: column; gap: 10px;">
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="outcomes-show-la" style="margin: 0;"> LA
-              </label>
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="outcomes-show-wales" style="margin: 0;"> Wales
-              </label>
-              <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
-                <input type="checkbox" id="outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
-              </label>
-            </div>
-          </div>
+        <div id="outcomes-comparator-controls" style="margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap;">
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="outcomes-show-la" style="margin: 0;"> LA
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="outcomes-show-wales" style="margin: 0;"> Wales
+          </label>
+          <label class="govuk-body-s" style="display: flex; align-items: center; gap: 6px;">
+            <input type="checkbox" id="outcomes-show-ctx" checked style="margin: 0;"> Contextualised comparator
+          </label>
         </div>
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="outcomes-chart"></canvas>
+        </div>
+
+        <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
+        {{ govukDetails({
+          classes: "govuk-!-margin-top-4",
+          summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
+          html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
+        }) }}
       </div>
     </div>
   </div>
-
+  
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

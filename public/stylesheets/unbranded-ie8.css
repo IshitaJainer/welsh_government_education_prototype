@@ -6235,6 +6235,7 @@ p + .govuk-heading-s,
 .aup-metric-card__label {
   color: #505a5f;
   margin-bottom: 5px;
+  min-height: 2.5em;
 }
 .aup-metric-card__value {
   margin-bottom: 5px;
