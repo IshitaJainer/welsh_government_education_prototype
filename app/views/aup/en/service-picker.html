@@ -1,0 +1,31 @@
+{% extends "layout_prototype.html" %}
+{% set lang = "en" %}
+{% block pageTitle %}Choose a service — School Data Service{% endblock %}
+{% block beforeContent %}{% endblock %}
+{% block content %}
+<div class="govuk-width-container">
+  <div class="govuk-grid-row govuk-!-margin-top-6">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-2">What would you like to view?</h1>
+      <p class="govuk-body govuk-!-margin-bottom-6">Choose a service to continue.</p>
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-half">
+          <a href="/aup/en/dashboard.html" class="govuk-link service-picker-option govuk-!-display-block govuk-!-padding-4" style="border: 2px solid #1B1E56; border-radius: 4px; text-decoration: none; margin-bottom: 16px; background: #f0f0ff; min-height: 140px;">
+            <strong class="govuk-heading-s govuk-!-margin-bottom-1" style="color: #1B1E56; display: block;">School Data Service</strong>
+            <span class="govuk-body-s" style="color: #505a5f;">View attendance, attainment, and comparison data for your school.</span>
+          </a>
+        </div>
+        <div class="govuk-grid-column-one-half">
+          <a href="/aup/en/grant-reporting.html" class="govuk-link service-picker-option govuk-!-display-block govuk-!-padding-4" style="border: 1px solid #b1b4b6; border-radius: 4px; text-decoration: none; margin-bottom: 16px; min-height: 140px;">
+            <strong class="govuk-heading-s govuk-!-margin-bottom-1" style="color: #0b0c0c; display: block;">PDG grant reporting</strong>
+            <span class="govuk-body-s" style="color: #505a5f;">Submit and manage your school's PDG grant return.</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
