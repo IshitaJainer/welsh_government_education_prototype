@@ -41,6 +41,11 @@
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Overall attendance — LA vs Wales</h2>
         </div>
+        {{ govukDetails({
+          classes: "govuk-!-margin-bottom-2",
+          summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+          html: "<p class='govuk-body-s'>The percentage of half-day sessions attended.</p>"
+        }) }}
         <canvas id="overview-attendance-chart" height="200"></canvas>
       </div>
     </div>
@@ -49,6 +54,11 @@
         <div class="aup-chart-card__header">
           <h2 class="govuk-heading-s aup-chart-card__title">Persistent absence — LA vs Wales</h2>
         </div>
+        {{ govukDetails({
+          classes: "govuk-!-margin-bottom-2",
+          summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+          html: "<p class='govuk-body-s'>Pupils absent for 20% or more of half-day sessions.</p><p class='govuk-body-s'>The Welsh Government has changed the statistical definition of 'persistent absence' from being absent for over 20% of half-day school sessions, to being absent for over 10% of half-day school sessions. Analyses of data using both definitions are provided in sections 1.5 and 1.6 respectively.</p>"
+        }) }}
         <canvas id="overview-pa-chart" height="200"></canvas>
       </div>
     </div>

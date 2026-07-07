@@ -19,18 +19,38 @@
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">Number of providers</p>
       <p class="aup-metric-card__value govuk-heading-l">12</p>
+      {{ govukDetails({
+        classes: "govuk-!-margin-bottom-0",
+        summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+        html: "<p class='govuk-body-s'>The number of organisations or settings commissioned by the local authority to deliver EOTAS.</p>"
+      }) }}
     </div>
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">Estimated registered learners</p>
       <p class="aup-metric-card__value govuk-heading-l">148</p>
+      {{ govukDetails({
+        classes: "govuk-!-margin-bottom-0",
+        summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+        html: "<p class='govuk-body-s'>The number of learners registered with an EOTAS provider. This figure is estimated, as registration data is not centrally recorded in real time.</p>"
+      }) }}
     </div>
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">Re-integration rate</p>
       <p class="aup-metric-card__value govuk-heading-l">34%</p>
+      {{ govukDetails({
+        classes: "govuk-!-margin-bottom-0",
+        summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+        html: "<p class='govuk-body-s'>The percentage of EOTAS learners who returned to mainstream education during the academic year.</p>"
+      }) }}
     </div>
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">De-register rate</p>
       <p class="aup-metric-card__value govuk-heading-l">18%</p>
+      {{ govukDetails({
+        classes: "govuk-!-margin-bottom-0",
+        summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+        html: "<p class='govuk-body-s'>The percentage of EOTAS learners who left EOTAS provision without returning to mainstream education - for example, because they moved area or left statutory education.</p>"
+      }) }}
     </div>
   </div>
 

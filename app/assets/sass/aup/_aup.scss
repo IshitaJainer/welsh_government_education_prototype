@@ -186,6 +186,7 @@
     text-align: right;
     color: #505a5f;
     font-size: 13px;
+    font-family: "GDS Transport", arial, sans-serif;
   }
 
   &__track {
@@ -219,6 +220,7 @@
   &__val {
     font-size: 12px;
     font-weight: bold;
+    font-family: "GDS Transport", arial, sans-serif;
     color: govuk-colour("white");
 
     .aup-hbar__fill--national &,
@@ -235,6 +237,7 @@
   gap: govuk-spacing(4);
   flex-wrap: wrap;
   margin-top: govuk-spacing(3);
+  font-family: "GDS Transport", arial, sans-serif;
 
   &__item {
     padding-left: 18px;

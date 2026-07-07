@@ -55,25 +55,35 @@
       <div class="aup-metric-grid" style="grid-template-columns: repeat(4, 1fr);">
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of possible sessions attended by all registered pupils.">Overall attendance</p>
+          <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
           <p id="dash-att-value" class="aup-metric-card__value govuk-heading-l"></p>
-          <p id="dash-att-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
+          <p id="dash-att-delta" class="govuk-body-s govuk-!-margin-bottom-2"></p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>The percentage of half-day sessions attended.</p>"
+          }) }}
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of pupils who missed 20% or more of possible sessions.">Persistent absence</p>
+          <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
           <p id="dash-pa-value" class="aup-metric-card__value govuk-heading-l"></p>
-          <p id="dash-pa-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
+          <p id="dash-pa-delta" class="govuk-body-s govuk-!-margin-bottom-2"></p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>Pupils absent for 20% or more of half-day sessions.</p>"
+          }) }}
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of Year 11 pupils entered for English.">Entries (5 GCSEs or equivalent)</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of Year 11 pupils entered for English.">Entries</p>
           <p id="dash-entries-value" class="aup-metric-card__value govuk-heading-l"></p>
           <p id="dash-entries-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
 
         <div class="aup-metric-card">
-          <p class="aup-metric-card__label govuk-body-s" title="The percentage of English GCSE entries (Year 11) achieving grade A*–C. This is not the same as the percentage of pupils achieving 5 or more A*–C grades.">Attainment (% achieveing 5 A*–As)</p>
+          <p class="aup-metric-card__label govuk-body-s" title="The percentage of English GCSE entries (Year 11) achieving grade A*–C. This is not the same as the percentage of pupils achieving 5 or more A*–C grades.">Attainment</p>
           <p id="dash-attc-value" class="aup-metric-card__value govuk-heading-l"></p>
           <p id="dash-attc-delta" class="govuk-body-s govuk-!-margin-bottom-0"></p>
         </div>
@@ -188,7 +198,7 @@
           var delta = value - prev;
           var abs   = Math.abs(delta).toFixed(decimals);
           var dir   = delta >= 0 ? 'above' : 'below';
-          document.getElementById(deltaId).textContent = abs + '% ' + dir + ' last year';
+          document.getElementById(deltaId).textContent = abs + ' percentage point' + (abs == 1 ? '' : 's') + ' ' + dir + ' last year';
         } else {
           document.getElementById(deltaId).textContent = 'No prior year data';
         }
