@@ -107,25 +107,25 @@
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">All learners</span>
             <div class="aup-hbar__track">
-              <div id="bar-school" class="aup-hbar__fill aup-hbar__fill--school" style="width:0%"><span class="aup-hbar__val"></span></div>
+              <div id="bar-school" class="aup-hbar__fill aup-hbar__fill--school" style="height:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">Wales avg</span>
             <div class="aup-hbar__track">
-              <div id="bar-wales" class="aup-hbar__fill aup-hbar__fill--national" style="width:0%"><span class="aup-hbar__val"></span></div>
+              <div id="bar-wales" class="aup-hbar__fill aup-hbar__fill--national" style="height:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">Comparator</span>
             <div class="aup-hbar__track">
-              <div id="bar-ctx" class="aup-hbar__fill aup-hbar__fill--comparator" style="width:0%"><span class="aup-hbar__val"></span></div>
+              <div id="bar-ctx" class="aup-hbar__fill aup-hbar__fill--comparator" style="height:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
           <div class="aup-hbar__row">
             <span class="aup-hbar__label govuk-body-s">FSM eligible</span>
             <div class="aup-hbar__track">
-              <div id="bar-fsm" class="aup-hbar__fill aup-hbar__fill--school" style="width:0%"><span class="aup-hbar__val"></span></div>
+              <div id="bar-fsm" class="aup-hbar__fill aup-hbar__fill--school" style="height:0%"><span class="aup-hbar__val"></span></div>
             </div>
           </div>
         </div>
@@ -213,10 +213,10 @@
         var el = document.getElementById(id);
         if (!el) return;
         if (value !== null && value !== undefined) {
-          el.style.width = value + '%';
+          el.style.height = value + '%';
           el.querySelector('.aup-hbar__val').textContent = value + '%';
         } else {
-          el.style.width = '0%';
+          el.style.height = '0%';
           el.querySelector('.aup-hbar__val').textContent = '\u2014';
         }
       }

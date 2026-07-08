@@ -38,10 +38,12 @@
           {{ govukCheckboxes({
             name: "fsm",
             items: [
-              { value: "0-10", text: "Up to 10%" },
-              { value: "10-25", text: "Over 10% and up to 25%", checked: true },
-              { value: "25-40", text: "Over 25% and up to 40%" },
-              { value: "40+", text: "Over 40%" },
+              { value: "0-5", text: "Up to 5%" },
+              { value: "5-10", text: "Over 5% and up to 10%", checked: true },
+              { value: "10-15", text: "Over 10% and up to 15%" },
+              { value: "15-20", text: "Over 15% and up to 20%" },
+              { value: "20-25", text: "Over 20% and up to 25%" },
+              { value: "30+", text: "Over 30%" },
               { divider: "or" },
               { value: "fsm-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
@@ -55,9 +57,11 @@
           {{ govukCheckboxes({
             name: "aln",
             items: [
-              { value: "low", text: "Lower than average (below 15%)" },
-              { value: "average", text: "Average (15% to 25%)" },
-              { value: "high", text: "Higher than average (over 25%)" },
+              { value: "very low", text: "Up to 10%" },
+              { value: "low", text: "Over 10% and up to 20%" },
+              { value: "average", text: "Over 20% and up to 30%" },
+              { value: "high", text: "Over 30% and up to 40%" },
+              { value: "high", text: "Over 40%" },
               { divider: "or" },
               { value: "aln-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
             ]

@@ -169,40 +169,48 @@
 }
 
 // ---- Horizontal bar chart ----
-
 .aup-hbar {
   margin: govuk-spacing(3) 0;
+  display: flex;
+  align-items: flex-end;
+  gap: govuk-spacing(5);
+  height: 220px;
 
   &__row {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: govuk-spacing(2);
-    margin-bottom: govuk-spacing(2);
+    justify-content: flex-end;
+    height: 100%;
+    flex: 1;
   }
 
   &__label {
-    width: 90px;
-    flex-shrink: 0;
-    text-align: right;
+    margin-top: govuk-spacing(2);
+    text-align: center;
     color: #505a5f;
     font-size: 13px;
     font-family: "GDS Transport", arial, sans-serif;
   }
 
   &__track {
-    flex: 1;
+    width: 48px;
+    flex-shrink: 0;
     background-color: govuk-colour("light-grey");
-    height: 22px;
-    border-radius: 2px;
+    border-radius: 2px 2px 0 0;
     overflow: hidden;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
   }
 
   &__fill {
-    height: 100%;
+    width: 100%;
     display: flex;
-    align-items: center;
-    padding-left: govuk-spacing(2);
-    border-radius: 2px;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: govuk-spacing(2);
+    border-radius: 2px 2px 0 0;
 
     &--school {
       background-color: var(--nrw-dark-green);

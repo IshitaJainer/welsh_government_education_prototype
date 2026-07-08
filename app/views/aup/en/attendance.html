@@ -34,18 +34,38 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-overall">—</p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>The percentage of half-day sessions attended.</p>"
+          }) }}
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-pa">—</p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>Pupils absent for 20% or more of half-day sessions.</p>"
+          }) }}
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Authorised absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-auth">—</p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>Absence agreed by the school in advance, or explained afterwards to the school's satisfaction — for example illness or a medical appointment.</p>"
+          }) }}
         </div>
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Unauthorised absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-unauth">—</p>
+          {{ govukDetails({
+            classes: "govuk-!-margin-bottom-0",
+            summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
+            html: "<p class='govuk-body-s'>Absence not authorised by the school — for example unexplained absence or unapproved holiday during term time.</p>"
+          }) }}
         </div>
       </div>
     </div>
@@ -98,8 +118,7 @@
           <canvas id="att-trend-chart" height="80"></canvas>
         </div>
 
-        <ul id="att-trend-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;"></ul>
-
+<ul id="att-trend-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>
         {{ govukDetails({
           classes: "govuk-!-margin-top-4",
           summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
@@ -138,7 +157,7 @@
           <canvas id="group-chart" height="80"></canvas>
         </div>
 
-        <ul style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap;">
+        <ul style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>
           <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Overall attendance</li>
           <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px;"></span> Authorised absence</li>
           <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#d4351c; border-radius:2px;"></span> Unauthorised absence</li>
@@ -210,7 +229,7 @@
       var el = document.getElementById('att-trend-legend');
       el.innerHTML = '';
       comparators.forEach(function(key) {
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;">'
           + '<span style="display:inline-block;width:12px;height:12px;background:' + COLOURS[key] + ';border-radius:2px;"></span>'
           + ' ' + LABELS[key] + '</li>';
       });

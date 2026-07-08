@@ -99,8 +99,7 @@
           <canvas id="entries-chart"></canvas>
         </div>
 
-        <ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
-{{ govukDetails({
+<ul id="entries-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>{{ govukDetails({
           classes: "govuk-!-margin-top-4",
           summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
           html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
@@ -177,8 +176,7 @@
           <canvas id="outcomes-chart"></canvas>
         </div>
 
-        <ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: inherit;"></ul>
-        {{ govukDetails({
+<ul id="outcomes-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>        {{ govukDetails({
           classes: "govuk-!-margin-top-4",
           summaryHtml: "<span class='govuk-body-s'>What is a contextualised comparator?</span>",
           html: "<p class='govuk-body-s'>A contextualised comparator is a benchmark made up of schools with similar contextual characteristics. It's designed to give a fairer comparison by accounting for factors outside a school's control.</p>"
@@ -346,23 +344,23 @@
       comparators.forEach(function(key) {
         var colour = COLOURS[key];
         // Solid line swatch for group A
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;">'
           + '<span style="display:inline-block;width:20px;height:3px;background:' + colour + ';"></span>'
           + ' ' + LABELS[key] + ' — ' + groups.a + '</li>';
         // Dashed line swatch for group B
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;">'
           + '<span style="display:inline-block;width:20px;height:3px;background:repeating-linear-gradient(90deg,' + colour + ' 0,' + colour + ' 5px,transparent 5px,transparent 9px);"></span>'
           + ' ' + LABELS[key] + ' — ' + groups.b + '</li>';
       });
     } else if (!isTime && isEntries && !isComp) {
       comparators.forEach(function(key) {
         var colour = COLOURS[key];
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+' — entered</li>';
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+hexToRgba(colour,0.5)+';border-radius:2px;"></span> '+LABELS[key]+' — not entered</li>';
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;"><span style="display:inline-block;width:12px;height:12px;background:'+colour+';border-radius:2px;"></span> '+LABELS[key]+' — entered</li>';
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;"><span style="display:inline-block;width:12px;height:12px;background:'+hexToRgba(colour,0.5)+';border-radius:2px;"></span> '+LABELS[key]+' — not entered</li>';
       });
     } else {
       comparators.forEach(function(key) {
-        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:12px;height:12px;background:'+COLOURS[key]+';border-radius:2px;"></span> '+LABELS[key]+'</li>';
+        el.innerHTML += '<li style="display:flex;align-items:center;gap:6px;font-family:\'GDS Transport\', arial, sans-serif;"><span style="display:inline-block;width:12px;height:12px;background:'+COLOURS[key]+';border-radius:2px;"></span> '+LABELS[key]+'</li>';
       });
     }
   }
@@ -445,16 +443,16 @@
         data: {
           labels: labels,
           datasets: [
-            { label: 'Entered',     data: entered,    backgroundColor: comparators.map(function(k){ return COLOURS[k]; }),              barThickness: 24, stack: 'stack' },
-            { label: 'Not entered', data: notEntered, backgroundColor: comparators.map(function(k){ return hexToRgba(COLOURS[k],0.5); }), barThickness: 24, stack: 'stack' }
+            { label: 'Entered',     data: entered,    backgroundColor: comparators.map(function(k){ return COLOURS[k]; }),              barPercentage: 0.6, categoryPercentage: 0.7, stack: 'stack' },
+            { label: 'Not entered', data: notEntered, backgroundColor: comparators.map(function(k){ return hexToRgba(COLOURS[k],0.5); }), barPercentage: 0.6, categoryPercentage: 0.7, stack: 'stack' }
           ]
         },
         options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
           scales: {
-            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
-            y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
+            x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
+            y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
@@ -467,18 +465,18 @@
         var colour = COLOURS[key];
         var ent = d[key];
         var notEnt = ent.map(function(v){ return 100-v; });
-        datasets.push({ label: LABELS[key]+' — Entered',     data: ent,    backgroundColor: colour,                 barThickness: 24, stack: key });
-        datasets.push({ label: LABELS[key]+' — Not entered', data: notEnt, backgroundColor: hexToRgba(colour,0.5), barThickness: 24, stack: key });
+        datasets.push({ label: LABELS[key]+' — Entered',     data: ent,    backgroundColor: colour,                 barPercentage: 0.6, categoryPercentage: 0.7, stack: key });
+        datasets.push({ label: LABELS[key]+' — Not entered', data: notEnt, backgroundColor: hexToRgba(colour,0.5), barPercentage: 0.6, categoryPercentage: 0.7, stack: key });
       });
       entriesChartInstance = new Chart(ctx, {
         type: 'bar',
         data: { labels: d.labels, datasets: datasets },
         options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
           scales: {
-            x: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
-            y: { stacked: true, grid: { display: false }, ticks: { font: FONT } }
+            x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
+            y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
@@ -704,14 +702,14 @@
         type: 'bar',
         data: {
           labels: comparators.map(function(k){ return LABELS[k]; }),
-          datasets: [{ label: '% of entries', data: comparators.map(function(k){ return d[k]; }), backgroundColor: comparators.map(function(k){ return COLOURS[k]; }), barThickness: 24 }]
+          datasets: [{ label: '% of entries', data: comparators.map(function(k){ return d[k]; }), backgroundColor: comparators.map(function(k){ return COLOURS[k]; }), barPercentage: 0.6, categoryPercentage: 0.7 }]
         },
         options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.x+'%'; } } } },
+          responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.y+'%'; } } } },
           scales: {
-            x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
-            y: { grid: { display: false }, ticks: { font: FONT } }
+            x: { grid: { display: false }, ticks: { font: FONT } },
+            y: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
@@ -724,15 +722,15 @@
         data: {
           labels: d.labels,
           datasets: comparators.map(function(key) {
-            return { label: LABELS[key], data: d[key], backgroundColor: COLOURS[key], barThickness: 24 };
+            return { label: LABELS[key], data: d[key], backgroundColor: COLOURS[key], barPercentage: 0.6, categoryPercentage: 0.7 };
           })
         },
         options: {
-          indexAxis: 'y', responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.x+'%'; } } } },
+          responsive: true,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
           scales: {
-            x: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } },
-            y: { grid: { display: false }, ticks: { font: FONT } }
+            x: { grid: { display: false }, ticks: { font: FONT } },
+            y: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
           }
         }
       });
