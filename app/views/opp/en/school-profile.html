@@ -540,8 +540,14 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/public/javascripts/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <script>
   (function() {
+
+    if (typeof ChartDataLabels !== 'undefined') {
+      Chart.register(ChartDataLabels);
+    }
+    Chart.defaults.set('plugins.datalabels', { display: false });
 
     // -------------------------------------------------------------------------
     // Tab switching
@@ -650,7 +656,14 @@ var FONT = { family: "'GDS Transport', arial, sans-serif", size: 13 };
           responsive: true,
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: function(c) { return c.parsed.y + '%'; } } }
+            tooltip: { callbacks: { label: function(c) { return c.parsed.y + '%'; } } },
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              font: FONT,
+              formatter: function(v) { return v + '%'; }
+            }
           },
           scales: {
             x: { grid: { display: false }, ticks: { font: FONT, maxRotation: 0, minRotation: 0 } },
@@ -906,7 +919,16 @@ function oppRenderLegend(elId, comparators, isTime, isEntries, breakdown) {
           },
           options: {
             responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } } },
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } },
+              datalabels: {
+                display: true,
+                color: function(c) { return c.datasetIndex === 0 ? '#fff' : '#0b0c0c'; },
+                font: FONT,
+                formatter: function(v) { return v + '%'; }
+              }
+            },
             scales: {
               x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
               y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
@@ -930,7 +952,16 @@ function oppRenderLegend(elId, comparators, isTime, isEntries, breakdown) {
           data: { labels: d.labels, datasets: datasets },
           options: {
             responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } } },
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } },
+              datalabels: {
+                display: true,
+                color: function(c) { return c.datasetIndex % 2 === 0 ? '#fff' : '#0b0c0c'; },
+                font: FONT,
+                formatter: function(v) { return v + '%'; }
+              }
+            },
             scales: {
               x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
               y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
@@ -1022,7 +1053,17 @@ function oppRenderLegend(elId, comparators, isTime, isEntries, breakdown) {
           },
           options: {
             responsive: true,
-            plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c) { return c.parsed.y + '%'; } } } },
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: function(c) { return c.parsed.y + '%'; } } },
+              datalabels: {
+                display: true,
+                anchor: 'end',
+                align: 'top',
+                font: FONT,
+                formatter: function(v) { return v + '%'; }
+              }
+            },
             scales: {
               x: { grid: { display: false }, ticks: { font: FONT } },
               y: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v) { return v + '%'; } } }
@@ -1051,7 +1092,14 @@ function oppRenderLegend(elId, comparators, isTime, isEntries, breakdown) {
             responsive: true,
             plugins: {
               legend: { display: false },
-              tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } }
+              tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; } } },
+              datalabels: {
+                display: true,
+                anchor: 'end',
+                align: 'top',
+                font: FONT,
+                formatter: function(v) { return v + '%'; }
+              }
             },
             scales: {
               x: { grid: { display: false }, ticks: { font: FONT } },

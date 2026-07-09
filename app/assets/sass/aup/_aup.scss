@@ -174,13 +174,12 @@
   display: flex;
   align-items: flex-end;
   gap: govuk-spacing(5);
-  height: 220px;
+  height: 260px;
 
   &__row {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
     height: 100%;
     flex: 1;
   }
@@ -196,12 +195,14 @@
   &__track {
     width: 48px;
     flex-shrink: 0;
+    flex: 1;
+    min-height: 0;
     background-color: govuk-colour("light-grey");
     border-radius: 2px 2px 0 0;
     overflow: hidden;
-    height: 100%;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 
   &__fill {

@@ -188,9 +188,15 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <script>
 
-  Chart.defaults.font.family = 'Arial, sans-serif';
+if (typeof ChartDataLabels !== 'undefined') {
+  Chart.register(ChartDataLabels);
+}
+Chart.defaults.set('plugins.datalabels', { display: false });
+
+  Chart.defaults.font.family = "'GDS Transport', arial, sans-serif";
   Chart.defaults.font.size = 14;
 
   var COLOURS = {
@@ -212,7 +218,7 @@
     'fsm-comparison': { a: 'FSM eligible', b: 'Non-FSM eligible' }
   };
 
-  var FONT = { family: 'Arial, sans-serif', size: 13 };
+  var FONT = { family: "'GDS Transport', arial, sans-serif", size: 13 };
 
   var COMPARATOR_IDS = ['la', 'wales', 'ctx'];
 
@@ -449,7 +455,11 @@
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } },
+            datalabels: { display: true, color: function(c) { return c.datasetIndex === 0 ? '#fff' : '#0b0c0c'; }, font: FONT, formatter: function(v){ return v+'%'; } }
+          },
           scales: {
             x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
             y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
@@ -473,7 +483,11 @@
         data: { labels: d.labels, datasets: datasets },
         options: {
           responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } },
+            datalabels: { display: true, color: function(c) { return c.datasetIndex % 2 === 0 ? '#fff' : '#0b0c0c'; }, font: FONT, formatter: function(v){ return v+'%'; } }
+          },
           scales: {
             x: { stacked: true, grid: { display: false }, ticks: { font: FONT } },
             y: { stacked: true, grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
@@ -706,7 +720,11 @@
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.parsed.y+'%'; } } } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c){ return c.parsed.y+'%'; } } },
+            datalabels: { display: true, anchor: 'end', align: 'top', font: FONT, formatter: function(v){ return v+'%'; } }
+          },
           scales: {
             x: { grid: { display: false }, ticks: { font: FONT } },
             y: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }
@@ -727,7 +745,11 @@
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } },
+            datalabels: { display: true, anchor: 'end', align: 'top', font: FONT, formatter: function(v){ return v+'%'; } }
+          },
           scales: {
             x: { grid: { display: false }, ticks: { font: FONT } },
             y: { grid: { display: false }, min: 0, max: 100, ticks: { font: FONT, callback: function(v){ return v+'%'; } } }

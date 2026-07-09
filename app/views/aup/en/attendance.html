@@ -180,8 +180,14 @@
   {{ super() }}
   <script src="/public/javascripts/data.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <script>
   (function() {
+
+    if (typeof ChartDataLabels !== 'undefined') {
+      Chart.register(ChartDataLabels);
+    }
+    Chart.defaults.set('plugins.datalabels', { display: false });
 
     var school = WGData.schools['abercastell'];
 
@@ -302,6 +308,12 @@
               callbacks: {
                 label: function(c) { return c.dataset.label + ': ' + c.parsed.y + '%'; }
               }
+            },
+            datalabels: {
+              display: !isMultiYear,
+              anchor: 'end',
+              align: 'top',
+              formatter: function(v) { return v + '%'; }
             }
           },
           scales: {
@@ -409,7 +421,18 @@
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
+          layout: {
+            padding: { top: 24 }
+          },
+          plugins: {
+            legend: { display: false },
+            datalabels: {
+              display: true,
+              anchor: 'end',
+              align: 'top',
+              formatter: function(v) { return v + '%'; }
+            }
+          },
           scales: {
             x: { grid: { display: false } },
             y: {
