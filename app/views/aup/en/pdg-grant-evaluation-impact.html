@@ -1,0 +1,146 @@
+{% extends "aup/layout_aup_grant.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant evaluation impact - School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell (2024–25)</p>
+    </div>
+  </div>
+
+  {{ govukInsetText({
+    html: "<strong>This feature is in development.</strong> PDG grant reporting will replace the current process of completing a template and publishing it on your school website. You'll submit a structured return through this platform instead."
+  }) }}
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-plan.html" class="aup-nav__link">Grant plan</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-evaluation-impact.html" class="aup-nav__link aup-nav__link--active">Evaluation of impact</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-previous-years.html" class="aup-nav__link">Previous years</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {# ---- PHASE 3: EVALUATION ---- #}
+      <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Evaluation of impact</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-6">For each spend entry, rate how well the success criterion was achieved and describe the impact on learners.</p>
+
+        {# ---- Entry 1: Hired literacy support tutor ---- #}
+        <div style="background: #f3f2f1; padding: 16px 20px; margin-bottom: 24px;">
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Hired literacy support tutor</h3>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Success criterion: X% improvement in lowest achievers' scores</p>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--s" for="success-rating-1">How well was the success criterion achieved?</label>
+            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
+            {{ govukSelect({
+              id: "success-rating-1",
+              name: "success-rating-1",
+              items: [
+                { value: "", text: "Select a rating" },
+                { value: "1", text: "1 — Not achieved" },
+                { value: "2", text: "2" },
+                { value: "3", text: "3" },
+                { value: "4", text: "4" },
+                { value: "5", text: "5 — Partially achieved" },
+                { value: "6", text: "6" },
+                { value: "7", text: "7" },
+                { value: "8", text: "8" },
+                { value: "9", text: "9" },
+                { value: "10", text: "10 — Fully achieved" }
+              ]
+            }) }}
+          </div>
+
+          {{ govukTextarea({
+            id: "impact-detail-1",
+            name: "impact-detail-1",
+            label: { text: "Describe the impact", classes: "govuk-label--s" },
+            hint: { text: "Describe what changed for learners as a result of this spend. Include any evidence. For example: scores for X group improved by X%. Children built a strong relationship with the tutor that increased their interest in learning." },
+            rows: 5
+          }) }}
+        </div>
+
+        {# ---- Entry 2: Family liaison officer ---- #}
+        <div style="background: #f3f2f1; padding: 16px 20px;">
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Family liaison officer</h3>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Success criterion: Reduce PA rate by 3%</p>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--s" for="success-rating-2">How well was the success criterion achieved?</label>
+            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
+            {{ govukSelect({
+              id: "success-rating-2",
+              name: "success-rating-2",
+              items: [
+                { value: "", text: "Select a rating" },
+                { value: "1", text: "1 — Not achieved" },
+                { value: "2", text: "2" },
+                { value: "3", text: "3" },
+                { value: "4", text: "4" },
+                { value: "5", text: "5 — Partially achieved" },
+                { value: "6", text: "6" },
+                { value: "7", text: "7" },
+                { value: "8", text: "8" },
+                { value: "9", text: "9" },
+                { value: "10", text: "10 — Fully achieved" }
+              ]
+            }) }}
+          </div>
+
+          {{ govukTextarea({
+            id: "impact-detail-2",
+            name: "impact-detail-2",
+            label: { text: "Describe the impact", classes: "govuk-label--s" },
+            hint: { text: "Describe what changed for learners as a result of this spend. Include any evidence. For example: scores for X group improved by X%. Children built a strong relationship with the tutor that increased their interest in learning." },
+            rows: 5
+          }) }}
+        </div>
+      </div>
+
+      {# ---- SUBMIT ---- #}
+      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+      <h2 class="govuk-heading-m">Submit your return</h2>
+      <p class="govuk-body">Once you have added all spend entries and evaluations, submit your return. </p>
+
+      {{ govukWarningText({
+        text: "Check all entries before submitting. Once submitted, changes can only be made by contacting your local authority.",
+        iconFallbackText: "Warning"
+      }) }}
+
+      <div class="govuk-button-group">
+        {{ govukButton({ text: "Submit return" }) }}
+        {{ govukButton({ text: "Save as draft", classes: "govuk-button--secondary" }) }}
+      </div>
+
+    </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-chart-card govuk-!-margin-bottom-4">
+        <h2 class="govuk-heading-s">Return status</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Status: <strong class="govuk-tag govuk-tag--red">Incomplete</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Deadline: <strong>31 March 2026</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

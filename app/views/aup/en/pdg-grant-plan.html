@@ -4,7 +4,7 @@
 {% set alternativeHref = "#" %}
 {% set currentNav = "grants" %}
 
-{% block pageTitle %}PDG grant reporting - School Data Service{% endblock %}
+{% block pageTitle %}PDG grant plan - School Data Service{% endblock %}
 
 {% block content %}
 <div class="govuk-width-container">
@@ -19,6 +19,20 @@
   {{ govukInsetText({
     html: "<strong>This feature is in development.</strong> PDG grant reporting will replace the current process of completing a template and publishing it on your school website. You'll submit a structured return through this platform instead."
   }) }}
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-plan.html" class="aup-nav__link aup-nav__link--active">Grant plan</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-evaluation-impact.html" class="aup-nav__link">Evaluation of impact</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-previous-years.html" class="aup-nav__link">Previous years</a>
+      </li>
+    </ul>
+  </nav>
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -121,42 +135,6 @@
         }) }}
       </div>
 
-      {# ---- PHASE 3: EVALUATION ---- #}
-      <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Evaluation of impact</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-4">For each spend entry, rate how well the success criterion was achieved and describe the impact on learners.</p>
-
-        <div class="govuk-form-group">
-          <label class="govuk-label govuk-label--s" for="success-rating">How well was the success criterion achieved?</label>
-          <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
-          {{ govukSelect({
-            id: "success-rating",
-            name: "success-rating",
-            items: [
-              { value: "", text: "Select a rating" },
-              { value: "1", text: "1 — Not achieved" },
-              { value: "2", text: "2" },
-              { value: "3", text: "3" },
-              { value: "4", text: "4" },
-              { value: "5", text: "5 — Partially achieved" },
-              { value: "6", text: "6" },
-              { value: "7", text: "7" },
-              { value: "8", text: "8" },
-              { value: "9", text: "9" },
-              { value: "10", text: "10 — Fully achieved" }
-            ]
-          }) }}
-        </div>
-
-        {{ govukTextarea({
-          id: "impact-detail",
-          name: "impact-detail",
-          label: { text: "Describe the impact", classes: "govuk-label--s" },
-          hint: { text: "Describe what changed for learners as a result of this spend. Include any evidence. For example: scores for X group improved by X%. Children built a strong relationship with the tutor that increased their interest in learning." },
-          rows: 5
-        }) }}
-      </div>
-
       {# ---- SUBMIT ---- #}
       <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
 
@@ -183,7 +161,6 @@
         <p class="govuk-body-s govuk-!-margin-bottom-1">Total spend recorded: <strong>£38,500</strong></p>
         <p class="govuk-body-s govuk-!-margin-bottom-0">Deadline: <strong>31 July 2025</strong></p>
       </div>
-
     </div>
 
   </div>

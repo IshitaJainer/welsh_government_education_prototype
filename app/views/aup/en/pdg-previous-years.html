@@ -1,0 +1,149 @@
+{% extends "aup/layout_aup_grant.html" %}
+
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant reporting - Previous years - School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Ysgol Gyfun Abercastell</p>
+    </div>
+  </div>
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-plan.html" class="aup-nav__link">Grant plan</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-evaluation-impact.html" class="aup-nav__link">Evaluation of impact</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-previous-years.html" class="aup-nav__link aup-nav__link--active">Previous years</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+      {{ govukSelect({
+        id: "previous-year",
+        name: "previous-year",
+        label: { text: "Financial year", classes: "govuk-label--s" },
+        hint: { text: "Select a financial year to view the submitted return for that year." },
+        items: [
+          { value: "2024-2025", text: "2024 to 2025", selected: true },
+          { value: "2023-2024", text: "2023 to 2024" },
+          { value: "2022-2023", text: "2022 to 2023" }
+        ]
+      }) }}
+
+      <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Grant plan</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Spend entries submitted for the selected year.</p>
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Category</th>
+              <th class="govuk-table__header">Key area</th>
+              <th class="govuk-table__header">Description</th>
+              <th class="govuk-table__header">Amount</th>
+              <th class="govuk-table__header">Success criterion</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="prev-plan-table-body"></tbody>
+        </table>
+      </div>
+
+      <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Evaluation of impact</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Evaluation submitted for each spend entry in the selected year.</p>
+        <div id="prev-evaluation-list"></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script>
+  (function() {
+
+    // -------------------------------------------------------------------------
+    // PDG previous-years fictional placeholder data, keyed by financial year
+    // -------------------------------------------------------------------------
+    var prevYearData = {
+      '2024-2025': {
+        entries: [
+          { category: "Targeted staff intervention", keyArea: "High-quality teaching and learning", description: "Hired literacy support tutor", amount: "£30,000", criterion: "X% improvement in lowest achievers' scores", rating: "8", impact: "Average reading age increased by 7 months across the targeted group." },
+          { category: "Attendance intervention", keyArea: "Reducing persistent absence", description: "Family liaison officer", amount: "£8,500", criterion: "Reduce PA rate by 3%", rating: "6", impact: "Persistent absence reduced from 12% to 9.5% among eligible pupils." }
+        ]
+      },
+      '2023-2024': {
+        entries: [
+          { category: "Teaching and learning resources", keyArea: "Literacy and numeracy", description: "New reading intervention scheme", amount: "£22,000", criterion: "Increase reading age by 6 months", rating: "7", impact: "Average reading age increased by 5 months across the cohort." },
+          { category: "Wellbeing and pastoral support", keyArea: "Wellbeing and mental health", description: "Additional pastoral mentor", amount: "£15,000", criterion: "Reduce referrals to external wellbeing services by 20%", rating: "5", impact: "Referrals reduced by 12%, partially meeting the target." }
+        ]
+      },
+      '2022-2023': {
+        entries: [
+          { category: "Staff CPD and development", keyArea: "High-quality teaching and learning", description: "Whole-school literacy training", amount: "£12,500", criterion: "Increase % of lessons rated good or better", rating: "9", impact: "90% of observed lessons rated good or better, up from 74%." },
+          { category: "Enrichment and extracurricular", keyArea: "Enrichment", description: "Subsidised extracurricular clubs for eFSM pupils", amount: "£9,800", criterion: "Increase eFSM pupil participation in enrichment activities by 25%", rating: "8", impact: "eFSM participation in enrichment activities rose by 28%." }
+        ]
+      }
+    };
+
+    var RATING_LABEL = {
+      '1': '1 — Not achieved', '2': '2', '3': '3', '4': '4', '5': '5 — Partially achieved',
+      '6': '6', '7': '7', '8': '8', '9': '9', '10': '10 — Fully achieved'
+    };
+
+    function parseAmount(amountStr) {
+      return parseInt(amountStr.replace(/[£,]/g, ''), 10);
+    }
+
+    function render(year) {
+      var data = prevYearData[year];
+      var planBody = document.getElementById('prev-plan-table-body');
+      var evalList = document.getElementById('prev-evaluation-list');
+
+      planBody.innerHTML = '';
+      evalList.innerHTML = '';
+
+      data.entries.forEach(function(entry) {
+        planBody.innerHTML += '<tr class="govuk-table__row">'
+          + '<td class="govuk-table__cell">' + entry.category + '</td>'
+          + '<td class="govuk-table__cell">' + entry.keyArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.description + '</td>'
+          + '<td class="govuk-table__cell">' + entry.amount + '</td>'
+          + '<td class="govuk-table__cell">' + entry.criterion + '</td>'
+          + '</tr>';
+
+        evalList.innerHTML += '<div class="govuk-!-margin-bottom-4">'
+          + '<p class="govuk-body-s govuk-!-margin-bottom-1"><strong>' + entry.description + '</strong></p>'
+          + '<p class="govuk-body-s govuk-!-margin-bottom-1">Rating: <strong>' + RATING_LABEL[entry.rating] + '</strong></p>'
+          + '<p class="govuk-body-s">' + entry.impact + '</p>'
+          + '</div>';
+      });
+    }
+
+    var select = document.getElementById('previous-year');
+    select.addEventListener('change', function() {
+      render(this.value);
+    });
+
+    render(select.value);
+
+  })();
+  </script>
+{% endblock %}
