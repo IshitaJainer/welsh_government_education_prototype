@@ -1,0 +1,115 @@
+{% extends "aup/layout_aup_la_grant.html" %}
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant reporting — LA-retained spend — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Rhondda Cynon Taf CBC — 2024–25</p>
+    </div>
+  </div>
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-reporting-la.html" class="aup-nav__link">School submissions</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-funding-to-schools.html" class="aup-nav__link">Funding to schools</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-retained-spend.html" class="aup-nav__link aup-nav__link--active">LA-retained spend</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link">Adviser interventions</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">LA-retained spend</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Record how the local authority has spent PDG funding that has not been passed to schools.</p>
+
+        {{ govukTable({
+          head: [
+            { text: "Category" },
+            { text: "Description" },
+            { text: "Amount" },
+            { text: "Outcome or success criterion" },
+            { text: "" }
+          ],
+          rows: [
+            [
+              { text: "Central training and CPD" },
+              { text: "Literacy in whole-LA CPD network" },
+              { text: "£22,000" },
+              { text: "Increase % of literacy leads trained across the LA" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ],
+            [
+              { text: "Data and evaluation support" },
+              { text: "Central PDG data analyst post" },
+              { text: "£15,000" },
+              { text: "Improve quality and consistency of school PDG evaluations" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ]
+          ]
+        }) }}
+
+        <h3 class="govuk-heading-s">Add a spend entry</h3>
+
+        {{ govukSelect({
+          id: "retained-category",
+          name: "retained-category",
+          label: { text: "Category of spend", classes: "govuk-label--s" },
+          hint: { text: "Select the type of activity this funding supports." },
+          items: [
+            { value: "", text: "Select a category" },
+            { value: "cpd", text: "Central training and CPD" },
+            { value: "data", text: "Data and evaluation support" },
+            { value: "resources", text: "Central resources and licences" },
+            { value: "advisers", text: "PDG adviser staffing" },
+            { value: "other", text: "Other" }
+          ]
+        }) }}
+
+        {{ govukTextarea({
+          id: "retained-description",
+          name: "retained-description",
+          label: { text: "Describe the spend", classes: "govuk-label--s" },
+          hint: { text: "Briefly describe what this funding is being used for." },
+          rows: 3
+        }) }}
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="retained-amount">Amount (£)</label>
+          <input class="govuk-input govuk-input--width-10" id="retained-amount" name="retained-amount" type="text" inputmode="numeric">
+        </div>
+
+        {{ govukTextarea({
+          id: "retained-outcome",
+          name: "retained-outcome",
+          label: { text: "Describe the outcome or success criterion", classes: "govuk-label--s" },
+          hint: { text: "What measurable outcome would indicate this spend has been successful?" },
+          rows: 3
+        }) }}
+
+        {{ govukButton({
+          text: "Add entry",
+          classes: "govuk-button--secondary"
+        }) }}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "aup/layout_aup_la_grant.html" %}
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant reporting — Funding to schools — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Rhondda Cynon Taf CBC — 2024–25</p>
+    </div>
+  </div>
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-reporting-la.html" class="aup-nav__link">School submissions</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-funding-to-schools.html" class="aup-nav__link aup-nav__link--active">Funding to schools</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-retained-spend.html" class="aup-nav__link">LA-retained spend</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link">Adviser interventions</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Funding to schools</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Record how much PDG funding has been passed to each school in your area. This excludes funding that Welsh Government directs to schools directly.</p>
+
+        {{ govukTable({
+          head: [
+            { text: "School" },
+            { text: "Amount allocated" },
+            { text: "Financial year" },
+            { text: "Notes" },
+            { text: "" }
+          ],
+          rows: [
+            [
+              { text: "Ysgol Gyfun Abercastell" },
+              { text: "£114,600" },
+              { text: "2024–25" },
+              { text: "Full PDG allocation passed through" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ],
+            [
+              { text: "Blaengwawr High School" },
+              { text: "£98,200" },
+              { text: "2024–25" },
+              { text: "Full PDG allocation passed through" },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ]
+          ]
+        }) }}
+
+        <h3 class="govuk-heading-s">Add a funding entry</h3>
+
+        {{ govukSelect({
+          id: "funding-school",
+          name: "funding-school",
+          label: { text: "School", classes: "govuk-label--s" },
+          hint: { text: "Select the school this funding was passed to." },
+          items: [
+            { value: "", text: "Select a school" },
+            { value: "abercastell", text: "Ysgol Gyfun Abercastell" },
+            { value: "blaengwawr", text: "Blaengwawr High School" },
+            { value: "treorchy", text: "Treorchy Comprehensive" },
+            { value: "mountain-ash", text: "Mountain Ash Comprehensive" },
+            { value: "aberdare", text: "Aberdare Community School" },
+            { value: "ferndale", text: "Ferndale Community School" },
+            { value: "llanhari", text: "Ysgol Llanhari" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "funding-year",
+          name: "funding-year",
+          label: { text: "Financial year", classes: "govuk-label--s" },
+          items: [
+            { value: "2024-2025", text: "2024 to 2025" },
+            { value: "2023-2024", text: "2023 to 2024" },
+            { value: "2022-2023", text: "2022 to 2023" }
+          ]
+        }) }}
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="funding-amount">Amount allocated (£)</label>
+          <input class="govuk-input govuk-input--width-10" id="funding-amount" name="funding-amount" type="text" inputmode="numeric">
+        </div>
+
+        {{ govukTextarea({
+          id: "funding-notes",
+          name: "funding-notes",
+          label: { text: "Notes", classes: "govuk-label--s" },
+          hint: { text: "Any conditions or context attached to this allocation." },
+          rows: 3
+        }) }}
+
+        {{ govukButton({
+          text: "Add entry",
+          classes: "govuk-button--secondary"
+        }) }}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
