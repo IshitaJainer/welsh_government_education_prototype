@@ -24,14 +24,12 @@
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">LA average attendance</p>
       <p id="card-attendance" class="aup-metric-card__value govuk-heading-l"></p>
-    </div>
-    <div class="aup-metric-card">
-      <p class="aup-metric-card__label govuk-body-s">Wales average attendance</p>
-      <p id="card-wales-attendance" class="aup-metric-card__value govuk-heading-l"></p>
+      <p class="aup-metric-card__change govuk-body-s">Wales average: <span id="card-wales-attendance"></span></p>
     </div>
     <div class="aup-metric-card">
       <p class="aup-metric-card__label govuk-body-s">LA average FSM</p>
       <p id="card-fsm" class="aup-metric-card__value govuk-heading-l"></p>
+      <p class="aup-metric-card__change govuk-body-s">Wales average: <span id="card-wales-fsm"></span></p>
     </div>
   </div>
 
@@ -97,6 +95,7 @@
       document.getElementById('card-attendance').textContent = overall1.value !== undefined ? overall1.value + '%' : '\u2014';
       document.getElementById('card-wales-attendance').textContent = overall1.wales !== undefined ? overall1.wales + '%' : '\u2014';
       document.getElementById('card-fsm').textContent = la.fsm ? la.fsm + '%' : '\u2014';
+      document.getElementById('card-wales-fsm').textContent = WGData.wales.fsm ? WGData.wales.fsm + '%' : '\u2014';
 
       // ── CHART SERIES ─────────────────────────────────────────────────
       var years = laAtt.overall['5'] ? laAtt.overall['5'].labels : ['2020-21','2021-22','2022-23','2023-24','2024-25'];
