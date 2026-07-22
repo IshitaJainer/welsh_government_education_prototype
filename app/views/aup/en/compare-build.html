@@ -25,6 +25,7 @@
               { value: "under-500", text: "Under 500" },
               { value: "500-1000", text: "500 to 1,000", checked: true },
               { value: "1000+", text: "Over 1,000" },
+              { value: "size-custom", text: "Custom range", checked: false, conditional: { html: '<div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="size-custom-min">Minimum pupils</label><input class="govuk-input govuk-input--width-4" id="size-custom-min" name="size-custom-min" type="number" min="0" inputmode="numeric"></div><div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="size-custom-max">Maximum pupils</label><input class="govuk-input govuk-input--width-4" id="size-custom-max" name="size-custom-max" type="number" min="0" inputmode="numeric"></div>' } },
               { divider: "or" },
               { value: "size-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
@@ -38,12 +39,11 @@
           {{ govukCheckboxes({
             name: "fsm",
             items: [
-              { value: "0-5", text: "Up to 5%" },
-              { value: "5-10", text: "Over 5% and up to 10%", checked: true },
-              { value: "10-15", text: "Over 10% and up to 15%" },
-              { value: "15-20", text: "Over 15% and up to 20%" },
-              { value: "20-25", text: "Over 20% and up to 25%" },
+              { value: "0-10", text: "Up to 10%" },
+              { value: "10-20", text: "Over 10% and up to 20%", checked: true },
+              { value: "20-30", text: "Over 20% and up to 30%" },
               { value: "30+", text: "Over 30%" },
+              { value: "fsm-custom", text: "Custom range", checked: false, conditional: { html: '<div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="fsm-custom-min">Minimum %</label><input class="govuk-input govuk-input--width-3" id="fsm-custom-min" name="fsm-custom-min" type="number" min="0" max="100" inputmode="numeric"></div><div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="fsm-custom-max">Maximum %</label><input class="govuk-input govuk-input--width-3" id="fsm-custom-max" name="fsm-custom-max" type="number" min="0" max="100" inputmode="numeric"></div>' } },
               { divider: "or" },
               { value: "fsm-any", text: "Do not apply this filter", behaviour: "exclusive" }
             ]
@@ -57,11 +57,11 @@
           {{ govukCheckboxes({
             name: "aln",
             items: [
-              { value: "very low", text: "Up to 10%" },
-              { value: "low", text: "Over 10% and up to 20%" },
-              { value: "average", text: "Over 20% and up to 30%" },
-              { value: "high", text: "Over 30% and up to 40%" },
-              { value: "high", text: "Over 40%" },
+              { value: "0-10", text: "Up to 10%" },
+              { value: "10-20", text: "Over 10% and up to 20%" },
+              { value: "20-30", text: "Over 20% and up to 30%" },
+              { value: "30+", text: "Over 30%" },
+              { value: "aln-custom", text: "Custom range", checked: false, conditional: { html: '<div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="aln-custom-min">Minimum %</label><input class="govuk-input govuk-input--width-3" id="aln-custom-min" name="aln-custom-min" type="number" min="0" max="100" inputmode="numeric"></div><div class="govuk-form-group govuk-form-group--small"><label class="govuk-label" for="aln-custom-max">Maximum %</label><input class="govuk-input govuk-input--width-3" id="aln-custom-max" name="aln-custom-max" type="number" min="0" max="100" inputmode="numeric"></div>' } },
               { divider: "or" },
               { value: "aln-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
             ]
@@ -80,6 +80,21 @@
               { value: "bilingual", text: "Bilingual / dual stream" },
               { divider: "or" },
               { value: "lang-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
+            ]
+          }) }}
+        </fieldset>
+      </div>
+
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">School location</legend>
+          {{ govukCheckboxes({
+            name: "locale",
+            items: [
+              { value: "rural", text: "Rural" },
+              { value: "urban", text: "Urban" },
+              { divider: "or" },
+              { value: "locale-any", text: "Do not apply this filter", checked: true, behaviour: "exclusive" }
             ]
           }) }}
         </fieldset>
@@ -203,13 +218,30 @@
         if (size.length) params.set('size', size.join(','));
 
         var fsm = getChecked('fsm', 'fsm-any');
+        var fsmCustomIdx = fsm.indexOf('fsm-custom');
+        if (fsmCustomIdx > -1) {
+          fsm.splice(fsmCustomIdx, 1);
+          var fsmMin = document.getElementById('fsm-custom-min').value;
+          var fsmMax = document.getElementById('fsm-custom-max').value;
+          if (fsmMin !== '' && fsmMax !== '') fsm.push(fsmMin + '-' + fsmMax);
+        }
         if (fsm.length) params.set('fsm', fsm.join(','));
 
         var aln = getChecked('aln', 'aln-any');
+        var alnCustomIdx = aln.indexOf('aln-custom');
+        if (alnCustomIdx > -1) {
+          aln.splice(alnCustomIdx, 1);
+          var alnMin = document.getElementById('aln-custom-min').value;
+          var alnMax = document.getElementById('aln-custom-max').value;
+          if (alnMin !== '' && alnMax !== '') aln.push(alnMin + '-' + alnMax);
+        }
         if (aln.length) params.set('aln', aln.join(','));
 
         var lang = getChecked('lang', 'lang-any');
         if (lang.length) params.set('lang', lang.join(','));
+
+        var locale = getChecked('locale', 'locale-any');
+        if (locale.length) params.set('locale', locale.join(','));
 
         var type = getChecked('type', 'type-any');
         if (type.length) params.set('type', type.join(','));

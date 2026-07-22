@@ -3,7 +3,7 @@
 {% set alternativeHref = "#" %}
 {% set currentNav = "grants" %}
 
-{% block pageTitle %}PDG grant reporting — Adviser interventions — School Data Service{% endblock %}
+{% block pageTitle %}PDG grant reporting — Adviser engagements — School Data Service{% endblock %}
 
 {% block content %}
 <div class="govuk-width-container">
@@ -27,7 +27,7 @@
         <a href="/aup/en/pdg-la-retained-spend.html" class="aup-nav__link">LA-retained spend</a>
       </li>
       <li class="aup-nav__item">
-        <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link aup-nav__link--active">Adviser interventions</a>
+        <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link aup-nav__link--active">Adviser engagements</a>
       </li>
     </ul>
   </nav>
@@ -36,8 +36,8 @@
     <div class="govuk-grid-column-two-thirds">
 
       <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Adviser interventions</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-4">Record how PDG advisers have been intervening to support schools this year.</p>
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Adviser engagements</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Record how PDG advisers have been engaging with schools this year.</p>
 
         {{ govukTable({
           head: [
@@ -68,13 +68,13 @@
           ]
         }) }}
 
-        <h3 class="govuk-heading-s">Add an intervention</h3>
+        <h3 class="govuk-heading-s">Add an engagement</h3>
 
         {{ govukSelect({
           id: "intervention-school",
           name: "intervention-school",
           label: { text: "School", classes: "govuk-label--s" },
-          hint: { text: "Select the school this intervention relates to." },
+          hint: { text: "Select the school this engagement relates to." },
           items: [
             { value: "", text: "Select a school" },
             { value: "abercastell", text: "Ysgol Gyfun Abercastell" },

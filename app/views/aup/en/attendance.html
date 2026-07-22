@@ -34,6 +34,7 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Overall attendance</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-overall">—</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-2" id="metric-overall-delta"></p>
           {{ govukDetails({
             classes: "govuk-!-margin-bottom-0",
             summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
@@ -43,6 +44,7 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Persistent absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-pa">—</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-2" id="metric-pa-delta"></p>
           {{ govukDetails({
             classes: "govuk-!-margin-bottom-0",
             summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
@@ -52,6 +54,7 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Authorised absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-auth">—</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-2" id="metric-auth-delta"></p>
           {{ govukDetails({
             classes: "govuk-!-margin-bottom-0",
             summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
@@ -61,6 +64,7 @@
         <div class="aup-metric-card">
           <p class="aup-metric-card__label govuk-body-s">Unauthorised absence</p>
           <p class="aup-metric-card__value govuk-heading-l" id="metric-unauth">—</p>
+          <p class="govuk-body-s govuk-!-margin-bottom-2" id="metric-unauth-delta"></p>
           {{ govukDetails({
             classes: "govuk-!-margin-bottom-0",
             summaryHtml: "<span class='govuk-body-s'>What does this mean?</span>",
@@ -97,6 +101,7 @@
 
         <div style="display: flex; gap: 12px; margin-bottom: 16px;">
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn att-time-btn--active" data-range="1" style="font-size: 14px; padding: 6px 12px;">1 year</button>
+          <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="3" style="font-size: 14px; padding: 6px 12px;">3 years</button>
           <button class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0 att-time-btn" data-range="5" style="font-size: 14px; padding: 6px 12px;">5 years</button>
         </div>
 
@@ -216,6 +221,19 @@
     document.getElementById('metric-auth').textContent    = school.attendance.auth['1'].school + '%';
     document.getElementById('metric-unauth').textContent  = school.attendance.unauth['1'].school + '%';
 
+    // Year-on-year deltas — illustrative figures for prototype purposes only
+    function setSummaryDelta(elId, change) {
+      var el = document.getElementById(elId);
+      var arrow = change > 0 ? '▲' : change < 0 ? '▼' : '►';
+      var abs = Math.abs(change).toFixed(1);
+      el.innerHTML = '<span aria-hidden="true">' + arrow + '</span> ' + abs + ' percentage point' + (abs == 1 ? '' : 's') + ' vs last year';
+    }
+
+    setSummaryDelta('metric-overall-delta', 1.2);
+    setSummaryDelta('metric-pa-delta', -0.6);
+    setSummaryDelta('metric-auth-delta', 0.3);
+    setSummaryDelta('metric-unauth-delta', -0.4);
+
     // -------------------------------------------------------------------------
     // Attendance over time — trend chart
     // -------------------------------------------------------------------------
@@ -262,7 +280,7 @@
       if (!d) return;
 
       var comparators = getActiveComparators();
-      var isMultiYear = currentRange === '5';
+      var isMultiYear = currentRange !== '1';
 
       // Labels: single year shows just the year; multi-year uses d.labels
       var chartLabels = isMultiYear ? d.labels : ['2024-25'];

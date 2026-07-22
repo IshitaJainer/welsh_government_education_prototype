@@ -198,7 +198,8 @@
           var delta = value - prev;
           var abs   = Math.abs(delta).toFixed(decimals);
           var dir   = delta >= 0 ? 'above' : 'below';
-          document.getElementById(deltaId).textContent = abs + ' percentage point' + (abs == 1 ? '' : 's') + ' ' + dir + ' last year';
+          var arrow = delta > 0 ? '▲' : delta < 0 ? '▼' : '►';
+          document.getElementById(deltaId).innerHTML = '<span aria-hidden="true">' + arrow + '</span> ' + abs + ' percentage point' + (abs == 1 ? '' : 's') + ' ' + dir + ' last year';
         } else {
           document.getElementById(deltaId).textContent = 'No prior year data';
         }

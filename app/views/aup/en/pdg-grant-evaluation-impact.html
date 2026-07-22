@@ -45,11 +45,18 @@
         {# ---- Entry 1: Hired literacy support tutor ---- #}
         <div style="background: #f3f2f1; padding: 16px 20px; margin-bottom: 24px;">
           <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Hired literacy support tutor</h3>
-          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Success criterion: X% improvement in lowest achievers' scores</p>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-1">Success criterion: X% improvement in lowest achievers' scores</p>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Planned amount: £30,000</p>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--s" for="actual-amount-1">Actual amount spent (£)</label>
+            <input class="govuk-input govuk-input--width-10" id="actual-amount-1" name="actual-amount-1" type="text" inputmode="numeric" data-planned="30000">
+            <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0" id="variance-1"></p>
+          </div>
 
           <div class="govuk-form-group">
             <label class="govuk-label govuk-label--s" for="success-rating-1">How well was the success criterion achieved?</label>
-            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
+            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 5 (fully achieved).</div>
             {{ govukSelect({
               id: "success-rating-1",
               name: "success-rating-1",
@@ -57,14 +64,9 @@
                 { value: "", text: "Select a rating" },
                 { value: "1", text: "1 — Not achieved" },
                 { value: "2", text: "2" },
-                { value: "3", text: "3" },
+                { value: "3", text: "3 — Partially achieved" },
                 { value: "4", text: "4" },
-                { value: "5", text: "5 — Partially achieved" },
-                { value: "6", text: "6" },
-                { value: "7", text: "7" },
-                { value: "8", text: "8" },
-                { value: "9", text: "9" },
-                { value: "10", text: "10 — Fully achieved" }
+                { value: "5", text: "5 — Fully achieved" }
               ]
             }) }}
           </div>
@@ -81,11 +83,18 @@
         {# ---- Entry 2: Family liaison officer ---- #}
         <div style="background: #f3f2f1; padding: 16px 20px;">
           <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Family liaison officer</h3>
-          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Success criterion: Reduce PA rate by 3%</p>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-1">Success criterion: Reduce PA rate by 3%</p>
+          <p class="govuk-body-s govuk-!-color-secondary govuk-!-margin-bottom-4">Planned amount: £8,500</p>
+
+          <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--s" for="actual-amount-2">Actual amount spent (£)</label>
+            <input class="govuk-input govuk-input--width-10" id="actual-amount-2" name="actual-amount-2" type="text" inputmode="numeric" data-planned="8500">
+            <p class="govuk-body-s govuk-!-margin-top-1 govuk-!-margin-bottom-0" id="variance-2"></p>
+          </div>
 
           <div class="govuk-form-group">
             <label class="govuk-label govuk-label--s" for="success-rating-2">How well was the success criterion achieved?</label>
-            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 10 (fully achieved).</div>
+            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 5 (fully achieved).</div>
             {{ govukSelect({
               id: "success-rating-2",
               name: "success-rating-2",
@@ -93,14 +102,9 @@
                 { value: "", text: "Select a rating" },
                 { value: "1", text: "1 — Not achieved" },
                 { value: "2", text: "2" },
-                { value: "3", text: "3" },
+                { value: "3", text: "3 — Partially achieved" },
                 { value: "4", text: "4" },
-                { value: "5", text: "5 — Partially achieved" },
-                { value: "6", text: "6" },
-                { value: "7", text: "7" },
-                { value: "8", text: "8" },
-                { value: "9", text: "9" },
-                { value: "10", text: "10 — Fully achieved" }
+                { value: "5", text: "5 — Fully achieved" }
               ]
             }) }}
           </div>
@@ -143,4 +147,35 @@
 
   </div>
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script>
+  (function() {
+
+    function formatCurrency(n) {
+      return '£' + n.toLocaleString();
+    }
+
+    function varianceLabel(planned, actual) {
+      var diff = actual - planned;
+      if (diff === 0) return 'On budget';
+      var abs = formatCurrency(Math.abs(diff));
+      return diff > 0 ? abs + ' over budget' : abs + ' under budget';
+    }
+
+    document.querySelectorAll('[data-planned]').forEach(function(input) {
+      var index = input.id.split('-').pop();
+      var varianceEl = document.getElementById('variance-' + index);
+      var planned = parseInt(input.getAttribute('data-planned'), 10);
+
+      input.addEventListener('input', function() {
+        var val = parseInt(this.value.replace(/[£,]/g, ''), 10);
+        varianceEl.textContent = isNaN(val) ? '' : varianceLabel(planned, val);
+      });
+    });
+
+  })();
+  </script>
 {% endblock %}

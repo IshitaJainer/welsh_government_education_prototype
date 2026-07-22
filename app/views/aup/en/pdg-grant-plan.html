@@ -42,34 +42,19 @@
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend entries</h2>
         <p class="govuk-body-s govuk-!-margin-bottom-4">Add each area of grant spend separately. You can add multiple entries.</p>
 
-        {{ govukTable({
-          head: [
-            { text: "Category" },
-            { text: "Key area" },
-            { text: "Description" },
-            { text: "Amount" },
-            { text: "Success criterion" },
-            { text: "" }
-          ],
-          rows: [
-            [
-              { text: "Targeted staff intervention" },
-              { text: "High-quality teaching and learning" },
-              { text: "Hired literacy support tutor" },
-              { text: "£30,000" },
-              { text: "X% improvement in lowest achievers' scores" },
-              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
-            ],
-            [
-              { text: "Attendance intervention" },
-              { text: "Reducing persistent absence" },
-              { text: "Family liaison officer" },
-              { text: "£8,500" },
-              { text: "Reduce PA rate by 3%" },
-              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
-            ]
-          ]
-        }) }}
+        <table class="govuk-table">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Category</th>
+              <th class="govuk-table__header">Key area</th>
+              <th class="govuk-table__header">Description</th>
+              <th class="govuk-table__header">Amount</th>
+              <th class="govuk-table__header">Success criterion</th>
+              <th class="govuk-table__header"></th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="spend-entries-table-body"></tbody>
+        </table>
 
         <h3 class="govuk-heading-s">Add a spend entry</h3>
 
@@ -131,7 +116,8 @@
 
         {{ govukButton({
           text: "Add entry",
-          classes: "govuk-button--secondary"
+          classes: "govuk-button--secondary",
+          attributes: { id: "add-spend-entry-btn" }
         }) }}
       </div>
 
@@ -157,12 +143,109 @@
       <div class="aup-chart-card govuk-!-margin-bottom-4">
         <h2 class="govuk-heading-s">Return status</h2>
         <p class="govuk-body-s govuk-!-margin-bottom-1">Status: <strong class="govuk-tag govuk-tag--yellow">Draft</strong></p>
-        <p class="govuk-body-s govuk-!-margin-bottom-1">Entries added: <strong>2</strong></p>
-        <p class="govuk-body-s govuk-!-margin-bottom-1">Total spend recorded: <strong>£38,500</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Entries added: <strong id="entries-count">2</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Total budget allocated: <strong id="budget-total">£45,000</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Total spend planned: <strong id="total-spend">£38,500</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Budget left: <strong id="budget-left">£6,500</strong></p>
         <p class="govuk-body-s govuk-!-margin-bottom-0">Deadline: <strong>31 July 2025</strong></p>
       </div>
     </div>
 
   </div>
 </div>
+{% endblock %}
+
+{% block bodyEnd %}
+  {{ super() }}
+  <script>
+  (function() {
+
+    var BUDGET_TOTAL = 45000;
+
+    var entries = [
+      { category: "Targeted staff intervention", keyArea: "High-quality teaching and learning", description: "Hired literacy support tutor", amount: 30000, criterion: "X% improvement in lowest achievers' scores" },
+      { category: "Attendance intervention", keyArea: "Reducing persistent absence", description: "Family liaison officer", amount: 8500, criterion: "Reduce PA rate by 3%" }
+    ];
+
+    var CATEGORY_LABEL = {
+      staff: "Targeted staff intervention",
+      teaching: "Teaching and learning resources",
+      attendance: "Attendance intervention",
+      wellbeing: "Wellbeing and pastoral support",
+      cpd: "Staff CPD and development",
+      enrichment: "Enrichment and extracurricular",
+      other: "Other"
+    };
+
+    var KEY_AREA_LABEL = {
+      hqt: "High-quality teaching and learning",
+      literacy: "Literacy and numeracy",
+      attendance: "Attendance and engagement",
+      wellbeing: "Wellbeing and mental health",
+      transitions: "Transitions",
+      enrichment: "Enrichment",
+      leadership: "Leadership and governance",
+      family: "Family and community engagement"
+    };
+
+   function formatCurrency(n) {
+      return '£' + n.toLocaleString();
+    }
+
+    function render() {
+      var body = document.getElementById('spend-entries-table-body');
+      body.innerHTML = '';
+      var total = 0;
+
+      entries.forEach(function(entry) {
+        total += entry.amount;
+        body.innerHTML += '<tr class="govuk-table__row">'
+          + '<td class="govuk-table__cell">' + entry.category + '</td>'
+          + '<td class="govuk-table__cell">' + entry.keyArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.description + '</td>'
+          + '<td class="govuk-table__cell">' + formatCurrency(entry.amount) + '</td>'
+          + '<td class="govuk-table__cell">' + entry.criterion + '</td>'
+          + '<td class="govuk-table__cell"><a href="#" class="govuk-link govuk-body-s">Edit</a></td>'
+          + '</tr>';
+      });
+
+      document.getElementById('entries-count').textContent = entries.length;
+      document.getElementById('total-spend').textContent = formatCurrency(total);
+      document.getElementById('budget-left').textContent = formatCurrency(BUDGET_TOTAL - total);
+    }
+
+    document.getElementById('add-spend-entry-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+
+      var categoryVal = document.getElementById('spend-category').value;
+      var keyAreaVal  = document.getElementById('key-area').value;
+      var description = document.getElementById('spend-description').value.trim();
+      var amountVal   = document.getElementById('annual-amount').value;
+      var criterion   = document.getElementById('success-criterion').value.trim();
+
+      if (!categoryVal || !keyAreaVal || !description || !amountVal || !criterion) {
+        return;
+      }
+
+      entries.push({
+        category: CATEGORY_LABEL[categoryVal] || categoryVal,
+        keyArea:  KEY_AREA_LABEL[keyAreaVal] || keyAreaVal,
+        description: description,
+        amount: parseInt(amountVal.replace(/[£,]/g, ''), 10) || 0,
+        criterion: criterion
+      });
+
+      render();
+
+      document.getElementById('spend-category').value = '';
+      document.getElementById('key-area').value = '';
+      document.getElementById('spend-description').value = '';
+      document.getElementById('annual-amount').value = '';
+      document.getElementById('success-criterion').value = '';
+    });
+
+    render();
+
+  })();
+  </script>
 {% endblock %}

@@ -221,6 +221,7 @@ Chart.defaults.set('plugins.datalabels', { display: false });
   var FONT = { family: "'GDS Transport', arial, sans-serif", size: 13 };
 
   var COMPARATOR_IDS = ['la', 'wales', 'ctx'];
+  var SCHOOL_COHORT_SIZE = 1124; // matches "Pupils" figure on compare-build.html summary card
 
   function hexToRgba(hex, alpha) {
     var r = parseInt(hex.slice(1,3),16);
@@ -457,7 +458,15 @@ Chart.defaults.set('plugins.datalabels', { display: false });
           responsive: true,
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y+'%'; } } },
+            tooltip: { callbacks: { label: function(c){
+              var key = comparators[c.dataIndex];
+              var line = c.dataset.label + ': ' + c.parsed.y + '%';
+              if (key === 'school' && entriesBreakdown === 'all') {
+                var count = Math.round(c.parsed.y / 100 * SCHOOL_COHORT_SIZE);
+                line += ' (' + count.toLocaleString() + ' of ' + SCHOOL_COHORT_SIZE.toLocaleString() + ' pupils)';
+              }
+              return line;
+            } } },
             datalabels: { display: true, color: function(c) { return c.datasetIndex === 0 ? '#fff' : '#0b0c0c'; }, font: FONT, formatter: function(v){ return v+'%'; } }
           },
           scales: {
