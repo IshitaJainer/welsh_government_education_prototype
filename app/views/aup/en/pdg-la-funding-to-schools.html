@@ -42,6 +42,7 @@
         {{ govukTable({
           head: [
             { text: "School" },
+            { text: "Funding type" },
             { text: "Amount allocated" },
             { text: "Financial year" },
             { text: "Notes" },
@@ -50,6 +51,7 @@
           rows: [
             [
               { text: "Ysgol Gyfun Abercastell" },
+              { text: "EYPDG" },
               { text: "£114,600" },
               { text: "2024–25" },
               { text: "Full PDG allocation passed through" },
@@ -57,6 +59,7 @@
             ],
             [
               { text: "Blaengwawr High School" },
+              { text: "EYPDG" },
               { text: "£98,200" },
               { text: "2024–25" },
               { text: "Full PDG allocation passed through" },
@@ -81,6 +84,20 @@
             { value: "aberdare", text: "Aberdare Community School" },
             { value: "ferndale", text: "Ferndale Community School" },
             { value: "llanhari", text: "Ysgol Llanhari" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "funding-type",
+          name: "funding-type",
+          label: { text: "Funding type", classes: "govuk-label--s" },
+          hint: { text: "Select which PDG funding stream this allocation relates to." },
+          items: [
+            { value: "", text: "Select a funding type" },
+            { value: "eypdg", text: "EYPDG" },
+            { value: "eotas-pdg", text: "EOTAS PDG" },
+            { value: "pdg-cla", text: "PDG-CLA" },
+            { value: "smoothing", text: "Smoothing" }
           ]
         }) }}
 

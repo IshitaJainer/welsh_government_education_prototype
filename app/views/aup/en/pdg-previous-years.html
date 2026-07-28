@@ -34,7 +34,22 @@
     <div class="govuk-grid-column-full">
       <div style="border-left: 4px solid #00703c; padding-left: 16px; margin-bottom: 32px;">
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend overview</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-4">Percentage of grant spend by key area, across all reported years.</p>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Grant spend, across all reported years.</p>
+
+        {{ govukRadios({
+          idPrefix: "chart-view",
+          name: "chart-view",
+          classes: "govuk-radios--inline govuk-radios--small",
+          fieldset: {
+            legend: { text: "View by", classes: "govuk-fieldset__legend--s" }
+          },
+          items: [
+            { value: "both", text: "Both focus areas", checked: true },
+            { value: "teaching-leadership", text: "High quality teaching and leadership" },
+            { value: "wellbeing", text: "Holistic support for wellbeing" }
+          ]
+        }) }}
+
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
           <canvas id="prev-overview-chart" height="80"></canvas>
         </div>
@@ -64,8 +79,8 @@
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th class="govuk-table__header">Category</th>
-              <th class="govuk-table__header">Key area</th>
+              <th class="govuk-table__header">Focus area</th>
+              <th class="govuk-table__header">Eligible activity</th>
               <th class="govuk-table__header">Description</th>
               <th class="govuk-table__header">Amount spent</th>
               <th class="govuk-table__header">Success criterion</th>
@@ -95,26 +110,34 @@
     var prevYearData = {
       '2024-2025': {
         entries: [
-          { category: "Targeted staff intervention", keyArea: "High-quality teaching and learning", description: "Hired literacy support tutor", actualAmount: "£29,200", criterion: "X% improvement in lowest achievers' scores", rating: "4", impact: "Average reading age increased by 7 months across the targeted group." },
-          { category: "Attendance intervention", keyArea: "Reducing persistent absence", description: "Family liaison officer", actualAmount: "£8,900", criterion: "Reduce PA rate by 3%", rating: "3", impact: "Persistent absence reduced from 12% to 9.5% among eligible pupils." }
+          { focusArea: "High quality teaching and leadership", activity: "Enhanced literacy and numeracy support", description: "Hired literacy support tutor", actualAmount: "£29,200", criterion: "X% improvement in lowest achievers' scores", rating: "4", impact: "Average reading age increased by 7 months across the targeted group." },
+          { focusArea: "High quality teaching and leadership", activity: "Professional learning", description: "Whole-staff pedagogy training", actualAmount: "£14,500", criterion: "Increase % of lessons rated good or better", rating: "4", impact: "85% of observed lessons rated good or better, up from 76%." },
+          { focusArea: "High quality teaching and leadership", activity: "Resources for learners", description: "Digital literacy and numeracy resources", actualAmount: "£9,800", criterion: "Increase pupil engagement with online learning tools", rating: "3", impact: "Weekly platform usage among target group rose from 40% to 62%." },
+          { focusArea: "Holistic support for wellbeing", activity: "Pastoral support", description: "Family liaison officer", actualAmount: "£8,900", criterion: "Reduce PA rate by 3%", rating: "3", impact: "Persistent absence reduced from 12% to 9.5% among eligible pupils." },
+          { focusArea: "Holistic support for wellbeing", activity: "Enrichment activities", description: "Subsidised extracurricular clubs for eFSM pupils", actualAmount: "£6,200", criterion: "Increase eFSM pupil participation in enrichment activities by 20%", rating: "4", impact: "eFSM participation in enrichment activities rose by 24%." },
+          { focusArea: "Holistic support for wellbeing", activity: "Community engagement", description: "Parent and carer engagement sessions", actualAmount: "£4,100", criterion: "Increase parental attendance at school engagement events", rating: "3", impact: "Attendance at family engagement sessions increased from 18 to 31 households." }
         ]
       },
       '2023-2024': {
         entries: [
-          { category: "Teaching and learning resources", keyArea: "Literacy and numeracy", description: "New reading intervention scheme", actualAmount: "£21,500", criterion: "Increase reading age by 6 months", rating: "4", impact: "Average reading age increased by 5 months across the cohort." },
-          { category: "Wellbeing and pastoral support", keyArea: "Wellbeing and mental health", description: "Additional pastoral mentor", actualAmount: "£15,800", criterion: "Reduce referrals to external wellbeing services by 20%", rating: "3", impact: "Referrals reduced by 12%, partially meeting the target." }
+          { focusArea: "High quality teaching and leadership", activity: "Enhanced literacy and numeracy support", description: "New reading intervention scheme", actualAmount: "£21,500", criterion: "Increase reading age by 6 months", rating: "4", impact: "Average reading age increased by 5 months across the cohort." },
+          { focusArea: "High quality teaching and leadership", activity: "Professional learning", description: "Literacy-focused staff CPD programme", actualAmount: "£11,200", criterion: "Increase % of staff trained in evidence-based literacy strategies", rating: "4", impact: "92% of teaching staff completed the CPD programme." },
+          { focusArea: "Holistic support for wellbeing", activity: "Pastoral support", description: "Additional pastoral mentor", actualAmount: "£15,800", criterion: "Reduce referrals to external wellbeing services by 20%", rating: "3", impact: "Referrals reduced by 12%, partially meeting the target." },
+          { focusArea: "Holistic support for wellbeing", activity: "Resources for learners", description: "Wellbeing toolkits for form tutors", actualAmount: "£3,600", criterion: "Increase use of wellbeing check-in tools in form time", rating: "3", impact: "Toolkits adopted by 14 of 18 form tutor groups." }
         ]
       },
       '2022-2023': {
         entries: [
-          { category: "Staff CPD and development", keyArea: "High-quality teaching and learning", description: "Whole-school literacy training", actualAmount: "£12,500", criterion: "Increase % of lessons rated good or better", rating: "5", impact: "90% of observed lessons rated good or better, up from 74%." },
-          { category: "Enrichment and extracurricular", keyArea: "Enrichment", description: "Subsidised extracurricular clubs for eFSM pupils", actualAmount: "£9,300", criterion: "Increase eFSM pupil participation in enrichment activities by 25%", rating: "4", impact: "eFSM participation in enrichment activities rose by 28%." }
+          { focusArea: "High quality teaching and leadership", activity: "Professional learning", description: "Whole-school literacy training", actualAmount: "£12,500", criterion: "Increase % of lessons rated good or better", rating: "5", impact: "90% of observed lessons rated good or better, up from 74%." },
+          { focusArea: "High quality teaching and leadership", activity: "Enhanced literacy and numeracy support", description: "Numeracy catch-up sessions", actualAmount: "£7,300", criterion: "Increase % of eFSM pupils meeting expected numeracy standard", rating: "3", impact: "eFSM pupils meeting expected standard rose from 58% to 67%." },
+          { focusArea: "Holistic support for wellbeing", activity: "Enrichment activities", description: "Subsidised extracurricular clubs for eFSM pupils", actualAmount: "£9,300", criterion: "Increase eFSM pupil participation in enrichment activities by 25%", rating: "4", impact: "eFSM participation in enrichment activities rose by 28%." },
+          { focusArea: "Holistic support for wellbeing", activity: "Community engagement", description: "Home-school liaison project", actualAmount: "£6,500", criterion: "Increase engagement with hard-to-reach families", rating: "3", impact: "Contact established with 22 previously disengaged families." }
         ]
       }
     };
 
     var RATING_LABEL = {
-      '1': '1 — Not achieved', '2': '2', '3': '3 - Partially achieved', '4': '4', '5': '5 — Fully achieved'
+      '1': '1 — Negative impact', '2': '2 — No impact', '3': '3 - Some impact', '4': '4 - Intended impact', '5': '5 — Exceptional impact'
     };
 
     function parseAmount(amountStr) {
@@ -129,8 +152,8 @@
 
       data.entries.forEach(function(entry) {
         planBody.innerHTML += '<tr class="govuk-table__row">'
-          + '<td class="govuk-table__cell">' + entry.category + '</td>'
-          + '<td class="govuk-table__cell">' + entry.keyArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.focusArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.activity + '</td>'
           + '<td class="govuk-table__cell">' + entry.description + '</td>'
           + '<td class="govuk-table__cell">' + entry.actualAmount + '</td>'
           + '<td class="govuk-table__cell">' + entry.criterion + '</td>'
@@ -148,85 +171,190 @@
     render(select.value);
 
     // -------------------------------------------------------------------------
-    // Spend overview — % of spend by key area, across all years
+    // Spend overview — selectable view: both focus areas combined, or eligible
+    // activity breakdown within a single focus area
     // -------------------------------------------------------------------------
-    var KEY_AREA_COLOURS = {
-      "High-quality teaching and learning": '#003078',
-      "Reducing persistent absence":        '#5694ca',
-      "Literacy and numeracy":              '#f47738',
-      "Wellbeing and mental health":        '#d4351c',
-      "Enrichment":                         '#00703c'
+    var FOCUS_AREA_COLOURS = {
+      "High quality teaching and leadership": '#003078',
+      "Holistic support for wellbeing":       '#d4351c'
     };
+
+    var ACTIVITY_COLOURS = {
+      "Enhanced literacy and numeracy support": '#003078',
+      "Pastoral support":                       '#d4351c',
+      "Enrichment activities":                  '#f47738',
+      "Resources for learners":                 '#28a197',
+      "Community engagement":                   '#b58840',
+      "Professional learning":                  '#5694ca'
+    };
+
     var FALLBACK_COLOUR = '#888787';
+    var ALL_ACTIVITIES = [
+      "Enhanced literacy and numeracy support",
+      "Pastoral support",
+      "Enrichment activities",
+      "Resources for learners",
+      "Community engagement",
+      "Professional learning"
+    ];
 
-    function buildOverviewChart() {
-      var years = ['2022-2023', '2023-2024', '2024-2025'];
-      var yearLabels = ['2022 to 2023', '2023 to 2024', '2024 to 2025'];
-      var keyAreas = [];
+    var overviewChart = null;
+    var years = ['2022-2023', '2023-2024', '2024-2025'];
+    var yearLabels = ['2022 to 2023', '2023 to 2024', '2024 to 2025'];
+
+    function buildOverviewChart(view) {
+      if (overviewChart) {
+        overviewChart.destroy();
+      }
+
       var yearTotals = {};
-      var yearByArea = {};
+      var datasets;
+      var tooltipTotalLabel;
 
-      years.forEach(function(year) {
-        var total = 0;
-        var areas = {};
-        prevYearData[year].entries.forEach(function(entry) {
-          var amt = parseAmount(entry.actualAmount);
-          total += amt;
-          areas[entry.keyArea] = (areas[entry.keyArea] || 0) + amt;
-          if (keyAreas.indexOf(entry.keyArea) === -1) keyAreas.push(entry.keyArea);
+      if (view === 'both') {
+        var yearByFocusArea = {};
+        years.forEach(function(year) {
+          var total = 0;
+          var byArea = {};
+          prevYearData[year].entries.forEach(function(entry) {
+            var amt = parseAmount(entry.actualAmount);
+            total += amt;
+            byArea[entry.focusArea] = (byArea[entry.focusArea] || 0) + amt;
+          });
+          yearTotals[year] = total;
+          yearByFocusArea[year] = byArea;
         });
-        yearTotals[year] = total;
-        yearByArea[year] = areas;
-      });
 
-      var datasets = keyAreas.map(function(area) {
-        return {
-          label: area,
-          data: years.map(function(year) {
-            var amt = yearByArea[year][area] || 0;
-            return yearTotals[year] ? Math.round((amt / yearTotals[year]) * 1000) / 10 : 0;
-          }),
-          backgroundColor: KEY_AREA_COLOURS[area] || FALLBACK_COLOUR,
-          barPercentage: 0.6,
-          categoryPercentage: 0.7,
-          stack: 'spend'
-        };
-      });
+        datasets = Object.keys(FOCUS_AREA_COLOURS).map(function(area) {
+          return {
+            label: area,
+            data: years.map(function(year) { return yearByFocusArea[year][area] || 0; }),
+            backgroundColor: FOCUS_AREA_COLOURS[area],
+            barPercentage: 0.6,
+            categoryPercentage: 0.7,
+            stack: 'spend'
+          };
+        });
+
+        tooltipTotalLabel = 'Total (both focus areas)';
+      } else {
+        var focusArea = view === 'teaching-leadership'
+          ? 'High quality teaching and leadership'
+          : 'Holistic support for wellbeing';
+
+        var yearByActivity = {};
+        years.forEach(function(year) {
+          var total = 0;
+          var byActivity = {};
+          prevYearData[year].entries
+            .filter(function(entry) { return entry.focusArea === focusArea; })
+            .forEach(function(entry) {
+              var amt = parseAmount(entry.actualAmount);
+              total += amt;
+              byActivity[entry.activity] = (byActivity[entry.activity] || 0) + amt;
+            });
+          yearTotals[year] = total;
+          yearByActivity[year] = byActivity;
+        });
+
+        datasets = ALL_ACTIVITIES.map(function(activity) {
+          return {
+            label: activity,
+            data: years.map(function(year) { return yearByActivity[year][activity] || 0; }),
+            backgroundColor: ACTIVITY_COLOURS[activity] || FALLBACK_COLOUR,
+            barPercentage: 0.6,
+            categoryPercentage: 0.7,
+            stack: 'spend'
+          };
+        });
+
+        tooltipTotalLabel = 'Total (' + focusArea + ')';
+      }
+
+      var barTotalsPlugin = {
+        id: 'barTotalsPlugin',
+        afterDatasetsDraw: function(chart) {
+          var ctx = chart.ctx;
+          var meta0 = chart.getDatasetMeta(0);
+
+          ctx.save();
+          ctx.font = 'bold 12px "GDS Transport", arial, sans-serif';
+          ctx.fillStyle = '#0b0c0c';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+
+          meta0.data.forEach(function(bar, index) {
+            var year = years[index];
+            var total = yearTotals[year] || 0;
+
+            // Find the topmost point across all datasets' bars at this index
+            var topY = bar.y;
+            chart.data.datasets.forEach(function(ds, dsIndex) {
+              var otherBar = chart.getDatasetMeta(dsIndex).data[index];
+              if (otherBar && otherBar.y < topY) {
+                topY = otherBar.y;
+              }
+            });
+
+            ctx.fillText('£' + total.toLocaleString(), bar.x, topY - 6);
+          });
+
+          ctx.restore();
+        }
+      };
 
       var canvas = document.getElementById('prev-overview-chart');
-      new Chart(canvas.getContext('2d'), {
+      overviewChart = new Chart(canvas.getContext('2d'), {
         type: 'bar',
         data: { labels: yearLabels, datasets: datasets },
+        plugins: [barTotalsPlugin],
         options: {
           responsive: true,
+          layout: {
+            padding: { top: 24 }
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
                 label: function(c) {
-                  var year = years[c.dataIndex];
-                  var amt = yearByArea[year][c.dataset.label] || 0;
-                  return c.dataset.label + ': ' + c.parsed.y + '% (£' + amt.toLocaleString() + ')';
+                  return c.dataset.label + ': £' + c.parsed.y.toLocaleString();
+                },
+                footer: function(items) {
+                  var year = years[items[0].dataIndex];
+                  return tooltipTotalLabel + ': £' + yearTotals[year].toLocaleString();
                 }
               }
             }
           },
           scales: {
             x: { stacked: true, grid: { display: false } },
-            y: { stacked: true, min: 0, max: 100, grid: { display: false }, ticks: { callback: function(v) { return v + '%'; } } }
+            y: {
+              stacked: true,
+              grid: { display: false },
+              ticks: { callback: function(v) { return '£' + (v >= 1000 ? (v / 1000) + 'k' : v); } }
+            }
           }
         }
       });
 
       var legendEl = document.getElementById('prev-overview-legend');
-      keyAreas.forEach(function(area) {
+      legendEl.innerHTML = '';
+      datasets.forEach(function(ds) {
         legendEl.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
-          + '<span style="display:inline-block;width:12px;height:12px;background:' + (KEY_AREA_COLOURS[area] || FALLBACK_COLOUR) + ';border-radius:2px;"></span>'
-          + area + '</li>';
+          + '<span style="display:inline-block;width:12px;height:12px;background:' + ds.backgroundColor + ';border-radius:2px;"></span>'
+          + ds.label + '</li>';
       });
-    }
 
-    buildOverviewChart();
+      }
+
+    document.querySelectorAll('input[name="chart-view"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        buildOverviewChart(this.value);
+      });
+    });
+
+    buildOverviewChart('both');
 
   })();
   </script>

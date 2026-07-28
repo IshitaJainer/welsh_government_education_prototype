@@ -78,20 +78,31 @@
     </div>
   </div>
 
-  {# LA spend breakdown chart #}
+  {# LA spend by focus area / eligible activity chart #}
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
       <div class="aup-chart-card">
-        <h2 class="govuk-heading-s">Spend by category — across all schools</h2>
-        <p class="govuk-body-s">Combined PDG spend across submitted returns, broken down by the three strategy areas.</p>
+        <h2 class="govuk-heading-s">Spend by focus area and eligible activity — across all schools</h2>
+        <p class="govuk-body-s">Combined PDG spend from submitted school returns, 2024–25.</p>
+
+        {{ govukRadios({
+          idPrefix: "la-chart-view",
+          name: "la-chart-view",
+          classes: "govuk-radios--inline govuk-radios--small",
+          fieldset: {
+            legend: { text: "View by", classes: "govuk-fieldset__legend--s" }
+          },
+          items: [
+            { value: "teaching-leadership", text: "High quality teaching and leadership", checked: true },
+            { value: "wellbeing", text: "Holistic support for wellbeing" },
+            { value: "all-activities", text: "All eligible activities" }
+          ]
+        }) }}
+
         <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
-          <canvas id="la-spend-chart" height="80"></canvas>
+          <canvas id="la-focus-area-chart" height="80"></canvas>
         </div>
-        <ul style="display: flex; flex-direction: column; gap: 6px; list-style: none; padding: 0; margin: 0; font-size: 14px;">
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#003078; border-radius:2px;"></span> Learning and teaching — £338,000</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#5694ca; border-radius:2px;"></span> Community focused schools — £154,200</li>
-          <li style="display: flex; align-items: center; gap: 6px;"><span style="display:inline-block; width:12px; height:12px; background:#f47738; border-radius:2px;"></span> Wider strategies — £81,900</li>
-        </ul>
+        <ul id="la-focus-area-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>
       </div>
     </div>
   </div>
@@ -184,6 +195,156 @@
       'not-submitted': '<strong class="govuk-tag govuk-tag--red">Not submitted</strong>'
     };
 
+    // -------------------------------------------------------------------------
+    // PDG spend by focus area / eligible activity — fictional aggregated
+    // entries across all submitted school returns, 2024–25
+    // -------------------------------------------------------------------------
+    var LA_ACTIVITIES = [
+      "Enhanced literacy and numeracy support",
+      "Pastoral support",
+      "Enrichment activities",
+      "Resources for learners",
+      "Community engagement",
+      "Professional learning"
+    ];
+
+    var laFocusAreaData = {
+      "High quality teaching and leadership": {
+        "Enhanced literacy and numeracy support": 96500,
+        "Professional learning":                  61200,
+        "Resources for learners":                 42800,
+        "Pastoral support":                       18200,
+        "Enrichment activities":                  12400,
+        "Community engagement":                    9600
+      },
+      "Holistic support for wellbeing": {
+        "Pastoral support":                       78300,
+        "Enrichment activities":                  39600,
+        "Community engagement":                   21400,
+        "Resources for learners":                 14100,
+        "Professional learning":                  11300,
+        "Enhanced literacy and numeracy support":   8200
+      }
+    };
+
+    var FOCUS_AREA_COLOURS = {
+      "High quality teaching and leadership": '#003078',
+      "Holistic support for wellbeing":       '#d4351c'
+    };
+
+    var ACTIVITY_COLOURS = {
+      "Enhanced literacy and numeracy support": '#003078',
+      "Pastoral support":                       '#d4351c',
+      "Enrichment activities":                  '#f47738',
+      "Resources for learners":                 '#28a197',
+      "Community engagement":                   '#b58840',
+      "Professional learning":                  '#5694ca'
+    };
+
+    var laFocusAreaChart = null;
+
+    function buildLaFocusAreaChart(view) {
+      if (laFocusAreaChart) {
+        laFocusAreaChart.destroy();
+      }
+
+      var rows;
+
+      if (view === 'all-activities') {
+        rows = LA_ACTIVITIES.map(function(activity) {
+          var total = 0;
+          Object.keys(laFocusAreaData).forEach(function(area) {
+            total += laFocusAreaData[area][activity] || 0;
+          });
+          return {
+            label: activity,
+            amount: total,
+            colour: ACTIVITY_COLOURS[activity] || '#888787'
+          };
+        });
+      } else {
+        var focusArea = view === 'teaching-leadership'
+          ? 'High quality teaching and leadership'
+          : 'Holistic support for wellbeing';
+        rows = LA_ACTIVITIES.map(function(activity) {
+          return {
+            label: activity,
+            amount: laFocusAreaData[focusArea][activity] || 0,
+            colour: ACTIVITY_COLOURS[activity] || '#888787'
+          };
+        });
+      }
+
+      var barValueLabelsPlugin = {
+        id: 'barValueLabelsPlugin',
+        afterDatasetsDraw: function(chart) {
+          var ctx = chart.ctx;
+          var meta = chart.getDatasetMeta(0);
+
+          ctx.save();
+          ctx.font = 'bold 12px "GDS Transport", arial, sans-serif';
+          ctx.fillStyle = '#0b0c0c';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+
+          meta.data.forEach(function(bar, index) {
+            var value = chart.data.datasets[0].data[index];
+            ctx.fillText('£' + value.toLocaleString(), bar.x, bar.y - 6);
+          });
+
+          ctx.restore();
+        }
+      };
+
+      var canvas = document.getElementById('la-focus-area-chart');
+      laFocusAreaChart = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: rows.map(function(r) { return r.label; }),
+          datasets: [{
+            data: rows.map(function(r) { return r.amount; }),
+            backgroundColor: rows.map(function(r) { return r.colour; }),
+            barThickness: 28
+          }]
+        },
+        plugins: [barValueLabelsPlugin],
+        options: {
+          responsive: true,
+          layout: {
+            padding: { top: 24 }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(c) { return '£' + c.parsed.y.toLocaleString(); }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, ticks: { callback: function(v) { return '£' + (v >= 1000 ? (v / 1000) + 'k' : v); } } }
+          }
+        }
+      });
+
+      var legendEl = document.getElementById('la-focus-area-legend');
+      legendEl.innerHTML = '';
+      rows.forEach(function(r) {
+        legendEl.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="display:inline-block;width:12px;height:12px;background:' + r.colour + ';border-radius:2px;"></span>'
+          + r.label + '</li>';
+      });
+    }
+
+    document.querySelectorAll('input[name="la-chart-view"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        buildLaFocusAreaChart(this.value);
+      });
+    });
+
+    buildLaFocusAreaChart('teaching-leadership');
+
     function fmt(n) {
       return '£' + n.toLocaleString();
     }
@@ -254,40 +415,6 @@
         + '<td class="govuk-table__cell">' + actionHtml + '</td>'
         + '</tr>';
       tbody.innerHTML += row;
-    });
-
-    // -------------------------------------------------------------------------
-    // Spend chart — LA totals, hardcoded (no per-school breakdown in WGData)
-    // -------------------------------------------------------------------------
-    var sctx = document.getElementById('la-spend-chart').getContext('2d');
-    new Chart(sctx, {
-      type: 'bar',
-      data: {
-        labels: ['Learning and teaching', 'Community focused schools', 'Wider strategies'],
-        datasets: [{
-          data: [338000, 154200, 81900],
-          backgroundColor: ['#003078', '#5694ca', '#f47738'],
-          barThickness: 32
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                return '£' + context.parsed.x.toLocaleString();
-              }
-            }
-          }
-        },
-        scales: {
-          x: { grid: { display: false }, ticks: { callback: function(v) { return '£' + (v >= 1000 ? (v/1000)+'k' : v); } } },
-          y: { grid: { display: false } }
-        }
-      }
     });
 
   })();

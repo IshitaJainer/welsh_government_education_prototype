@@ -45,8 +45,8 @@
         <table class="govuk-table">
           <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-              <th class="govuk-table__header">Category</th>
-              <th class="govuk-table__header">Key area</th>
+              <th class="govuk-table__header">Focus area</th>
+              <th class="govuk-table__header">Eligible activity</th>
               <th class="govuk-table__header">Description</th>
               <th class="govuk-table__header">Amount</th>
               <th class="govuk-table__header">Success criterion</th>
@@ -59,37 +59,30 @@
         <h3 class="govuk-heading-s">Add a spend entry</h3>
 
         {{ govukSelect({
-          id: "spend-category",
-          name: "spend-category",
-          label: { text: "Category of spend", classes: "govuk-label--s" },
-          hint: { text: "Select the type of activity this funding supports." },
+          id: "focus-area",
+          name: "focus-area",
+          label: { text: "Focus area", classes: "govuk-label--s" },
+          hint: { text: "Select the focus area this spend is primarily aimed at." },
           items: [
-            { value: "", text: "Select a category" },
-            { value: "staff", text: "Targeted staff intervention" },
-            { value: "teaching", text: "Teaching and learning resources" },
-            { value: "attendance", text: "Attendance intervention" },
-            { value: "wellbeing", text: "Wellbeing and pastoral support" },
-            { value: "cpd", text: "Staff CPD and development" },
-            { value: "enrichment", text: "Enrichment and extracurricular" },
-            { value: "other", text: "Other" }
+            { value: "", text: "Select a focus area" },
+            { value: "teaching-leadership", text: "High quality teaching and leadership" },
+            { value: "wellbeing", text: "Holistic support for wellbeing" }
           ]
         }) }}
 
         {{ govukSelect({
-          id: "key-area",
-          name: "key-area",
-          label: { text: "Key area this spend is primarily aimed at", classes: "govuk-label--s" },
-          hint: { text: "Select from the 8 key areas." },
+          id: "eligible-activity",
+          name: "eligible-activity",
+          label: { text: "Eligible activity", classes: "govuk-label--s" },
+          hint: { text: "Select the eligible activity this funding supports." },
           items: [
-            { value: "", text: "Select a key area" },
-            { value: "hqt", text: "High-quality teaching and learning" },
-            { value: "literacy", text: "Literacy and numeracy" },
-            { value: "attendance", text: "Attendance and engagement" },
-            { value: "wellbeing", text: "Wellbeing and mental health" },
-            { value: "transitions", text: "Transitions" },
-            { value: "enrichment", text: "Enrichment" },
-            { value: "leadership", text: "Leadership and governance" },
-            { value: "family", text: "Family and community engagement" }
+            { value: "", text: "Select an eligible activity" },
+            { value: "literacy-numeracy", text: "Enhanced literacy and numeracy support" },
+            { value: "pastoral", text: "Pastoral support" },
+            { value: "enrichment", text: "Enrichment activities" },
+            { value: "resources", text: "Resources for learners" },
+            { value: "community", text: "Community engagement" },
+            { value: "professional-learning", text: "Professional learning" }
           ]
         }) }}
 
@@ -163,29 +156,22 @@
     var BUDGET_TOTAL = 45000;
 
     var entries = [
-      { category: "Targeted staff intervention", keyArea: "High-quality teaching and learning", description: "Hired literacy support tutor", amount: 30000, criterion: "X% improvement in lowest achievers' scores" },
-      { category: "Attendance intervention", keyArea: "Reducing persistent absence", description: "Family liaison officer", amount: 8500, criterion: "Reduce PA rate by 3%" }
+      { focusArea: "High quality teaching and leadership", activity: "Enhanced literacy and numeracy support", description: "Hired literacy support tutor", amount: 30000, criterion: "X% improvement in lowest achievers' scores" },
+      { focusArea: "Holistic support for wellbeing", activity: "Pastoral support", description: "Family liaison officer", amount: 8500, criterion: "Reduce PA rate by 3%" }
     ];
 
-    var CATEGORY_LABEL = {
-      staff: "Targeted staff intervention",
-      teaching: "Teaching and learning resources",
-      attendance: "Attendance intervention",
-      wellbeing: "Wellbeing and pastoral support",
-      cpd: "Staff CPD and development",
-      enrichment: "Enrichment and extracurricular",
-      other: "Other"
+    var FOCUS_AREA_LABEL = {
+      "teaching-leadership": "High quality teaching and leadership",
+      "wellbeing": "Holistic support for wellbeing"
     };
 
-    var KEY_AREA_LABEL = {
-      hqt: "High-quality teaching and learning",
-      literacy: "Literacy and numeracy",
-      attendance: "Attendance and engagement",
-      wellbeing: "Wellbeing and mental health",
-      transitions: "Transitions",
-      enrichment: "Enrichment",
-      leadership: "Leadership and governance",
-      family: "Family and community engagement"
+    var ACTIVITY_LABEL = {
+      "literacy-numeracy": "Enhanced literacy and numeracy support",
+      "pastoral": "Pastoral support",
+      "enrichment": "Enrichment activities",
+      "resources": "Resources for learners",
+      "community": "Community engagement",
+      "professional-learning": "Professional learning"
     };
 
    function formatCurrency(n) {
@@ -200,8 +186,8 @@
       entries.forEach(function(entry) {
         total += entry.amount;
         body.innerHTML += '<tr class="govuk-table__row">'
-          + '<td class="govuk-table__cell">' + entry.category + '</td>'
-          + '<td class="govuk-table__cell">' + entry.keyArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.focusArea + '</td>'
+          + '<td class="govuk-table__cell">' + entry.activity + '</td>'
           + '<td class="govuk-table__cell">' + entry.description + '</td>'
           + '<td class="govuk-table__cell">' + formatCurrency(entry.amount) + '</td>'
           + '<td class="govuk-table__cell">' + entry.criterion + '</td>'
@@ -217,19 +203,19 @@
     document.getElementById('add-spend-entry-btn').addEventListener('click', function(e) {
       e.preventDefault();
 
-      var categoryVal = document.getElementById('spend-category').value;
-      var keyAreaVal  = document.getElementById('key-area').value;
+      var focusAreaVal = document.getElementById('focus-area').value;
+      var activityVal  = document.getElementById('eligible-activity').value;
       var description = document.getElementById('spend-description').value.trim();
       var amountVal   = document.getElementById('annual-amount').value;
       var criterion   = document.getElementById('success-criterion').value.trim();
 
-      if (!categoryVal || !keyAreaVal || !description || !amountVal || !criterion) {
+      if (!focusAreaVal || !activityVal || !description || !amountVal || !criterion) {
         return;
       }
 
       entries.push({
-        category: CATEGORY_LABEL[categoryVal] || categoryVal,
-        keyArea:  KEY_AREA_LABEL[keyAreaVal] || keyAreaVal,
+        focusArea: FOCUS_AREA_LABEL[focusAreaVal] || focusAreaVal,
+        activity:  ACTIVITY_LABEL[activityVal] || activityVal,
         description: description,
         amount: parseInt(amountVal.replace(/[£,]/g, ''), 10) || 0,
         criterion: criterion
@@ -237,8 +223,8 @@
 
       render();
 
-      document.getElementById('spend-category').value = '';
-      document.getElementById('key-area').value = '';
+      document.getElementById('focus-area').value = '';
+      document.getElementById('eligible-activity').value = '';
       document.getElementById('spend-description').value = '';
       document.getElementById('annual-amount').value = '';
       document.getElementById('success-criterion').value = '';

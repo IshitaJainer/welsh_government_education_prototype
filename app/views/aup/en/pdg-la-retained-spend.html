@@ -41,7 +41,9 @@
 
         {{ govukTable({
           head: [
-            { text: "Category" },
+            { text: "Funding type" },
+            { text: "Focus area" },
+            { text: "Eligible activity" },
             { text: "Description" },
             { text: "Amount" },
             { text: "Outcome or success criterion" },
@@ -49,14 +51,18 @@
           ],
           rows: [
             [
-              { text: "Central training and CPD" },
+              { text: "PDG main" },
+              { text: "High quality teaching and leadership" },
+              { text: "Professional learning" },
               { text: "Literacy in whole-LA CPD network" },
               { text: "£22,000" },
               { text: "Increase % of literacy leads trained across the LA" },
               { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
             ],
             [
-              { text: "Data and evaluation support" },
+              { text: "PDG main" },
+              { text: "High quality teaching and leadership" },
+              { text: "Resources for learners" },
               { text: "Central PDG data analyst post" },
               { text: "£15,000" },
               { text: "Improve quality and consistency of school PDG evaluations" },
@@ -68,17 +74,45 @@
         <h3 class="govuk-heading-s">Add a spend entry</h3>
 
         {{ govukSelect({
-          id: "retained-category",
-          name: "retained-category",
-          label: { text: "Category of spend", classes: "govuk-label--s" },
-          hint: { text: "Select the type of activity this funding supports." },
+          id: "retained-funding-type",
+          name: "retained-funding-type",
+          label: { text: "Funding type", classes: "govuk-label--s" },
+          hint: { text: "Select which PDG funding stream this spend is drawn from." },
           items: [
-            { value: "", text: "Select a category" },
-            { value: "cpd", text: "Central training and CPD" },
-            { value: "data", text: "Data and evaluation support" },
-            { value: "resources", text: "Central resources and licences" },
-            { value: "advisers", text: "PDG adviser staffing" },
-            { value: "other", text: "Other" }
+            { value: "", text: "Select a funding type" },
+            { value: "pdg-main", text: "PDG main" },
+            { value: "eypdg", text: "EYPDG" },
+            { value: "eotas-pdg", text: "EOTAS PDG" },
+            { value: "pdg-cla", text: "PDG-CLA" },
+            { value: "smoothing", text: "Smoothing" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "retained-focus-area",
+          name: "retained-focus-area",
+          label: { text: "Focus area", classes: "govuk-label--s" },
+          hint: { text: "Select the focus area this spend is primarily aimed at." },
+          items: [
+            { value: "", text: "Select a focus area" },
+            { value: "teaching-leadership", text: "High quality teaching and leadership" },
+            { value: "wellbeing", text: "Holistic support for wellbeing" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "retained-activity",
+          name: "retained-activity",
+          label: { text: "Eligible activity", classes: "govuk-label--s" },
+          hint: { text: "Select the eligible activity this funding supports." },
+          items: [
+            { value: "", text: "Select an eligible activity" },
+            { value: "literacy-numeracy", text: "Enhanced literacy and numeracy support" },
+            { value: "pastoral", text: "Pastoral support" },
+            { value: "enrichment", text: "Enrichment activities" },
+            { value: "resources", text: "Resources for learners" },
+            { value: "community", text: "Community engagement" },
+            { value: "professional-learning", text: "Professional learning" }
           ]
         }) }}
 

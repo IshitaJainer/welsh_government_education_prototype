@@ -56,17 +56,17 @@
 
           <div class="govuk-form-group">
             <label class="govuk-label govuk-label--s" for="success-rating-1">How well was the success criterion achieved?</label>
-            <div class="govuk-hint">Rate on a scale from 1 (not achieved) to 5 (fully achieved).</div>
+            <div class="govuk-hint">Rate on a scale from 1 (negative impact) to 5 (exceptional impact).</div>
             {{ govukSelect({
               id: "success-rating-1",
               name: "success-rating-1",
               items: [
                 { value: "", text: "Select a rating" },
-                { value: "1", text: "1 — Not achieved" },
-                { value: "2", text: "2" },
-                { value: "3", text: "3 — Partially achieved" },
-                { value: "4", text: "4" },
-                { value: "5", text: "5 — Fully achieved" }
+                { value: "1", text: "1 — Negative impact" },
+                { value: "2", text: "2 — No impact" },
+                { value: "3", text: "3 — Some impact" },
+                { value: "4", text: "4 — Intended impact" },
+                { value: "5", text: "5 — Exceptional impact" }
               ]
             }) }}
           </div>
