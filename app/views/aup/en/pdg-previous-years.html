@@ -30,10 +30,38 @@
     </ul>
   </nav>
 
+  <div class="govuk-grid-row govuk-!-margin-bottom-6">
+    <div class="govuk-grid-column-full">
+      <div class="aup-chart-card">
+        <h2 class="govuk-heading-s">Spend by focus area and eligible activity - 2024–25</h2>
+        <p class="govuk-body-s">PDG spend for the current reporting year.</p>
+
+        {{ govukRadios({
+          idPrefix: "current-year-chart-view",
+          name: "current-year-chart-view",
+          classes: "govuk-radios--inline govuk-radios--small",
+          fieldset: {
+            legend: { text: "View by", classes: "govuk-fieldset__legend--s" }
+          },
+          items: [
+            { value: "teaching-leadership", text: "High quality teaching and leadership", checked: true },
+            { value: "wellbeing", text: "Holistic support for wellbeing" },
+            { value: "all-activities", text: "All eligible activities" }
+          ]
+        }) }}
+
+        <div style="background: #f3f2f1; padding: 20px; margin-bottom: 16px;">
+          <canvas id="current-year-chart" height="80"></canvas>
+        </div>
+        <ul id="current-year-legend" style="display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; font-size: 14px; flex-wrap: wrap; font-family: 'GDS Transport', arial, sans-serif;"></ul>
+      </div>
+    </div>
+  </div>
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       <div style="border-left: 4px solid #00703c; padding-left: 16px; margin-bottom: 32px;">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend overview</h2>
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Spend overview for previous years</h2>
         <p class="govuk-body-s govuk-!-margin-bottom-4">Grant spend, across all reported years.</p>
 
         {{ govukRadios({
@@ -44,7 +72,7 @@
             legend: { text: "View by", classes: "govuk-fieldset__legend--s" }
           },
           items: [
-            { value: "both", text: "Both focus areas", checked: true },
+            { value: "all-activities", text: "All eligible activities", checked: true },
             { value: "teaching-leadership", text: "High quality teaching and leadership" },
             { value: "wellbeing", text: "Holistic support for wellbeing" }
           ]
@@ -74,7 +102,7 @@
       }) }}
 
       <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Grant plan</h2>
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Grant report</h2>
         <p class="govuk-body-s govuk-!-margin-bottom-4">Spend entries and evaluation submitted for the selected year.</p>
         <table class="govuk-table">
           <thead class="govuk-table__head">
@@ -211,32 +239,32 @@
       var datasets;
       var tooltipTotalLabel;
 
-      if (view === 'both') {
-        var yearByFocusArea = {};
+      if (view === 'all-activities') {
+        var yearByActivityAll = {};
         years.forEach(function(year) {
           var total = 0;
-          var byArea = {};
+          var byActivity = {};
           prevYearData[year].entries.forEach(function(entry) {
             var amt = parseAmount(entry.actualAmount);
             total += amt;
-            byArea[entry.focusArea] = (byArea[entry.focusArea] || 0) + amt;
+            byActivity[entry.activity] = (byActivity[entry.activity] || 0) + amt;
           });
           yearTotals[year] = total;
-          yearByFocusArea[year] = byArea;
+          yearByActivityAll[year] = byActivity;
         });
 
-        datasets = Object.keys(FOCUS_AREA_COLOURS).map(function(area) {
+        datasets = ALL_ACTIVITIES.map(function(activity) {
           return {
-            label: area,
-            data: years.map(function(year) { return yearByFocusArea[year][area] || 0; }),
-            backgroundColor: FOCUS_AREA_COLOURS[area],
+            label: activity,
+            data: years.map(function(year) { return yearByActivityAll[year][activity] || 0; }),
+            backgroundColor: ACTIVITY_COLOURS[activity] || FALLBACK_COLOUR,
             barPercentage: 0.6,
             categoryPercentage: 0.7,
             stack: 'spend'
           };
         });
 
-        tooltipTotalLabel = 'Total (both focus areas)';
+        tooltipTotalLabel = 'Total (all eligible activities)';
       } else {
         var focusArea = view === 'teaching-leadership'
           ? 'High quality teaching and leadership'
@@ -354,7 +382,117 @@
       });
     });
 
-    buildOverviewChart('both');
+    buildOverviewChart('all-activities');
+
+    // -------------------------------------------------------------------------
+    // Current year (2024-25) spend by focus area / eligible activity chart
+    // Mirrors the LA-view "Spend by focus area and eligible activity" chart,
+    // scoped to this school's current-year entries only
+    // -------------------------------------------------------------------------
+    var currentYearChart = null;
+
+    function buildCurrentYearChart(view) {
+      if (currentYearChart) {
+        currentYearChart.destroy();
+      }
+
+      var currentEntries = prevYearData['2024-2025'].entries;
+      var totals = {};
+
+      if (view === 'all-activities') {
+        currentEntries.forEach(function(entry) {
+          var amt = parseAmount(entry.actualAmount);
+          totals[entry.activity] = (totals[entry.activity] || 0) + amt;
+        });
+      } else {
+        var focusArea = view === 'teaching-leadership'
+          ? 'High quality teaching and leadership'
+          : 'Holistic support for wellbeing';
+        currentEntries
+          .filter(function(entry) { return entry.focusArea === focusArea; })
+          .forEach(function(entry) {
+            var amt = parseAmount(entry.actualAmount);
+            totals[entry.activity] = (totals[entry.activity] || 0) + amt;
+          });
+      }
+
+      var rows = ALL_ACTIVITIES.map(function(activity) {
+        return {
+          label: activity,
+          amount: totals[activity] || 0,
+          colour: ACTIVITY_COLOURS[activity] || FALLBACK_COLOUR
+        };
+      });
+
+      var barValueLabelsPlugin = {
+        id: 'currentYearBarValueLabelsPlugin',
+        afterDatasetsDraw: function(chart) {
+          var ctx = chart.ctx;
+          var meta = chart.getDatasetMeta(0);
+
+          ctx.save();
+          ctx.font = 'bold 12px "GDS Transport", arial, sans-serif';
+          ctx.fillStyle = '#0b0c0c';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'bottom';
+
+          meta.data.forEach(function(bar, index) {
+            var value = chart.data.datasets[0].data[index];
+            ctx.fillText('£' + value.toLocaleString(), bar.x, bar.y - 6);
+          });
+
+          ctx.restore();
+        }
+      };
+
+      var canvas = document.getElementById('current-year-chart');
+      currentYearChart = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: rows.map(function(r) { return r.label; }),
+          datasets: [{
+            data: rows.map(function(r) { return r.amount; }),
+            backgroundColor: rows.map(function(r) { return r.colour; }),
+            barThickness: 28
+          }]
+        },
+        plugins: [barValueLabelsPlugin],
+        options: {
+          responsive: true,
+          layout: {
+            padding: { top: 24 }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(c) { return '£' + c.parsed.y.toLocaleString(); }
+              }
+            }
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { display: false }, ticks: { callback: function(v) { return '£' + (v >= 1000 ? (v / 1000) + 'k' : v); } } }
+          }
+        }
+      });
+
+      var legendEl = document.getElementById('current-year-legend');
+      legendEl.innerHTML = '';
+      rows.forEach(function(r) {
+        legendEl.innerHTML += '<li style="display:flex;align-items:center;gap:6px;">'
+          + '<span style="display:inline-block;width:12px;height:12px;background:' + r.colour + ';border-radius:2px;"></span>'
+          + r.label + '</li>';
+      });
+    }
+
+    document.querySelectorAll('input[name="current-year-chart-view"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        buildCurrentYearChart(this.value);
+      });
+    });
+
+    buildCurrentYearChart('teaching-leadership');
 
   })();
   </script>

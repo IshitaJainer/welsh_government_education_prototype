@@ -32,7 +32,7 @@
     </ul>
   </nav>
 
-  <div class="govuk-grid-row">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
@@ -46,12 +46,12 @@
             { text: "Eligible activity" },
             { text: "Description" },
             { text: "Amount" },
-            { text: "Outcome or success criterion" },
+            { text: "Outcome" },
             { text: "" }
           ],
           rows: [
             [
-              { text: "PDG main" },
+              { text: "EYPDG" },
               { text: "High quality teaching and leadership" },
               { text: "Professional learning" },
               { text: "Literacy in whole-LA CPD network" },
@@ -60,7 +60,7 @@
               { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
             ],
             [
-              { text: "PDG main" },
+              { text: "PDG-CLA" },
               { text: "High quality teaching and leadership" },
               { text: "Resources for learners" },
               { text: "Central PDG data analyst post" },
@@ -72,7 +72,6 @@
         }) }}
 
         <h3 class="govuk-heading-s">Add a spend entry</h3>
-
         {{ govukSelect({
           id: "retained-funding-type",
           name: "retained-funding-type",
@@ -80,11 +79,9 @@
           hint: { text: "Select which PDG funding stream this spend is drawn from." },
           items: [
             { value: "", text: "Select a funding type" },
-            { value: "pdg-main", text: "PDG main" },
             { value: "eypdg", text: "EYPDG" },
             { value: "eotas-pdg", text: "EOTAS PDG" },
-            { value: "pdg-cla", text: "PDG-CLA" },
-            { value: "smoothing", text: "Smoothing" }
+            { value: "pdg-cla", text: "PDG-CLA" }
           ]
         }) }}
 
@@ -144,6 +141,15 @@
       </div>
 
     </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-chart-card govuk-!-margin-bottom-4">
+        <h2 class="govuk-heading-s">LA-retained spend summary</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Planned spend: <strong>£157,200</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-0">Actual spend: <strong>£37,000</strong></p>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}

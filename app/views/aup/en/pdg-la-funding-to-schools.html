@@ -32,12 +32,12 @@
     </ul>
   </nav>
 
-  <div class="govuk-grid-row">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
       <div style="border-left: 4px solid #f47738; padding-left: 16px; margin-bottom: 32px;">
         <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Funding to schools</h2>
-        <p class="govuk-body-s govuk-!-margin-bottom-4">Record how much PDG funding has been passed to each school in your area. This excludes funding that Welsh Government directs to schools directly.</p>
+                <p class="govuk-body-s govuk-!-margin-bottom-4">Record how much PDG funding has been passed to each school in your area. This excludes funding that Welsh Government directs to schools directly.</p>
 
         {{ govukTable({
           head: [
@@ -132,6 +132,22 @@
       </div>
 
     </div>
+
+    <div class="govuk-grid-column-one-third">
+      <div class="aup-chart-card govuk-!-margin-bottom-4">
+        <h2 class="govuk-heading-s">Funding to schools summary</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Total LA PDG allocation: <strong>£370,000</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">Total LA actual spend on funding for schools: <strong>£212,800</strong></p>
+        <p class="govuk-body-s govuk-!-margin-bottom-1">Spend by funding category:</p>
+        <ul class="govuk-list govuk-list--bullet govuk-body-s govuk-!-margin-bottom-0">
+          <li>EYPDG: £212,800</li>
+          </li>EOTAS PDG: £0</li>
+          <li>PDG-CLA: £0</li>
+          <li>Smoothing: £0</li>
+        </ul>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock %}
