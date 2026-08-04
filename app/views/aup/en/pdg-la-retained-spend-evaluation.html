@@ -1,0 +1,131 @@
+{% extends "aup/layout_aup_la_grant.html" %}
+{% set lang = "en" %}
+{% set alternativeHref = "#" %}
+{% set currentNav = "grants" %}
+
+{% block pageTitle %}PDG grant reporting — LA-retained spend evaluation — School Data Service{% endblock %}
+
+{% block content %}
+<div class="govuk-width-container">
+
+  <div class="govuk-grid-row govuk-!-margin-bottom-4">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">PDG grant reporting</h1>
+      <p class="govuk-body govuk-!-color-secondary">Rhondda Cynon Taf CBC — 2024–25</p>
+    </div>
+  </div>
+
+  <nav class="aup-nav" aria-label="PDG grant reporting sections">
+    <ul class="aup-nav__list">
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-grant-reporting-la.html" class="aup-nav__link">School submissions</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-funding-to-schools.html" class="aup-nav__link">Funding to schools</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-retained-spend.html" class="aup-nav__link">LA-retained spend</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-retained-spend-evaluation.html" class="aup-nav__link aup-nav__link--active">LA-retained spend evaluation</a>
+      </li>
+      <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link">Adviser interventions</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <div style="border-left: 4px solid #d4351c; padding-left: 16px; margin-bottom: 32px;">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-1">LA-retained spend evaluation</h2>
+        <p class="govuk-body-s govuk-!-margin-bottom-4">For each LA-retained spend entry, rate how well the success criterion was achieved and describe the impact.</p>
+
+        {{ govukTable({
+          head: [
+            { text: "Eligible activity" },
+            { text: "Success criterion" },
+            { text: "Rating" },
+            { text: "Impact" },
+            { text: "" }
+          ],
+          rows: [
+            [
+              { text: "Professional learning" },
+              { text: "Increase % of literacy leads trained across the LA" },
+              { text: "4 - Intended impact" },
+              { text: "92% of targeted literacy leads completed the CPD network programme, up from a baseline of 60%." },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ],
+            [
+              { text: "Resources for learners" },
+              { text: "Improve quality and consistency of school PDG evaluations" },
+              { text: "3 - Some impact" },
+              { text: "Analyst support reduced inconsistent reporting across schools, though full standardisation is still in progress." },
+              { html: "<a href='#' class='govuk-link govuk-body-s'>Edit</a>" }
+            ]
+          ]
+        }) }}
+
+        <h3 class="govuk-heading-s">Add an evaluation entry</h3>
+
+        {{ govukSelect({
+          id: "retained-eval-activity",
+          name: "retained-eval-activity",
+          label: { text: "Eligible activity", classes: "govuk-label--s" },
+          hint: { text: "Select the eligible activity this evaluation relates to." },
+          items: [
+            { value: "", text: "Select an eligible activity" },
+            { value: "literacy-numeracy", text: "Enhanced literacy and numeracy support" },
+            { value: "pastoral", text: "Pastoral support" },
+            { value: "enrichment", text: "Enrichment activities" },
+            { value: "resources", text: "Resources for learners" },
+            { value: "community", text: "Community engagement" },
+            { value: "professional-learning", text: "Professional learning" }
+          ]
+        }) }}
+
+        {{ govukTextarea({
+          id: "retained-eval-criterion",
+          name: "retained-eval-criterion",
+          label: { text: "Success criterion being evaluated", classes: "govuk-label--s" },
+          hint: { text: "Copy or restate the success criterion from the related spend entry." },
+          rows: 2
+        }) }}
+
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-label--s" for="retained-eval-rating">How well was the success criterion achieved?</label>
+          <div class="govuk-hint">Rate on a scale from 1 (negative impact) to 5 (exceptional impact).</div>
+          {{ govukSelect({
+            id: "retained-eval-rating",
+            name: "retained-eval-rating",
+            items: [
+              { value: "", text: "Select a rating" },
+              { value: "1", text: "1 — Negative impact" },
+              { value: "2", text: "2 — No impact" },
+              { value: "3", text: "3 — Some impact" },
+              { value: "4", text: "4 — Intended impact" },
+              { value: "5", text: "5 — Exceptional impact" }
+            ]
+          }) }}
+        </div>
+
+        {{ govukTextarea({
+          id: "retained-eval-impact",
+          name: "retained-eval-impact",
+          label: { text: "Describe the impact", classes: "govuk-label--s" },
+          hint: { text: "Describe what changed as a result of this spend, and include any evidence to support this." },
+          rows: 5
+        }) }}
+
+        {{ govukButton({
+          text: "Add entry",
+          classes: "govuk-button--secondary"
+        }) }}
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -33,6 +33,9 @@
         <a href="/aup/en/pdg-la-retained-spend.html" class="aup-nav__link">LA-retained spend</a>
       </li>
       <li class="aup-nav__item">
+        <a href="/aup/en/pdg-la-retained-spend-evaluation.html" class="aup-nav__link">LA-retained spend evaluation</a>
+      </li>
+      <li class="aup-nav__item">
         <a href="/aup/en/pdg-la-adviser-interventions.html" class="aup-nav__link">Adviser interventions</a>
       </li>
     </ul>
@@ -122,8 +125,19 @@
   <div class="govuk-grid-row govuk-!-margin-bottom-6">
     <div class="govuk-grid-column-full">
       <div class="aup-chart-card">
-        <h2 class="govuk-heading-s">Spend by focus area and eligible activity - previous years</h2>
+        <h2 class="govuk-heading-s" id="la-prev-years-chart-heading">Spend by focus area and eligible activity — previous years — funding for schools</h2>
         <p class="govuk-body-s">Combined PDG spend from submitted school returns, across all reported years.</p>
+
+        {{ govukSelect({
+          id: "la-prev-years-chart-scope",
+          name: "la-prev-years-chart-scope",
+          label: { text: "Filter by", classes: "govuk-label--s" },
+          items: [
+            { value: "total-money", text: "Total money" },
+            { value: "schools-spend", text: "Overview of schools spend", selected: true },
+            { value: "la-retained", text: "LA retained spend" }
+          ]
+        }) }}
 
         {{ govukRadios({
           idPrefix: "la-prev-years-chart-view",
@@ -502,11 +516,54 @@
       }
     };
 
+    // -------------------------------------------------------------------------
+    // LA-retained spend — previous years (fictional, matches the two entries
+    // used on the LA-retained spend planning page's amounts trending upward)
+    // -------------------------------------------------------------------------
+    var laRetainedPrevYearsData = {
+      '2022-2023': {
+        "High quality teaching and leadership": { "Professional learning": 12000, "Resources for learners": 8000 },
+        "Holistic support for wellbeing": {}
+      },
+      '2023-2024': {
+        "High quality teaching and leadership": { "Professional learning": 16000, "Resources for learners": 11000 },
+        "Holistic support for wellbeing": {}
+      },
+      '2024-2025': {
+        "High quality teaching and leadership": { "Professional learning": 22000, "Resources for learners": 15000 },
+        "Holistic support for wellbeing": {}
+      }
+    };
+
+    var PREV_YEARS_SCOPE_LABEL = {
+      'total-money':   'total money',
+      'schools-spend': 'funding for schools',
+      'la-retained':   'LA-retained spend'
+    };
+
+    function getPrevYearScopeData(year, scope) {
+      if (scope === 'schools-spend') return laPrevYearsData[year];
+      if (scope === 'la-retained') return laRetainedPrevYearsData[year];
+
+      var schoolsData = laPrevYearsData[year];
+      var retainedData = laRetainedPrevYearsData[year];
+      var combined = {};
+      Object.keys(schoolsData).forEach(function(area) {
+        combined[area] = {};
+        LA_ACTIVITIES.forEach(function(activity) {
+          var schoolsAmt = schoolsData[area][activity] || 0;
+          var retainedAmt = (retainedData[area] && retainedData[area][activity]) || 0;
+          combined[area][activity] = schoolsAmt + retainedAmt;
+        });
+      });
+      return combined;
+    }
+
     var laPrevYears = ['2022-2023', '2023-2024', '2024-2025'];
     var laPrevYearLabels = ['2022 to 2023', '2023 to 2024', '2024 to 2025'];
     var laPrevYearsChart = null;
 
-    function buildLaPrevYearsChart(view) {
+    function buildLaPrevYearsChart(scope, view) {
       if (laPrevYearsChart) {
         laPrevYearsChart.destroy();
       }
@@ -517,7 +574,7 @@
       laPrevYears.forEach(function(year) {
         var byActivity = {};
         var total = 0;
-        var yearData = laPrevYearsData[year];
+        var yearData = getPrevYearScopeData(year, scope);
 
         var areasToInclude = view === 'all-activities'
           ? Object.keys(yearData)
@@ -525,7 +582,7 @@
 
         areasToInclude.forEach(function(area) {
           LA_ACTIVITIES.forEach(function(activity) {
-            var amt = yearData[area][activity] || 0;
+            var amt = (yearData[area] && yearData[area][activity]) || 0;
             byActivity[activity] = (byActivity[activity] || 0) + amt;
             total += amt;
           });
@@ -534,6 +591,9 @@
         yearByActivity[year] = byActivity;
         yearTotals[year] = total;
       });
+
+      document.getElementById('la-prev-years-chart-heading').textContent =
+        'Spend by focus area and eligible activity — previous years — ' + PREV_YEARS_SCOPE_LABEL[scope];
 
       var tooltipTotalLabel = view === 'all-activities'
         ? 'Total (all eligible activities)'
@@ -625,13 +685,27 @@
       });
     }
 
+    function currentPrevYearsScope() {
+      var select = document.getElementById('la-prev-years-chart-scope');
+      return select ? select.value : 'schools-spend';
+    }
+
+    function currentPrevYearsView() {
+      var checked = document.querySelector('input[name="la-prev-years-chart-view"]:checked');
+      return checked ? checked.value : 'all-activities';
+    }
+
+    document.getElementById('la-prev-years-chart-scope').addEventListener('change', function() {
+      buildLaPrevYearsChart(currentPrevYearsScope(), currentPrevYearsView());
+    });
+
     document.querySelectorAll('input[name="la-prev-years-chart-view"]').forEach(function(radio) {
       radio.addEventListener('change', function() {
-        buildLaPrevYearsChart(this.value);
+        buildLaPrevYearsChart(currentPrevYearsScope(), currentPrevYearsView());
       });
     });
 
-    buildLaPrevYearsChart('all-activities');
+    buildLaPrevYearsChart('schools-spend', 'all-activities');
 
     function fmt(n) {
       return '£' + n.toLocaleString();
